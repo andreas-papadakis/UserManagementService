@@ -20,7 +20,7 @@ public class UserManagementServiceApplication {
 													 	  "id (type int, primary key, not null, auto increment), " +
 													      "first_name (type varchar(100), not null), " +
 													      "last_name (type varchar(100), not null) " +
-													 	  "and e_mail (type varchar(100), not null)")
+													 	  "and email (type varchar(100), not null)")
 								 );
 	}
 }
