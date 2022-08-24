@@ -41,12 +41,10 @@ public class User {
 
     @Column(name = "created_at")
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
 
-    @Column(name = "created_at")
+    @Column(name = "updated_at")
     @UpdateTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedAt;
 
     /**
