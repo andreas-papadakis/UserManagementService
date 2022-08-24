@@ -2,12 +2,15 @@ package com.agileactors.user_management_service.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="users")
@@ -35,6 +38,16 @@ public class User {
     @Size(min = 5, max = 100, message = "e-mail's length must not exceed 100 characters.")
     @Schema(name = "eMail", example = "johndoe@gmail.com", description = "User's e-mail")
     private String eMail;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime createdAt;
+
+    @Column(name = "created_at")
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime updatedAt;
 
     /**
      * Get user's unique ID
