@@ -2,9 +2,10 @@ package com.agileactors.user_management_service.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.lang.NonNull;
 
 import javax.persistence.*;
 
@@ -14,6 +15,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name="users")
+@Getter
+@Setter
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,11 +36,11 @@ public class User {
     @Schema(example = "Doe", description = "User's last name")
     private String lastName;
 
-    @Column(name = "e_mail")
+    @Column(name = "email")
     @NotBlank(message = "e-mail must not be blank and in correct format.")
     @Size(min = 5, max = 100, message = "e-mail's length must not exceed 100 characters.")
-    @Schema(name = "eMail", example = "johndoe@gmail.com", description = "User's e-mail")
-    private String eMail;
+    @Schema(name = "email", example = "johndoe@gmail.com", description = "User's e-mail")
+    private String email;
 
     @Column(name = "created_at")
     @CreationTimestamp
@@ -47,84 +50,17 @@ public class User {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    /**
-     * Get user's unique ID
-     * @return user's ID
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * Set user's unique ID
-     * @param id user's ID
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    /**
-     * Get user's first name
-     * @return user's first name
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * Set user's first name
-     * @param firstName user's first name
-     */
-    public void setFirstName(@NonNull String firstName) {
-        this.firstName = firstName.trim();
-    }
-
-    /**
-     * Get user's last name
-     * @return user's last name
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * Set user's last name
-     * @param lastName user's last name
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName.trim();
-    }
-
-    /**
-     * Get user's e-mail
-     * @return user's e-mail
-     */
-    public String geteMail() {
-        return eMail;
-    }
-
-    /**
-     * Set user's e-mail
-     * @param eMail user's e-mail
-     */
-    public void seteMail(String eMail) {
-        if(eMail.contains("@")) {
-            if(eMail.substring(eMail.indexOf('@')).contains(".") )
-                this.eMail = eMail.trim();
-        }
-    }
-
     public String toString() {
-        return "ID: " + id + "\nFirst name: " + firstName + "\nLast name: " + lastName + "\ne-mail: " + eMail + "\n";
+        return "ID: " + id + "\nFirst name: " + firstName + "\nLast name: " + lastName + "\ne-mail: " + email + "\n";
     }
 
-    User() {
-        super();
-    }
-
-    public User(String firstName, String lastName, String eMail) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.eMail = eMail;
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName.trim();
+        this.lastName = lastName.trim();
+        if(email.contains("@"))
+            if(email.substring(email.indexOf('@')).contains(".") )
+                this.email = email.trim();
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = createdAt;
     }
 }
