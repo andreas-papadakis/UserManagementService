@@ -1,6 +1,5 @@
 package com.agileactors.user_management_service.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import lombok.*;
@@ -67,7 +66,6 @@ public class User {
      * @param lastName Entity's last name
      * @param email Entity's email
      */
-    @JsonCreator
     public User(String firstName, String lastName, String email) {
         this.id = UUID.randomUUID().toString();
         this.firstName = (firstName != null) ? firstName.trim() : null;
