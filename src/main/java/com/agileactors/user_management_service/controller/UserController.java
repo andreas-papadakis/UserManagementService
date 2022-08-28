@@ -84,7 +84,7 @@ public class UserController {
                                        schema = @Schema (implementation = GetUserResponseDTO.class) ) }
                 )
     @GetMapping(value = "/users/{id}")
-    public Optional<GetUserResponseDTO> getUserById(@PathVariable(value = "id") String user_id) {
+    public Optional<GetUserResponseDTO> getUserById(@PathVariable(value = "123e4567-e89b-12d3-a456-426614174000") String user_id) {
         return userServiceImpl.getUserById(user_id);
     }
 
@@ -94,15 +94,15 @@ public class UserController {
      * @return Number of users removed from DB
      */
     @Operation(summary = "Remove user",
-            description = "Remove user with given id from DB",
-            tags = "DELETE")
+               description = "Remove user with given id from DB",
+               tags = "DELETE")
     @ApiResponse(responseCode = "200",
-            description = "Return number of users removed from DB",
-            content = { @Content (mediaType = "application/json",
-                                  schema = @Schema (implementation = User.class) ) }
+                 description = "Return number of users removed from DB",
+                 content = { @Content (mediaType = "application/json",
+                                       schema = @Schema (implementation = Integer.class) ) }
     )
     @DeleteMapping(value = "/users/{id}")
-    public int deleteUser(@PathVariable(value = "id") String user_id) {
+    public int deleteUser(@PathVariable(value = "123e4567-e89b-12d3-a456-426614174000") String user_id) {
         return userServiceImpl.deleteUser(user_id);
     }
 
@@ -114,9 +114,9 @@ public class UserController {
             description = "Remove all users",
             tags = "DELETE")
     @ApiResponse(responseCode = "200",
-            description = "Return number of users removed from DB",
-            content = { @Content (mediaType = "application/json",
-                                  schema = @Schema (implementation = User.class) ) }
+                 description = "Return number of users removed from DB",
+                 content = { @Content (mediaType = "application/json",
+                                       schema = @Schema (implementation = Integer.class) ) }
     )
     @DeleteMapping(value = "/users")
     public int deleteAllUsers() {
@@ -138,7 +138,7 @@ public class UserController {
                                        schema = @Schema (implementation = User.class) ) }
                 )
     @PutMapping(value = "/users/{id}")
-    public Optional<User> updateUser(@PathVariable(value = "id") String user_id, @RequestBody @Valid User updated_user) {
+    public Optional<User> updateUser(@PathVariable(value = "123e4567-e89b-12d3-a456-426614174000") String user_id, @RequestBody @Valid User updated_user) {
         return userServiceImpl.updateUser(user_id, updated_user);
     }
 }
