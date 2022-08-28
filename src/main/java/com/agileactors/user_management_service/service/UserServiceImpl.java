@@ -1,5 +1,6 @@
 package com.agileactors.user_management_service.service;
 
+import com.agileactors.user_management_service.dto.GetUserResponseDTO;
 import com.agileactors.user_management_service.model.User;
 import com.agileactors.user_management_service.repository.UserRepository;
 
@@ -18,12 +19,20 @@ public class UserServiceImpl implements UserServiceInterface {
         return userRepository.save(user);
     }
 
-    public List<User> getAllUsers(String first_name) {
-        return (first_name.isBlank()) ? userRepository.findAll() : userRepository.findByFirstNameLike("%" + first_name + "%");
+    public List<GetUserResponseDTO> getAllUsers(String first_name) {
+        return (first_name.isBlank())
+                ? userRepository.findAll()
+                                .stream()
+                                .map(user -> new GetUserResponseDTO(user.getFirstName(), user.getLastName(), user.getEmail()))
+                                .toList()
+                : userRepository.findByFirstNameLike("%" + first_name + "%")
+                                .stream()
+                                .map(user -> new GetUserResponseDTO(user.getFirstName(), user.getLastName(), user.getEmail()))
+                                .toList();
     }
 
-    public Optional<User> getUserById(String user_id) {
-        return userRepository.findById(user_id);
+    public Optional<GetUserResponseDTO> getUserById(String user_id) {
+        return userRepository.findById(user_id).map(user -> new GetUserResponseDTO(user.getFirstName(), user.getLastName(), user.getEmail()));
     }
 
     public int deleteUser(String user_id) {

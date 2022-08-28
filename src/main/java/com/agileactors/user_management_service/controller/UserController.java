@@ -1,5 +1,6 @@
 package com.agileactors.user_management_service.controller;
 
+import com.agileactors.user_management_service.dto.GetUserResponseDTO;
 import com.agileactors.user_management_service.model.User;
 import com.agileactors.user_management_service.service.UserServiceImpl;
 
@@ -55,17 +56,15 @@ public class UserController {
      * @return List with retrieved users
      */
     @Operation(summary = "Get all users",
-               description = "Retrieve all users from DB. If parameter firstName exists, retrieve those whose first name matches the given value. " +
-                             "A name matches if it starts with up to 3 characters before given value (case-insensitive), " +
-                             "then contains the value as is and can continue with any and as many characters afterwards.",
+               description = "Retrieve all users from DB. If parameter firstName exists, retrieve those whose first name contains the given value.",
                tags = "GET")
     @ApiResponse(responseCode = "200",
                  description = "Return a list with retrieved users. If no users were retrieved, list will be empty",
                  content = { @Content (mediaType = "application/json",
-                                       schema = @Schema (implementation = User.class) ) }
+                                       schema = @Schema (implementation = GetUserResponseDTO.class) ) }
                 )
     @GetMapping(value = "/users")
-    public List<User> getAllUsers(@RequestParam(value = "firstName", defaultValue = "") String first_name) {
+    public List<GetUserResponseDTO> getAllUsers(@RequestParam(value = "firstName", defaultValue = "") String first_name) {
             return userServiceImpl.getAllUsers(first_name);
     }
 
@@ -80,10 +79,10 @@ public class UserController {
     @ApiResponse(responseCode = "200",
                  description = "Return retrieved user or null",
                  content = { @Content (mediaType = "application/json",
-                                       schema = @Schema (implementation = User.class) ) }
+                                       schema = @Schema (implementation = GetUserResponseDTO.class) ) }
                 )
     @GetMapping(value = "/users/{id}")
-    public Optional<User> getUserById(@PathVariable(value = "id") String user_id) {
+    public Optional<GetUserResponseDTO> getUserById(@PathVariable(value = "id") String user_id) {
         return userServiceImpl.getUserById(user_id);
     }
 

@@ -1,5 +1,6 @@
 package com.agileactors.user_management_service.service;
 
+import com.agileactors.user_management_service.dto.GetUserResponseDTO;
 import com.agileactors.user_management_service.model.User;
 
 import java.util.List;
@@ -21,14 +22,14 @@ interface UserServiceInterface {
      * @param first_name The first name to retrieve users who have a similar
      * @return List with retrieved users
      */
-    List<User> getAllUsers(String first_name);
+    List<GetUserResponseDTO> getAllUsers(String first_name);
 
     /**
      * Retrieve a specific user
      * @param user_id User's to be retrieved ID
      * @return Optional with user if one was retrieved or null otherwise
      */
-    Optional<User> getUserById(String user_id);
+    Optional<GetUserResponseDTO> getUserById(String user_id);
 
     /**
      * Remove user with ID user_id from DB if exists
