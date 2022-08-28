@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, String> {
     /**
      * Retrieve all users from database whose first name matches the pattern of regular expression regular_expression.
      * @param regular_expression The regular expression to check if a first_name matches

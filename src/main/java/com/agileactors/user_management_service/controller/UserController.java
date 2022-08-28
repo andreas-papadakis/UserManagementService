@@ -83,9 +83,29 @@ public class UserController {
                                        schema = @Schema (implementation = User.class) ) }
                 )
     @GetMapping(value = "/users/{id}")
-    public Optional<User> getUserById(@PathVariable(value = "id") Long user_id) {
+    public Optional<User> getUserById(@PathVariable(value = "id") String user_id) {
         return userServiceImpl.getUserById(user_id);
     }
+
+    /**
+     * Remove user with ID user_id from DB if exists
+     * @param user_id The ID of user to be deleted
+     * @return Number of users removed from DB
+     */
+    @Operation(summary = "Remove user",
+            description = "Remove user with given id from DB",
+            tags = "DELETE")
+    @ApiResponse(responseCode = "200",
+            description = "Return number of users removed from DB",
+            content = { @Content (mediaType = "application/json",
+                    schema = @Schema (implementation = User.class) ) }
+    )
+    @DeleteMapping(value = "/users/{id}")
+    public int deleteUser(@PathVariable(value = "id") String user_id) {
+        return userServiceImpl.deleteUser(user_id);
+    }
+
+
 
     /**
      * Update user with ID user_id in DB with the values stored in user updated_user
@@ -102,25 +122,9 @@ public class UserController {
                                        schema = @Schema (implementation = User.class) ) }
                 )
     @PutMapping(value = "/users/{id}")
-    public Optional<User> updateUser(@PathVariable(value = "id") Long user_id, @RequestBody @Valid User updated_user) {
+    public Optional<User> updateUser(@PathVariable(value = "id") String user_id, @RequestBody @Valid User updated_user) {
         return userServiceImpl.updateUser(user_id, updated_user);
     }
 
-    /**
-     * Remove user with ID user_id from DB if exists
-     * @param user_id The ID of user to be deleted
-     * @return Number of users removed from DB
-     */
-    @Operation(summary = "Remove user",
-               description = "Remove user with given id from DB",
-               tags = "DELETE")
-    @ApiResponse(responseCode = "200",
-                 description = "Return number of users removed from DB",
-                 content = { @Content (mediaType = "application/json",
-                                       schema = @Schema (implementation = User.class) ) }
-                 )
-    @DeleteMapping(value = "/users/{id}")
-    public int deleteUser(@PathVariable(value = "id") Long user_id) {
-        return userServiceImpl.deleteUser(user_id);
-    }
+
 }

@@ -28,14 +28,14 @@ interface UserServiceInterface {
      * @param user_id User's to be retrieved ID
      * @return Optional with user if one was retrieved or null otherwise
      */
-    Optional<User> getUserById(Long user_id);
+    Optional<User> getUserById(String user_id);
 
     /**
      * Remove user with ID user_id from DB if exists
      * @param user_id The ID of user to be deleted
      * @return Number of users removed from DB
      */
-    int deleteUser(Long user_id);
+    int deleteUser(String user_id);
 
     /**
      * Remove all users
@@ -49,5 +49,5 @@ interface UserServiceInterface {
      * @param updated_user The user holding the new values
      * @return Optional with updated user if one was retrieved or null otherwise
      */
-    Optional<User> updateUser(Long user_id, User updated_user);
+    Optional<User> updateUser(String user_id, User updated_user);
 }
