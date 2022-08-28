@@ -1,7 +1,7 @@
 package com.agileactors.user_management_service.controller;
 
 import com.agileactors.user_management_service.model.User;
-import com.agileactors.user_management_service.service.UserService;
+import com.agileactors.user_management_service.service.UserServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,7 +20,7 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class UserController {
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
 
     /**
      * Upload user in DB
@@ -43,7 +43,7 @@ public class UserController {
             })
     @PostMapping(value = "/users")
     public User createUser(@RequestBody @Valid User user) {
-        return userService.createUser(user);
+        return userServiceImpl.createUser(user);
     }
 
     /**
@@ -66,7 +66,7 @@ public class UserController {
                 )
     @GetMapping(value = "/users")
     public List<User> getAllUsers(@RequestParam(value = "firstName", defaultValue = "") String first_name) {
-            return userService.getAllUsers(first_name);
+            return userServiceImpl.getAllUsers(first_name);
     }
 
     /**
@@ -84,7 +84,7 @@ public class UserController {
                 )
     @GetMapping(value = "/users/{id}")
     public Optional<User> getUserById(@PathVariable(value = "id") Long user_id) {
-        return userService.getUserById(user_id);
+        return userServiceImpl.getUserById(user_id);
     }
 
     /**
@@ -103,7 +103,7 @@ public class UserController {
                 )
     @PutMapping(value = "/users/{id}")
     public Optional<User> updateUser(@PathVariable(value = "id") Long user_id, @RequestBody @Valid User updated_user) {
-        return userService.updateUser(user_id, updated_user);
+        return userServiceImpl.updateUser(user_id, updated_user);
     }
 
     /**
@@ -121,6 +121,6 @@ public class UserController {
                  )
     @DeleteMapping(value = "/users/{id}")
     public int deleteUser(@PathVariable(value = "id") Long user_id) {
-        return userService.deleteUser(user_id);
+        return userServiceImpl.deleteUser(user_id);
     }
 }
