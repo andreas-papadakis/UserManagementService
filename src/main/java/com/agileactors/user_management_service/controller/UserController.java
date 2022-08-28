@@ -1,9 +1,8 @@
 package com.agileactors.user_management_service.controller;
 
-import com.agileactors.user_management_service.dto.CreateUserRequestDTO;
-import com.agileactors.user_management_service.dto.CreateUserResponseDTO;
+import com.agileactors.user_management_service.dto.CreateUpdateUserRequestDTO;
+import com.agileactors.user_management_service.dto.CreateUpdateUserResponseDTO;
 import com.agileactors.user_management_service.dto.GetUserResponseDTO;
-import com.agileactors.user_management_service.model.User;
 import com.agileactors.user_management_service.service.UserServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,7 +36,7 @@ public class UserController {
             @ApiResponse(responseCode = "200",
                          description = "User successfully created",
                          content = { @Content (mediaType = "application/json",
-                                               schema = @Schema(implementation = CreateUserResponseDTO.class)) }
+                                               schema = @Schema(implementation = CreateUpdateUserResponseDTO.class)) }
                         ),
             @ApiResponse(responseCode = "400",
                          description = "User was NOT created. Check again the fields. Neither field must be blank and e-mail must be in correct format",
@@ -45,16 +44,13 @@ public class UserController {
                         )
             })
     @PostMapping(value = "/users")
-    public CreateUserResponseDTO createUser(@RequestBody @Valid CreateUserRequestDTO user) {
+    public CreateUpdateUserResponseDTO createUser(@RequestBody @Valid CreateUpdateUserRequestDTO user) {
         return userServiceImpl.createUser(user);
     }
 
     /**
-     * Retrieve all users from DB.
-     * If first_name is not blank then retrieve all those with similar first name to first_name.
-     * A name is similar if it starts with up to 3 characters before given value (case-insensitive),
-     * then contains the value as is and can continue with any and as many characters afterwards.
-     * @param first_name The first name to retrieve users who have a similar
+     * Retrieve all users from database whose first name contains the search_term.
+     * @param search_term The term that first_name must contain to retrieve the user
      * @return List with retrieved users
      */
     @Operation(summary = "Get all users",
@@ -66,8 +62,8 @@ public class UserController {
                                        schema = @Schema (implementation = GetUserResponseDTO.class) ) }
                 )
     @GetMapping(value = "/users")
-    public List<GetUserResponseDTO> getAllUsers(@RequestParam(value = "firstName", defaultValue = "") String first_name) {
-            return userServiceImpl.getAllUsers(first_name);
+    public List<GetUserResponseDTO> getAllUsers(@RequestParam(value = "firstName", defaultValue = "") String search_term) {
+            return userServiceImpl.getAllUsers(search_term);
     }
 
     /**
@@ -84,7 +80,7 @@ public class UserController {
                                        schema = @Schema (implementation = GetUserResponseDTO.class) ) }
                 )
     @GetMapping(value = "/users/{id}")
-    public Optional<GetUserResponseDTO> getUserById(@PathVariable(value = "123e4567-e89b-12d3-a456-426614174000") String user_id) {
+    public Optional<GetUserResponseDTO> getUserById(@PathVariable(value = "id") String user_id) {
         return userServiceImpl.getUserById(user_id);
     }
 
@@ -102,7 +98,7 @@ public class UserController {
                                        schema = @Schema (implementation = Integer.class) ) }
     )
     @DeleteMapping(value = "/users/{id}")
-    public int deleteUser(@PathVariable(value = "123e4567-e89b-12d3-a456-426614174000") String user_id) {
+    public int deleteUser(@PathVariable(value = "id") String user_id) {
         return userServiceImpl.deleteUser(user_id);
     }
 
@@ -127,18 +123,19 @@ public class UserController {
      * Update user with ID user_id in DB with the values stored in user updated_user
      * @param user_id The ID of user to be updated
      * @param updated_user The user holding the new values
-     * @return Optional with the updated user if ID exists or null otherwise
+     * @return All the info of the updated user if one was retrieved or an empty one otherwise
      */
     @Operation(summary = "Update user",
                description = "Update a user's basic information",
                tags = "PUT")
     @ApiResponse(responseCode = "200",
-                 description = "Return updated user or null if user id not found",
+                 description = "Return updated user or empty user if user id not found",
                  content = { @Content (mediaType = "application/json",
-                                       schema = @Schema (implementation = User.class) ) }
+                                       schema = @Schema (implementation = CreateUpdateUserResponseDTO.class) ) }
                 )
     @PutMapping(value = "/users/{id}")
-    public Optional<User> updateUser(@PathVariable(value = "123e4567-e89b-12d3-a456-426614174000") String user_id, @RequestBody @Valid User updated_user) {
+    public CreateUpdateUserResponseDTO updateUser(@PathVariable(value = "id") String user_id,
+                                                            @RequestBody @Valid CreateUpdateUserRequestDTO updated_user) {
         return userServiceImpl.updateUser(user_id, updated_user);
     }
 }

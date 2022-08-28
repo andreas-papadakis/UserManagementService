@@ -1,9 +1,8 @@
 package com.agileactors.user_management_service.service;
 
-import com.agileactors.user_management_service.dto.CreateUserRequestDTO;
-import com.agileactors.user_management_service.dto.CreateUserResponseDTO;
+import com.agileactors.user_management_service.dto.CreateUpdateUserRequestDTO;
+import com.agileactors.user_management_service.dto.CreateUpdateUserResponseDTO;
 import com.agileactors.user_management_service.dto.GetUserResponseDTO;
-import com.agileactors.user_management_service.model.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,17 +13,14 @@ interface UserServiceInterface {
      * @param user The user to be uploaded
      * @return The uploaded user on success
      */
-    CreateUserResponseDTO createUser(CreateUserRequestDTO user);
+    CreateUpdateUserResponseDTO createUser(CreateUpdateUserRequestDTO user);
 
     /**
-     * Retrieve all users from DB.
-     * If first_name is not blank then retrieve all those with similar first name to first_name.
-     * In order to be similar, a first name must have up to 3 characters before (case-insensitive),
-     * then contain the first name as is and contain any other character and as many afterwards.
-     * @param first_name The first name to retrieve users who have a similar
+     * Retrieve all users from database whose first name contains the search_term.
+     * @param search_term The term that first_name must contain to retrieve the user
      * @return List with retrieved users
      */
-    List<GetUserResponseDTO> getAllUsers(String first_name);
+    List<GetUserResponseDTO> getAllUsers(String search_term);
 
     /**
      * Retrieve a specific user
@@ -50,7 +46,7 @@ interface UserServiceInterface {
      * Update user with ID user_id in DB with the values stored in user updated_user
      * @param user_id The ID of user to be updated
      * @param updated_user The user holding the new values
-     * @return Optional with updated user if one was retrieved or null otherwise
+     * @return All the info of the updated user if one was retrieved or an empty one otherwise
      */
-    Optional<User> updateUser(String user_id, User updated_user);
+    CreateUpdateUserResponseDTO updateUser(String user_id, CreateUpdateUserRequestDTO updated_user);
 }

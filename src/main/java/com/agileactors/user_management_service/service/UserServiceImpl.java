@@ -1,7 +1,7 @@
 package com.agileactors.user_management_service.service;
 
-import com.agileactors.user_management_service.dto.CreateUserRequestDTO;
-import com.agileactors.user_management_service.dto.CreateUserResponseDTO;
+import com.agileactors.user_management_service.dto.CreateUpdateUserRequestDTO;
+import com.agileactors.user_management_service.dto.CreateUpdateUserResponseDTO;
 import com.agileactors.user_management_service.dto.GetUserResponseDTO;
 import com.agileactors.user_management_service.model.User;
 import com.agileactors.user_management_service.repository.UserRepository;
@@ -9,6 +9,7 @@ import com.agileactors.user_management_service.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,9 +18,14 @@ public class UserServiceImpl implements UserServiceInterface {
     @Autowired
     UserRepository userRepository;
 
-    public CreateUserResponseDTO createUser(CreateUserRequestDTO user) {
+    public CreateUpdateUserResponseDTO createUser(CreateUpdateUserRequestDTO user) {
         User user1 = userRepository.save(new User(user.firstName(), user.lastName(), user.email()));
-        return new CreateUserResponseDTO(user1.getId(), user1.getFirstName(), user1.getLastName(), user1.getEmail(), user1.getCreatedAt(), user1.getUpdatedAt());
+        return new CreateUpdateUserResponseDTO(user1.getId(),
+                                               user1.getFirstName(),
+                                               user1.getLastName(),
+                                               user1.getEmail(),
+                                               user1.getCreatedAt(),
+                                               user1.getUpdatedAt());
     }
 
     public List<GetUserResponseDTO> getAllUsers(String first_name) {
@@ -46,13 +52,22 @@ public class UserServiceImpl implements UserServiceInterface {
         return userRepository.deleteAllUsers();
     }
 
-    public Optional<User> updateUser(String user_id, User updated_user) {
+    public CreateUpdateUserResponseDTO updateUser(String user_id, CreateUpdateUserRequestDTO updated_user) {
         Optional<User> optionalUser = userRepository.findById(user_id);
 
-        return optionalUser.map(user -> userRepository.save(new User(user.getId(),
-                                                                     updated_user.getFirstName(),
-                                                                     updated_user.getLastName(),
-                                                                     updated_user.getEmail(),
-                                                                     user.getCreatedAt())));
+        if(optionalUser.isPresent()) {
+            User user = userRepository.save(new User(user_id,
+                                                     updated_user.firstName(),
+                                                     updated_user.lastName(),
+                                                     updated_user.email(),
+                                                     optionalUser.get().getCreatedAt()));
+            return new CreateUpdateUserResponseDTO(user.getId(),
+                                                   user.getFirstName(),
+                                                   user.getLastName(),
+                                                   user.getEmail(),
+                                                   user.getCreatedAt(),
+                                                   user.getUpdatedAt());
+        }
+        return new CreateUpdateUserResponseDTO("", "", "", "", LocalDateTime.now(), LocalDateTime.now());
     }
 }
