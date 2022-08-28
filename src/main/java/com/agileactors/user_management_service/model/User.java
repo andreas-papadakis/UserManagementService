@@ -81,6 +81,7 @@ public class User {
      * @param firstName The updated first name
      * @param lastName The updated last name
      * @param email The updated email
+     * @param createdAt The creation datetime of user
      */
     public User(String id, String firstName, String lastName, String email, LocalDateTime createdAt) {
         this.id = id;
