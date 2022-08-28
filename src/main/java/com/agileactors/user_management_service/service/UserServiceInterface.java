@@ -1,5 +1,7 @@
 package com.agileactors.user_management_service.service;
 
+import com.agileactors.user_management_service.dto.CreateUserRequestDTO;
+import com.agileactors.user_management_service.dto.CreateUserResponseDTO;
 import com.agileactors.user_management_service.dto.GetUserResponseDTO;
 import com.agileactors.user_management_service.model.User;
 
@@ -12,7 +14,7 @@ interface UserServiceInterface {
      * @param user The user to be uploaded
      * @return The uploaded user on success
      */
-    User createUser(User user);
+    CreateUserResponseDTO createUser(CreateUserRequestDTO user);
 
     /**
      * Retrieve all users from DB.

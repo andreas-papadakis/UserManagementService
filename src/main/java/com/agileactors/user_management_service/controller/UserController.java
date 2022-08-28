@@ -1,5 +1,7 @@
 package com.agileactors.user_management_service.controller;
 
+import com.agileactors.user_management_service.dto.CreateUserRequestDTO;
+import com.agileactors.user_management_service.dto.CreateUserResponseDTO;
 import com.agileactors.user_management_service.dto.GetUserResponseDTO;
 import com.agileactors.user_management_service.model.User;
 import com.agileactors.user_management_service.service.UserServiceImpl;
@@ -35,7 +37,7 @@ public class UserController {
             @ApiResponse(responseCode = "200",
                          description = "User successfully created",
                          content = { @Content (mediaType = "application/json",
-                                               schema = @Schema(implementation = User.class)) }
+                                               schema = @Schema(implementation = CreateUserResponseDTO.class)) }
                         ),
             @ApiResponse(responseCode = "400",
                          description = "User was NOT created. Check again the fields. Neither field must be blank and e-mail must be in correct format",
@@ -43,7 +45,7 @@ public class UserController {
                         )
             })
     @PostMapping(value = "/users")
-    public User createUser(@RequestBody @Valid User user) {
+    public CreateUserResponseDTO createUser(@RequestBody @Valid CreateUserRequestDTO user) {
         return userServiceImpl.createUser(user);
     }
 
@@ -139,6 +141,4 @@ public class UserController {
     public Optional<User> updateUser(@PathVariable(value = "id") String user_id, @RequestBody @Valid User updated_user) {
         return userServiceImpl.updateUser(user_id, updated_user);
     }
-
-
 }

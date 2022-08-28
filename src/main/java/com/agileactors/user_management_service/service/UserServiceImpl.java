@@ -1,5 +1,7 @@
 package com.agileactors.user_management_service.service;
 
+import com.agileactors.user_management_service.dto.CreateUserRequestDTO;
+import com.agileactors.user_management_service.dto.CreateUserResponseDTO;
 import com.agileactors.user_management_service.dto.GetUserResponseDTO;
 import com.agileactors.user_management_service.model.User;
 import com.agileactors.user_management_service.repository.UserRepository;
@@ -15,8 +17,9 @@ public class UserServiceImpl implements UserServiceInterface {
     @Autowired
     UserRepository userRepository;
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public CreateUserResponseDTO createUser(CreateUserRequestDTO user) {
+        User user1 = userRepository.save(new User(user.firstName(), user.lastName(), user.email()));
+        return new CreateUserResponseDTO(user1.getId(), user1.getFirstName(), user1.getLastName(), user1.getEmail(), user1.getCreatedAt(), user1.getUpdatedAt());
     }
 
     public List<GetUserResponseDTO> getAllUsers(String first_name) {
