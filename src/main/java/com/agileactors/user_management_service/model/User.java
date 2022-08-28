@@ -12,17 +12,16 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name="users")
 @Value
 public class User {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, example = "1", description = "User's unique identifier")
-    //TODO: replace with UUID and correct it in constructor
-    Long id;
+    String id;
 
     @Column(name = "first_name")
     @NotBlank(message = "First name must not be blank")
@@ -70,7 +69,7 @@ public class User {
      */
     @JsonCreator
     public User(String firstName, String lastName, String email) {
-        this.id = 295L; //not important. Right now DB sets the correct one and will be updated to UUID instead of long
+        this.id = UUID.randomUUID().toString();
         this.firstName = (firstName != null) ? firstName.trim() : null;
         this.lastName  = (lastName != null) ? lastName.trim() : null;
         this.email     = (email != null && email.contains("@") && email.substring(email.indexOf('@')).contains(".")) ? email.trim() : null;
@@ -85,7 +84,7 @@ public class User {
      * @param lastName The updated last name
      * @param email The updated email
      */
-    public User(Long id, String firstName, String lastName, String email, LocalDateTime createdAt) {
+    public User(String id, String firstName, String lastName, String email, LocalDateTime createdAt) {
         this.id = id;
         this.firstName = (firstName != null) ? firstName.trim() : null;
         this.lastName  = (lastName != null) ? lastName.trim() : null;
