@@ -38,6 +38,12 @@ interface UserServiceInterface {
     int deleteUser(Long user_id);
 
     /**
+     * Remove all users
+     * @return Number of users removed from DB
+     */
+    int deleteAllUsers();
+
+    /**
      * Update user with ID user_id in DB with the values stored in user updated_user
      * @param user_id The ID of user to be updated
      * @param updated_user The user holding the new values
