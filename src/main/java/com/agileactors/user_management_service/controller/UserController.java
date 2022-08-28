@@ -98,14 +98,29 @@ public class UserController {
     @ApiResponse(responseCode = "200",
             description = "Return number of users removed from DB",
             content = { @Content (mediaType = "application/json",
-                    schema = @Schema (implementation = User.class) ) }
+                                  schema = @Schema (implementation = User.class) ) }
     )
     @DeleteMapping(value = "/users/{id}")
     public int deleteUser(@PathVariable(value = "id") String user_id) {
         return userServiceImpl.deleteUser(user_id);
     }
 
-
+    /**
+     * Remove all users from DB
+     * @return Number of users removed from DB
+     */
+    @Operation(summary = "Remove all users",
+            description = "Remove all users",
+            tags = "DELETE")
+    @ApiResponse(responseCode = "200",
+            description = "Return number of users removed from DB",
+            content = { @Content (mediaType = "application/json",
+                                  schema = @Schema (implementation = User.class) ) }
+    )
+    @DeleteMapping(value = "/users")
+    public int deleteAllUsers() {
+        return userServiceImpl.deleteAllUsers();
+    }
 
     /**
      * Update user with ID user_id in DB with the values stored in user updated_user
