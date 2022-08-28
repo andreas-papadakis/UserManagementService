@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserServiceInterface {
     }
 
     public List<User> getAllUsers(String first_name) {
-        return (first_name.isBlank()) ? userRepository.findAll() : userRepository.findByFirstName("[a-zA-Z]{0,3}" + first_name + "[a-zA-z]*");
+        return (first_name.isBlank()) ? userRepository.findAll() : userRepository.findByFirstNameLike("%" + first_name + "%");
     }
 
     public Optional<User> getUserById(String user_id) {

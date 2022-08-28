@@ -12,12 +12,11 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
     /**
-     * Retrieve all users from database whose first name matches the pattern of regular expression regular_expression.
-     * @param regular_expression The regular expression to check if a first_name matches
-     * @return List with all the users whose first name matches regular_expression
+     * Retrieve all users from database whose first name contains the search_term.
+     * @param search_term The term that first_name must contain to retrieve the user
+     * @return List with all the users whose first name contains search_term
      */
-    @Query(value = "SELECT * FROM users WHERE first_name REGEXP ?", nativeQuery = true)
-    List<User> findByFirstName(String regular_expression);
+    List<User> findByFirstNameLike(String search_term);
 
     /**
      * Remove user with id from database and return the number of rows affected.
