@@ -62,15 +62,10 @@ public class UserService {
     public Optional<User> updateUser(Long user_id, User updated_user) {
         Optional<User> optionalUser = userRepository.findById(user_id);
 
-        if(optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setFirstName(updated_user.getFirstName());
-            user.setLastName(updated_user.getLastName());
-            user.seteMail(updated_user.geteMail());
-
-            return Optional.of(userRepository.save(user));
-        }
-
-        return optionalUser;
+        return optionalUser.map(user -> userRepository.save(new User(user.getId(),
+                                                                     updated_user.getFirstName(),
+                                                                     updated_user.getLastName(),
+                                                                     updated_user.getEmail(),
+                                                                     user.getCreatedAt())));
     }
 }
