@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Value
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, example = "1", description = "User's unique identifier")
     //TODO: replace with UUID and correct it in constructor
@@ -62,13 +62,35 @@ public class User {
         updatedAt = null;
     }
 
+    /**
+     * Constructor used for creating entities for the very first time
+     * @param firstName Entity's first name
+     * @param lastName Entity's last name
+     * @param email Entity's email
+     */
     @JsonCreator
     public User(String firstName, String lastName, String email) {
-        this.id = 300L; //not important. Right now DB sets the correct one and will be updated to UUID instead of long
+        this.id = 295L; //not important. Right now DB sets the correct one and will be updated to UUID instead of long
         this.firstName = (firstName != null) ? firstName.trim() : null;
         this.lastName  = (lastName != null) ? lastName.trim() : null;
         this.email     = (email != null && email.contains("@") && email.substring(email.indexOf('@')).contains(".")) ? email.trim() : null;
-        this.createdAt = null; //not important; fixed by annotations
-        this.updatedAt = null; //not important; fixed by annotations
+        this.createdAt = null;
+        this.updatedAt = null;
+    }
+
+    /**
+     * Constructor used for updating entities
+     * @param id The id of the entity to be updated
+     * @param firstName The updated first name
+     * @param lastName The updated last name
+     * @param email The updated email
+     */
+    public User(Long id, String firstName, String lastName, String email, LocalDateTime createdAt) {
+        this.id = id;
+        this.firstName = (firstName != null) ? firstName.trim() : null;
+        this.lastName  = (lastName != null) ? lastName.trim() : null;
+        this.email     = (email != null && email.contains("@") && email.substring(email.indexOf('@')).contains(".")) ? email.trim() : null;
+        this.createdAt = createdAt;
+        this.updatedAt = null;
     }
 }
