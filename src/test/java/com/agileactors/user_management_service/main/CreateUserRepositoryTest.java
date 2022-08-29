@@ -33,7 +33,7 @@ public class CreateUserRepositoryTest {
 
         userRepository.save(testUser);
 
-        assertNotNull(userRepository.findById(testUser.getId()).get());
+        assertTrue(userRepository.findById(testUser.getId()).isPresent());
     }
 
     /**
@@ -125,9 +125,8 @@ public class CreateUserRepositoryTest {
      */
     @Test
     public void testValidationOfeMail() {
-        User testUser = new User("lala", "lala", "");
-        testUser.seteMail("aaaa@");
-
+        User testUser = new User("lala", "lala", "aaaa@");
+        
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<User>> violations = validator.validate(testUser);

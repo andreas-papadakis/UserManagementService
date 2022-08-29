@@ -21,22 +21,20 @@ class UpdateUserRepositoryTest {
      */
     @Test
     public void testUpdateUser() {
-        User testUser1 = new User("testFName", "testLName", "a@a.com");
-        Long userIdBeforeUpdate;
+        User testUser = new User("testFName", "testLName", "a@a.com");
+        String userIdBeforeUpdate;
 
-        userRepository.save(testUser1);
-        userIdBeforeUpdate = testUser1.getId();
+        testUser = userRepository.save(testUser);
+        userIdBeforeUpdate = testUser.getId();
 
-        testUser1.setFirstName("uptdFName");
-        testUser1.setLastName("uptdLName");
-        testUser1.seteMail("uptdMail@a.com");
+        testUser = new User(userIdBeforeUpdate, "uptdFName", "uptdLName", "uptdMail@a.com", testUser.getCreatedAt());
 
-        userRepository.save(testUser1);
-        testUser1 = userRepository.findById(testUser1.getId()).get();
+        userRepository.save(testUser);
+        testUser = userRepository.findById(testUser.getId()).get();
 
-        assertEquals(userIdBeforeUpdate, testUser1.getId());
-        assertEquals("uptdFName", testUser1.getFirstName());
-        assertEquals("uptdLName", testUser1.getLastName());
-        assertEquals("uptdMail@a.com", testUser1.geteMail());
+        assertEquals(userIdBeforeUpdate, testUser.getId());
+        assertEquals("uptdFName", testUser.getFirstName());
+        assertEquals("uptdLName", testUser.getLastName());
+        assertEquals("uptdMail@a.com", testUser.getEmail());
     }
 }

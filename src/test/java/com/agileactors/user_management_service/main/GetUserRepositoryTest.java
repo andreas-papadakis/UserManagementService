@@ -57,7 +57,7 @@ class GetUserRepositoryTest {
         userRepository.save(testUser1);
         userRepository.save(testUser2);
 
-        List<User> retrievedUsers = userRepository.findByFirstName(testUser1.getFirstName());
+        List<User> retrievedUsers = userRepository.findByFirstNameLike(testUser1.getFirstName());
 
         assertTrue(retrievedUsers.size() >= 2);
     }
