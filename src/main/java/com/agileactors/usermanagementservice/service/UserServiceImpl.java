@@ -54,16 +54,20 @@ class UserServiceImpl implements UserService {
     }
 
     public User updateUser(UpdateUserRequestDto updateUserRequestDto) {
-        User existingUser = userRepository.findById(updateUserRequestDto.userId()).orElseThrow(new UserNotFoundException);
-
-        if(optionalUser.isPresent()) {
-            User user = userRepository.save(new User(updateUserRequestDto.userId(),
-                                                     updateUserRequestDto.firstName(),
-                                                     updateUserRequestDto.lastName(),
-                                                     updateUserRequestDto.email(),
-                                                     optionalUser.get().getCreatedAt()));
-            return user;
+        try {
+            User existingUser = userRepository.findById(updateUserRequestDto.userId())
+                                              .orElseThrow(UserNotFoundException::new);
+            User updatedUser  = new User(updateUserRequestDto.userId(),
+                                         updateUserRequestDto.firstName(),
+                                         updateUserRequestDto.lastName(),
+                                         updateUserRequestDto.email(),
+                                         existingUser.getCreatedAt(),
+                                         null);
+            return userRepository.save(updatedUser);
         }
-        return new CreateUpdateUserResponseDto("", "", "", "", LocalDateTime.now(), LocalDateTime.now());
+        catch (Exception e) {
+            //TODO: handle exception
+            return null;
+        }
     }
 }

@@ -45,10 +45,9 @@ public interface UserService {
     int deleteAllUsers();
 
     /**
-     * Update user with ID user_id in DB with the values stored in user updated_user
-     * @param user_id The ID of user to be updated
-     * @param updated_user The user holding the new values
-     * @return All the info of the updated user if one was retrieved or an empty one otherwise
+     * Update user in DB
+     * @param updated_user The dto containing the ID of user to update and the new values
+     * @return The updated user
      */
     User updateUser(UpdateUserRequestDto updated_user);
 }
