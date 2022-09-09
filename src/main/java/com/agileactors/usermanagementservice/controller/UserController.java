@@ -1,10 +1,8 @@
 package com.agileactors.usermanagementservice.controller;
 
-import com.agileactors.usermanagementservice.dto.CreateUpdateUserRequestDto;
-import com.agileactors.usermanagementservice.dto.CreateUpdateUserResponseDto;
-import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
+import com.agileactors.usermanagementservice.dto.*;
 
-import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
+import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -123,9 +121,9 @@ public class UserController {
 
     /**
      * Update user with ID user_id in DB with the values stored in user updated_user
-     * @param user_id The ID of user to be updated
-     * @param updated_user The user holding the new values
-     * @return All the info of the updated user if one was retrieved or an empty one otherwise
+     * @param userId The ID of user to be updated
+     * @param updateUserRequestDto The dto holding the new values
+     * @return All the info of the updated user
      */
     @Operation(summary = "Update user",
                description = "Update a user's basic information",
@@ -136,9 +134,18 @@ public class UserController {
                                        schema = @Schema (implementation = CreateUpdateUserResponseDto.class) ) }
                 )
     @PutMapping(value = "/users/{id}")
-    public CreateUpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
-                                                  @RequestBody @Valid UpdateUserRequestDto updatedUser) {
-        UpdateUserRequestDto updatedUserDto = new UpdateUserRequestDto(userId, updatedUser.firstName(), updatedUser.lastName(), updatedUser.email());
-        return userService.updateUser(updatedUserDto);
+    public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
+                                            @RequestBody @Valid UpdateUserRequestDto updateUserRequestDto) {
+        UpdateUserRequestDto updatedUserDto = new UpdateUserRequestDto(userId,
+                                                                       updateUserRequestDto.firstName(),
+                                                                       updateUserRequestDto.lastName(),
+                                                                       updateUserRequestDto.email());
+        User updatedUser = userService.updateUser(updatedUserDto);
+        return new UpdateUserResponseDto(updatedUser.getId(),
+                                         updatedUser.getFirstName(),
+                                         updatedUserDto.lastName(),
+                                         updatedUser.getEmail(),
+                                         updatedUser.getCreatedAt(),
+                                         updatedUser.getUpdatedAt());
     }
 }
