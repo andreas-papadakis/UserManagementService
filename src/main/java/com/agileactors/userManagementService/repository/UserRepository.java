@@ -1,6 +1,6 @@
-package com.agileactors.user_management_service.repository;
+package com.agileactors.userManagementService.repository;
 
-import com.agileactors.user_management_service.model.User;
+import com.agileactors.userManagementService.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

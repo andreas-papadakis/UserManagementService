@@ -1,4 +1,4 @@
-package com.agileactors.user_management_service.model;
+package com.agileactors.userManagementService.model;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

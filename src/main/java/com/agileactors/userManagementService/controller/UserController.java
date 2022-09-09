@@ -1,11 +1,11 @@
-package com.agileactors.user_management_service.controller;
+package com.agileactors.userManagementService.controller;
 
-import com.agileactors.user_management_service.dto.CreateUpdateUserRequestDTO;
-import com.agileactors.user_management_service.dto.CreateUpdateUserResponseDTO;
-import com.agileactors.user_management_service.dto.GetUserResponseDTO;
+import com.agileactors.userManagementService.dto.CreateUpdateUserRequestDto;
+import com.agileactors.userManagementService.dto.CreateUpdateUserResponseDto;
+import com.agileactors.userManagementService.dto.GetUserResponseDto;
 
-import com.agileactors.user_management_service.dto.UpdateUserRequestDTO;
-import com.agileactors.user_management_service.service.UserServiceInterface;
+import com.agileactors.userManagementService.dto.UpdateUserRequestDto;
+import com.agileactors.userManagementService.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,7 +24,7 @@ import java.util.UUID;
 @RequestMapping("/api")
 public class UserController {
     @Autowired
-    UserServiceInterface userService;
+    UserService userService;
 
     /**
      * Upload user in DB
@@ -38,7 +38,7 @@ public class UserController {
             @ApiResponse(responseCode = "200",
                          description = "User successfully created",
                          content = { @Content (mediaType = "application/json",
-                                               schema = @Schema(implementation = CreateUpdateUserResponseDTO.class)) }
+                                               schema = @Schema(implementation = CreateUpdateUserResponseDto.class)) }
                         ),
             @ApiResponse(responseCode = "400",
                          description = "User was NOT created. Check again the fields. Neither field must be blank and e-mail must be in correct format",
@@ -46,7 +46,7 @@ public class UserController {
                         )
             })
     @PostMapping(value = "/users")
-    public CreateUpdateUserResponseDTO createUser(@RequestBody @Valid CreateUpdateUserRequestDTO user) {
+    public CreateUpdateUserResponseDto createUser(@RequestBody @Valid CreateUpdateUserRequestDto user) {
         return userService.createUser(user);
     }
 
@@ -61,10 +61,10 @@ public class UserController {
     @ApiResponse(responseCode = "200",
                  description = "Return a list with retrieved users. If no users were retrieved, list will be empty",
                  content = { @Content (mediaType = "application/json",
-                                       schema = @Schema (implementation = GetUserResponseDTO.class) ) }
+                                       schema = @Schema (implementation = GetUserResponseDto.class) ) }
                 )
     @GetMapping(value = "/users")
-    public List<GetUserResponseDTO> getAllUsers(@RequestParam(value = "firstName", defaultValue = "") String search_term) {
+    public List<GetUserResponseDto> getAllUsers(@RequestParam(value = "firstName", defaultValue = "") String search_term) {
             return userService.getAllUsers(search_term);
     }
 
@@ -79,10 +79,10 @@ public class UserController {
     @ApiResponse(responseCode = "200",
                  description = "Return retrieved user or null",
                  content = { @Content (mediaType = "application/json",
-                                       schema = @Schema (implementation = GetUserResponseDTO.class) ) }
+                                       schema = @Schema (implementation = GetUserResponseDto.class) ) }
                 )
     @GetMapping(value = "/users/{id}")
-    public Optional<GetUserResponseDTO> getUserById(@PathVariable(value = "id") String user_id) {
+    public Optional<GetUserResponseDto> getUserById(@PathVariable(value = "id") String user_id) {
         return userService.getUserById(user_id);
     }
 
@@ -133,12 +133,12 @@ public class UserController {
     @ApiResponse(responseCode = "200",
                  description = "Return updated user or empty user if user id not found",
                  content = { @Content (mediaType = "application/json",
-                                       schema = @Schema (implementation = CreateUpdateUserResponseDTO.class) ) }
+                                       schema = @Schema (implementation = CreateUpdateUserResponseDto.class) ) }
                 )
     @PutMapping(value = "/users/{id}")
-    public CreateUpdateUserResponseDTO updateUser(@PathVariable(value = "id") UUID userId,
-                                                  @RequestBody @Valid UpdateUserRequestDTO updatedUser) {
-        UpdateUserRequestDTO updatedUserDto = new UpdateUserRequestDTO(userId, updatedUser.firstName(), updatedUser.lastName(), updatedUser.email());
+    public CreateUpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
+                                                  @RequestBody @Valid UpdateUserRequestDto updatedUser) {
+        UpdateUserRequestDto updatedUserDto = new UpdateUserRequestDto(userId, updatedUser.firstName(), updatedUser.lastName(), updatedUser.email());
         return userService.updateUser(updatedUserDto);
     }
 }

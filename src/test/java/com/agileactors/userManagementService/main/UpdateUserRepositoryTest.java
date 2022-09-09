@@ -1,7 +1,7 @@
-package com.agileactors.user_management_service.main;
+package com.agileactors.userManagementService.main;
 
-import com.agileactors.user_management_service.model.User;
-import com.agileactors.user_management_service.repository.UserRepository;
+import com.agileactors.userManagementService.model.User;
+import com.agileactors.userManagementService.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

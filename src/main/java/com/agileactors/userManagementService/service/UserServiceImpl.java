@@ -1,11 +1,11 @@
-package com.agileactors.user_management_service.service;
+package com.agileactors.userManagementService.service;
 
-import com.agileactors.user_management_service.dto.CreateUpdateUserRequestDTO;
-import com.agileactors.user_management_service.dto.CreateUpdateUserResponseDTO;
-import com.agileactors.user_management_service.dto.GetUserResponseDTO;
-import com.agileactors.user_management_service.dto.UpdateUserRequestDTO;
-import com.agileactors.user_management_service.model.User;
-import com.agileactors.user_management_service.repository.UserRepository;
+import com.agileactors.userManagementService.dto.CreateUpdateUserRequestDto;
+import com.agileactors.userManagementService.dto.CreateUpdateUserResponseDto;
+import com.agileactors.userManagementService.dto.GetUserResponseDto;
+import com.agileactors.userManagementService.dto.UpdateUserRequestDto;
+import com.agileactors.userManagementService.model.User;
+import com.agileactors.userManagementService.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-class UserServiceImpl implements UserServiceInterface {
+class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
-    public CreateUpdateUserResponseDTO createUser(CreateUpdateUserRequestDTO user) {
+    public CreateUpdateUserResponseDto createUser(CreateUpdateUserRequestDto user) {
         User user1 = userRepository.save(new User(user.firstName(), user.lastName(), user.email()));
-        return new CreateUpdateUserResponseDTO(user1.getId(),
+        return new CreateUpdateUserResponseDto(user1.getId(),
                                                user1.getFirstName(),
                                                user1.getLastName(),
                                                user1.getEmail(),
@@ -29,20 +29,20 @@ class UserServiceImpl implements UserServiceInterface {
                                                user1.getUpdatedAt());
     }
 
-    public List<GetUserResponseDTO> getAllUsers(String first_name) {
+    public List<GetUserResponseDto> getAllUsers(String first_name) {
         return (first_name.isBlank())
                 ? userRepository.findAll()
                                 .stream()
-                                .map(user -> new GetUserResponseDTO(user.getFirstName(), user.getLastName(), user.getEmail()))
+                                .map(user -> new GetUserResponseDto(user.getFirstName(), user.getLastName(), user.getEmail()))
                                 .toList()
                 : userRepository.findByFirstNameLike("%" + first_name + "%")
                                 .stream()
-                                .map(user -> new GetUserResponseDTO(user.getFirstName(), user.getLastName(), user.getEmail()))
+                                .map(user -> new GetUserResponseDto(user.getFirstName(), user.getLastName(), user.getEmail()))
                                 .toList();
     }
 
-    public Optional<GetUserResponseDTO> getUserById(String user_id) {
-        return userRepository.findById(user_id).map(user -> new GetUserResponseDTO(user.getFirstName(), user.getLastName(), user.getEmail()));
+    public Optional<GetUserResponseDto> getUserById(String user_id) {
+        return userRepository.findById(user_id).map(user -> new GetUserResponseDto(user.getFirstName(), user.getLastName(), user.getEmail()));
     }
 
     public int deleteUser(String user_id) {
@@ -53,7 +53,7 @@ class UserServiceImpl implements UserServiceInterface {
         return userRepository.deleteAllUsers();
     }
 
-    public User updateUser(UpdateUserRequestDTO updateUserRequestDto) {
+    public User updateUser(UpdateUserRequestDto updateUserRequestDto) {
         User existingUser = userRepository.findById(updateUserRequestDto.userId()).orElseThrow(new UserNotFoundException);
 
         if(optionalUser.isPresent()) {
@@ -64,6 +64,6 @@ class UserServiceImpl implements UserServiceInterface {
                                                      optionalUser.get().getCreatedAt()));
             return user;
         }
-        return new CreateUpdateUserResponseDTO("", "", "", "", LocalDateTime.now(), LocalDateTime.now());
+        return new CreateUpdateUserResponseDto("", "", "", "", LocalDateTime.now(), LocalDateTime.now());
     }
 }
