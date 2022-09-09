@@ -16,11 +16,13 @@ import java.util.UUID;
 @Entity
 @Table(name="users")
 @Value
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
     @Id
     @Column(name = "id")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, example = "1", description = "User's unique identifier")
-    String id;
+    UUID id;
 
     @Column(name = "first_name")
     @NotBlank(message = "First name must not be blank")
@@ -47,48 +49,4 @@ public class User {
     @Column(name = "updated_at")
     @UpdateTimestamp
     LocalDateTime updatedAt;
-
-    /**
-     * Private constructor used only for JpaRepository's reflection
-     */
-    private User() {
-        id        = null;
-        firstName = null;
-        lastName  = null;
-        email     = null;
-        createdAt = null;
-        updatedAt = null;
-    }
-
-    /**
-     * Constructor used for creating entities for the very first time
-     * @param firstName Entity's first name
-     * @param lastName Entity's last name
-     * @param email Entity's email
-     */
-    public User(String firstName, String lastName, String email) {
-        this.id = UUID.randomUUID().toString();
-        this.firstName = (firstName != null) ? firstName.trim() : null;
-        this.lastName  = (lastName != null) ? lastName.trim() : null;
-        this.email     = (email != null && email.contains("@") && email.substring(email.indexOf('@')).contains(".")) ? email.trim() : null;
-        this.createdAt = null;
-        this.updatedAt = null;
-    }
-
-    /**
-     * Constructor used for updating entities
-     * @param id The id of the entity to be updated
-     * @param firstName The updated first name
-     * @param lastName The updated last name
-     * @param email The updated email
-     * @param createdAt The creation datetime of user
-     */
-    public User(String id, String firstName, String lastName, String email, LocalDateTime createdAt) {
-        this.id = id;
-        this.firstName = (firstName != null) ? firstName.trim() : null;
-        this.lastName  = (lastName != null) ? lastName.trim() : null;
-        this.email     = (email != null && email.contains("@") && email.substring(email.indexOf('@')).contains(".")) ? email.trim() : null;
-        this.createdAt = createdAt;
-        this.updatedAt = null;
-    }
 }
