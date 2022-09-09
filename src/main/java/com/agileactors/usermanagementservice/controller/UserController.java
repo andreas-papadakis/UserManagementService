@@ -1,11 +1,11 @@
-package com.agileactors.userManagementService.controller;
+package com.agileactors.usermanagementservice.controller;
 
-import com.agileactors.userManagementService.dto.CreateUpdateUserRequestDto;
-import com.agileactors.userManagementService.dto.CreateUpdateUserResponseDto;
-import com.agileactors.userManagementService.dto.GetUserResponseDto;
+import com.agileactors.usermanagementservice.dto.CreateUpdateUserRequestDto;
+import com.agileactors.usermanagementservice.dto.CreateUpdateUserResponseDto;
+import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
 
-import com.agileactors.userManagementService.dto.UpdateUserRequestDto;
-import com.agileactors.userManagementService.service.UserService;
+import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
+import com.agileactors.usermanagementservice.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
