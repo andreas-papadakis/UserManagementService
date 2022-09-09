@@ -3,6 +3,7 @@ package com.agileactors.user_management_service.service;
 import com.agileactors.user_management_service.dto.CreateUpdateUserRequestDTO;
 import com.agileactors.user_management_service.dto.CreateUpdateUserResponseDTO;
 import com.agileactors.user_management_service.dto.GetUserResponseDTO;
+import com.agileactors.user_management_service.dto.UpdateUserRequestDTO;
 import com.agileactors.user_management_service.model.User;
 import com.agileactors.user_management_service.repository.UserRepository;
 
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserServiceInterface {
+class UserServiceImpl implements UserServiceInterface {
     @Autowired
     UserRepository userRepository;
 
@@ -52,21 +53,16 @@ public class UserServiceImpl implements UserServiceInterface {
         return userRepository.deleteAllUsers();
     }
 
-    public CreateUpdateUserResponseDTO updateUser(String user_id, CreateUpdateUserRequestDTO updated_user) {
-        Optional<User> optionalUser = userRepository.findById(user_id);
+    public User updateUser(UpdateUserRequestDTO updateUserRequestDto) {
+        User existingUser = userRepository.findById(updateUserRequestDto.userId()).orElseThrow(new UserNotFoundException);
 
         if(optionalUser.isPresent()) {
-            User user = userRepository.save(new User(user_id,
-                                                     updated_user.firstName(),
-                                                     updated_user.lastName(),
-                                                     updated_user.email(),
+            User user = userRepository.save(new User(updateUserRequestDto.userId(),
+                                                     updateUserRequestDto.firstName(),
+                                                     updateUserRequestDto.lastName(),
+                                                     updateUserRequestDto.email(),
                                                      optionalUser.get().getCreatedAt()));
-            return new CreateUpdateUserResponseDTO(user.getId(),
-                                                   user.getFirstName(),
-                                                   user.getLastName(),
-                                                   user.getEmail(),
-                                                   user.getCreatedAt(),
-                                                   user.getUpdatedAt());
+            return user;
         }
         return new CreateUpdateUserResponseDTO("", "", "", "", LocalDateTime.now(), LocalDateTime.now());
     }
