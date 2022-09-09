@@ -3,8 +3,9 @@ package com.agileactors.user_management_service.controller;
 import com.agileactors.user_management_service.dto.CreateUpdateUserRequestDTO;
 import com.agileactors.user_management_service.dto.CreateUpdateUserResponseDTO;
 import com.agileactors.user_management_service.dto.GetUserResponseDTO;
-import com.agileactors.user_management_service.service.UserServiceImpl;
 
+import com.agileactors.user_management_service.dto.UpdateUserRequestDTO;
+import com.agileactors.user_management_service.service.UserServiceInterface;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -17,12 +18,13 @@ import javax.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
 public class UserController {
     @Autowired
-    UserServiceImpl userServiceImpl;
+    UserServiceInterface userService;
 
     /**
      * Upload user in DB
@@ -45,7 +47,7 @@ public class UserController {
             })
     @PostMapping(value = "/users")
     public CreateUpdateUserResponseDTO createUser(@RequestBody @Valid CreateUpdateUserRequestDTO user) {
-        return userServiceImpl.createUser(user);
+        return userService.createUser(user);
     }
 
     /**
@@ -63,7 +65,7 @@ public class UserController {
                 )
     @GetMapping(value = "/users")
     public List<GetUserResponseDTO> getAllUsers(@RequestParam(value = "firstName", defaultValue = "") String search_term) {
-            return userServiceImpl.getAllUsers(search_term);
+            return userService.getAllUsers(search_term);
     }
 
     /**
@@ -81,7 +83,7 @@ public class UserController {
                 )
     @GetMapping(value = "/users/{id}")
     public Optional<GetUserResponseDTO> getUserById(@PathVariable(value = "id") String user_id) {
-        return userServiceImpl.getUserById(user_id);
+        return userService.getUserById(user_id);
     }
 
     /**
@@ -99,7 +101,7 @@ public class UserController {
     )
     @DeleteMapping(value = "/users/{id}")
     public int deleteUser(@PathVariable(value = "id") String user_id) {
-        return userServiceImpl.deleteUser(user_id);
+        return userService.deleteUser(user_id);
     }
 
     /**
@@ -116,7 +118,7 @@ public class UserController {
     )
     @DeleteMapping(value = "/users")
     public int deleteAllUsers() {
-        return userServiceImpl.deleteAllUsers();
+        return userService.deleteAllUsers();
     }
 
     /**
@@ -134,8 +136,9 @@ public class UserController {
                                        schema = @Schema (implementation = CreateUpdateUserResponseDTO.class) ) }
                 )
     @PutMapping(value = "/users/{id}")
-    public CreateUpdateUserResponseDTO updateUser(@PathVariable(value = "id") String user_id,
-                                                            @RequestBody @Valid CreateUpdateUserRequestDTO updated_user) {
-        return userServiceImpl.updateUser(user_id, updated_user);
+    public CreateUpdateUserResponseDTO updateUser(@PathVariable(value = "id") UUID userId,
+                                                  @RequestBody @Valid UpdateUserRequestDTO updatedUser) {
+        UpdateUserRequestDTO updatedUserDto = new UpdateUserRequestDTO(userId, updatedUser.firstName(), updatedUser.lastName(), updatedUser.email());
+        return userService.updateUser(updatedUserDto);
     }
 }
