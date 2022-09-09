@@ -3,11 +3,13 @@ package com.agileactors.user_management_service.service;
 import com.agileactors.user_management_service.dto.CreateUpdateUserRequestDTO;
 import com.agileactors.user_management_service.dto.CreateUpdateUserResponseDTO;
 import com.agileactors.user_management_service.dto.GetUserResponseDTO;
+import com.agileactors.user_management_service.dto.UpdateUserRequestDTO;
+import com.agileactors.user_management_service.model.User;
 
 import java.util.List;
 import java.util.Optional;
 
-interface UserServiceInterface {
+public interface UserServiceInterface {
     /**
      * Upload user in DB
      * @param user The user to be uploaded
@@ -48,5 +50,5 @@ interface UserServiceInterface {
      * @param updated_user The user holding the new values
      * @return All the info of the updated user if one was retrieved or an empty one otherwise
      */
-    CreateUpdateUserResponseDTO updateUser(String user_id, CreateUpdateUserRequestDTO updated_user);
+    User updateUser(UpdateUserRequestDTO updated_user);
 }
