@@ -1,7 +1,7 @@
 package com.agileactors.usermanagementservice.service;
 
-import com.agileactors.usermanagementservice.dto.CreateUpdateUserRequestDto;
-import com.agileactors.usermanagementservice.dto.CreateUpdateUserResponseDto;
+import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
+import com.agileactors.usermanagementservice.dto.CreateUserResponseDto;
 import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.model.User;
@@ -12,10 +12,10 @@ import java.util.Optional;
 public interface UserService {
     /**
      * Upload user in DB
-     * @param user The user to be uploaded
+     * @param createUserRequestDto The user to be uploaded
      * @return The uploaded user on success
      */
-    CreateUpdateUserResponseDto createUser(CreateUpdateUserRequestDto user);
+    CreateUserResponseDto createUser(CreateUserRequestDto createUserRequestDto);
 
     /**
      * Retrieve all users from database whose first name contains the search_term.

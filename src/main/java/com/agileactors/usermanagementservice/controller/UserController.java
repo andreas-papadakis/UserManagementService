@@ -26,7 +26,7 @@ public class UserController {
 
     /**
      * Upload user in DB
-     * @param user The user to be uploaded
+     * @param createUserRequestDto The user to be uploaded
      * @return The uploaded user on success
      */
     @Operation(summary = "Create user",
@@ -36,7 +36,7 @@ public class UserController {
             @ApiResponse(responseCode = "200",
                          description = "User successfully created",
                          content = { @Content (mediaType = "application/json",
-                                               schema = @Schema(implementation = CreateUpdateUserResponseDto.class)) }
+                                               schema = @Schema(implementation = CreateUserResponseDto.class)) }
                         ),
             @ApiResponse(responseCode = "400",
                          description = "User was NOT created. Check again the fields. Neither field must be blank and e-mail must be in correct format",
@@ -44,8 +44,8 @@ public class UserController {
                         )
             })
     @PostMapping(value = "/users")
-    public CreateUpdateUserResponseDto createUser(@RequestBody @Valid CreateUpdateUserRequestDto user) {
-        return userService.createUser(user);
+    public CreateUserResponseDto createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
+        return userService.createUser(createUserRequestDto);
     }
 
     /**
@@ -131,7 +131,7 @@ public class UserController {
     @ApiResponse(responseCode = "200",
                  description = "Return updated user or empty user if user id not found",
                  content = { @Content (mediaType = "application/json",
-                                       schema = @Schema (implementation = CreateUpdateUserResponseDto.class) ) }
+                                       schema = @Schema (implementation = CreateUserResponseDto.class) ) }
                 )
     @PutMapping(value = "/users/{id}")
     public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
