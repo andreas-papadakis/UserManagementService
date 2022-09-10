@@ -8,6 +8,7 @@ import com.agileactors.usermanagementservice.model.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UserService {
     /**
@@ -29,7 +30,7 @@ public interface UserService {
      * @param user_id User's to be retrieved ID
      * @return Optional with user if one was retrieved or null otherwise
      */
-    Optional<GetUserResponseDto> getUserById(String user_id);
+    Optional<GetUserResponseDto> getUserById(UUID user_id);
 
     /**
      * Remove user with ID user_id from DB if exists

@@ -80,7 +80,7 @@ public class UserController {
                                        schema = @Schema (implementation = GetUserResponseDto.class) ) }
                 )
     @GetMapping(value = "/users/{id}")
-    public Optional<GetUserResponseDto> getUserById(@PathVariable(value = "id") String user_id) {
+    public Optional<GetUserResponseDto> getUserById(@PathVariable(value = "id") UUID user_id) {
         return userService.getUserById(user_id);
     }
 
