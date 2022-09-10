@@ -146,7 +146,7 @@ public class UserController {
                                                                        updateUserRequestDto.lastName(),
                                                                        updateUserRequestDto.email());
         User updatedUser = userService.updateUser(updatedUserDto);
-        return new UpdateUserResponseDto(updatedUser.getId(),
+        return new UpdateUserResponseDto(UUID.fromString(updatedUser.getId()),
                                          updatedUser.getFirstName(),
                                          updatedUserDto.lastName(),
                                          updatedUser.getEmail(),

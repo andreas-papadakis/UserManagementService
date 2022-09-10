@@ -21,13 +21,13 @@ class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     public CreateUserResponseDto createUser(CreateUserRequestDto createUserRequestDto) {
-        User user = userRepository.save(new User(UUID.randomUUID(),
+        User user = userRepository.save(new User(UUID.randomUUID().toString(),
                                                  createUserRequestDto.firstName(),
                                                  createUserRequestDto.lastName(),
                                                  createUserRequestDto.email(),
                                                  null,
                                                  null));
-        return new CreateUserResponseDto(user.getId(),
+        return new CreateUserResponseDto(UUID.fromString(user.getId()),
                                          user.getFirstName(),
                                          user.getLastName(),
                                          user.getEmail(),
@@ -69,7 +69,7 @@ class UserServiceImpl implements UserService {
     public User updateUser(UpdateUserRequestDto updateUserRequestDto) {
         User existingUser = userRepository.findById(updateUserRequestDto.userId())
                                           .orElseThrow(() -> new UserNotFoundException("User with ID: " + updateUserRequestDto.userId() + " does not exist"));
-        User updatedUser  = new User(updateUserRequestDto.userId(),
+        User updatedUser  = new User(updateUserRequestDto.userId().toString(),
                                      updateUserRequestDto.firstName(),
                                      updateUserRequestDto.lastName(),
                                      updateUserRequestDto.email(),

@@ -11,7 +11,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name="users")
@@ -22,7 +21,7 @@ public class User {
     @Id
     @Column(name = "id")
     @Schema(accessMode = Schema.AccessMode.READ_ONLY, example = "1", description = "User's unique identifier")
-    UUID id;
+    String id;
 
     @Column(name = "first_name")
     @NotBlank(message = "First name must not be blank")
