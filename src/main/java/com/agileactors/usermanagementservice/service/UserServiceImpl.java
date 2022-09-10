@@ -51,10 +51,11 @@ class UserServiceImpl implements UserService {
                                 .toList();
     }
 
-    public Optional<GetUserResponseDto> getUserById(UUID user_id) {
-        return userRepository.findById(user_id).map(user -> new GetUserResponseDto(user.getFirstName(),
-                                                                                   user.getLastName(),
-                                                                                   user.getEmail()));
+    public GetUserResponseDto getUserById(UUID user_id) {
+        User retrievedUser = userRepository.findById(user_id).orElseThrow(() -> new UserNotFoundException("User with ID: " + user_id + " does not exist"));
+        return new GetUserResponseDto(retrievedUser.getFirstName(),
+                                      retrievedUser.getLastName(),
+                                      retrievedUser.getEmail());
     }
 
     public int deleteUser(String user_id) {

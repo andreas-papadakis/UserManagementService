@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -34,16 +33,13 @@ public class UserController {
                description = "Create a new user in DB. All fields must be filled and e-mail must contain '@' and a '.' afterwards.",
                tags = "POST")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",
-                         description = "User successfully created",
-                         content = { @Content (mediaType = "application/json",
-                                               schema = @Schema(implementation = CreateUserResponseDto.class)) }
-                        ),
-            @ApiResponse(responseCode = "400",
-                         description = "User was NOT created. Check again the fields. Neither field must be blank and e-mail must be in correct format",
-                         content = @Content
-                        )
-            })
+        @ApiResponse(responseCode = "200",
+                     description = "User successfully created",
+                     content = { @Content (mediaType = "application/json",
+                                           schema = @Schema(implementation = CreateUserResponseDto.class)) } ),
+        @ApiResponse(responseCode = "400",
+                     description = "User was NOT created. Check again the fields. Neither field must be blank and e-mail must be in correct format",
+                     content = @Content) } )
     @PostMapping(value = "/users")
     public CreateUserResponseDto createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
         return userService.createUser(createUserRequestDto);
@@ -60,8 +56,7 @@ public class UserController {
     @ApiResponse(responseCode = "200",
                  description = "Return a list with retrieved users. If no users were retrieved, list will be empty",
                  content = { @Content (mediaType = "application/json",
-                                       schema = @Schema (implementation = GetUserResponseDto.class) ) }
-                )
+                                       schema = @Schema (implementation = GetUserResponseDto.class) ) } )
     @GetMapping(value = "/users")
     public List<GetUserResponseDto> getAllUsers(@RequestParam(value = "firstName", defaultValue = "") String search_term) {
             return userService.getAllUsers(search_term);
@@ -75,13 +70,17 @@ public class UserController {
     @Operation(summary = "Get user by id",
                description = "Retrieve user with specific id",
                tags = "GET")
-    @ApiResponse(responseCode = "200",
-                 description = "Return retrieved user or null",
-                 content = { @Content (mediaType = "application/json",
-                                       schema = @Schema (implementation = GetUserResponseDto.class) ) }
-                )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200",
+                     description = "Return updated user",
+                     content = { @Content (mediaType = "application/json",
+                                           schema = @Schema (implementation = CreateUserResponseDto.class))}),
+        @ApiResponse(responseCode = "404",
+                     description = "User with given ID does not exist",
+                     content = { @Content (mediaType = "application/json",
+                                           schema = @Schema (implementation = ApiException.class))})})
     @GetMapping(value = "/users/{id}")
-    public Optional<GetUserResponseDto> getUserById(@PathVariable(value = "id") UUID user_id) {
+    public GetUserResponseDto getUserById(@PathVariable(value = "id") UUID user_id) {
         return userService.getUserById(user_id);
     }
 

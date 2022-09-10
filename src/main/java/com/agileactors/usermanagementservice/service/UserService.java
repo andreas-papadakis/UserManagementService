@@ -29,8 +29,9 @@ public interface UserService {
      * Retrieve a specific user
      * @param user_id User's to be retrieved ID
      * @return Optional with user if one was retrieved or null otherwise
+     * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not found
      */
-    Optional<GetUserResponseDto> getUserById(UUID user_id);
+    GetUserResponseDto getUserById(UUID user_id);
 
     /**
      * Remove user with ID user_id from DB if exists
