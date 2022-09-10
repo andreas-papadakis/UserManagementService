@@ -17,7 +17,7 @@ import java.util.UUID;
 @Table(name="users")
 @Value
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class User {
     @Id
     @Column(name = "id")
