@@ -2,6 +2,7 @@ package com.agileactors.usermanagementservice.controller;
 
 import com.agileactors.usermanagementservice.dto.*;
 
+import com.agileactors.usermanagementservice.exception.ApiException;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -128,11 +129,16 @@ public class UserController {
     @Operation(summary = "Update user",
                description = "Update a user's basic information",
                tags = "PUT")
-    @ApiResponse(responseCode = "200",
-                 description = "Return updated user or empty user if user id not found",
-                 content = { @Content (mediaType = "application/json",
-                                       schema = @Schema (implementation = CreateUserResponseDto.class) ) }
-                )
+    @ApiResponses(value = {
+                    @ApiResponse(responseCode = "200",
+                                 description = "Return updated user",
+                                 content = { @Content (mediaType = "application/json",
+                                                       schema = @Schema (implementation = CreateUserResponseDto.class) ) } ),
+                    @ApiResponse(responseCode = "404",
+                                 description = "User with given ID does not exist",
+                                 content = { @Content (mediaType = "application/json",
+                                             schema = @Schema (implementation = ApiException.class) ) } )
+                  })
     @PutMapping(value = "/users/{id}")
     public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
                                             @RequestBody @Valid UpdateUserRequestDto updateUserRequestDto) {
