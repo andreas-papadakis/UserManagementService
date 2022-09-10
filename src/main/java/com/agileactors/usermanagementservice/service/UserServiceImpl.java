@@ -4,6 +4,7 @@ import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
 import com.agileactors.usermanagementservice.dto.CreateUserResponseDto;
 import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
+import com.agileactors.usermanagementservice.exception.UserNotFoundException;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 
@@ -51,7 +52,9 @@ class UserServiceImpl implements UserService {
     }
 
     public Optional<GetUserResponseDto> getUserById(UUID user_id) {
-        return userRepository.findById(user_id).map(user -> new GetUserResponseDto(user.getFirstName(), user.getLastName(), user.getEmail()));
+        return userRepository.findById(user_id).map(user -> new GetUserResponseDto(user.getFirstName(),
+                                                                                   user.getLastName(),
+                                                                                   user.getEmail()));
     }
 
     public int deleteUser(String user_id) {
@@ -63,20 +66,14 @@ class UserServiceImpl implements UserService {
     }
 
     public User updateUser(UpdateUserRequestDto updateUserRequestDto) {
-        try {
-            User existingUser = userRepository.findById(updateUserRequestDto.userId())
-                                              .orElseThrow(UserNotFoundException::new);
-            User updatedUser  = new User(updateUserRequestDto.userId(),
-                                         updateUserRequestDto.firstName(),
-                                         updateUserRequestDto.lastName(),
-                                         updateUserRequestDto.email(),
-                                         existingUser.getCreatedAt(),
-                                         null);
-            return userRepository.save(updatedUser);
-        }
-        catch (Exception e) {
-            //TODO: handle exception
-            return null;
-        }
+        User existingUser = userRepository.findById(updateUserRequestDto.userId())
+                                          .orElseThrow(() -> new UserNotFoundException("User with ID: " + updateUserRequestDto.userId() + " does not exist"));
+        User updatedUser  = new User(updateUserRequestDto.userId(),
+                                     updateUserRequestDto.firstName(),
+                                     updateUserRequestDto.lastName(),
+                                     updateUserRequestDto.email(),
+                                     existingUser.getCreatedAt(),
+                                     null);
+        return userRepository.save(updatedUser);
     }
 }
