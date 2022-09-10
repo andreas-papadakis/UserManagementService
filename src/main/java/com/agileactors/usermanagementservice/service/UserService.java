@@ -49,6 +49,7 @@ public interface UserService {
      * Update user in DB
      * @param updated_user The dto containing the ID of user to update and the new values
      * @return The updated user
+     * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not found
      */
     User updateUser(UpdateUserRequestDto updated_user);
 }
