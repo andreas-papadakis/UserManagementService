@@ -38,15 +38,19 @@ class UserServiceImpl implements UserService {
         return (first_name.isBlank())
                 ? userRepository.findAll()
                                 .stream()
-                                .map(user -> new GetUserResponseDto(user.getFirstName(), user.getLastName(), user.getEmail()))
+                                .map(user -> new GetUserResponseDto(user.getFirstName(),
+                                                                    user.getLastName(),
+                                                                    user.getEmail()))
                                 .toList()
                 : userRepository.findByFirstNameLike("%" + first_name + "%")
                                 .stream()
-                                .map(user -> new GetUserResponseDto(user.getFirstName(), user.getLastName(), user.getEmail()))
+                                .map(user -> new GetUserResponseDto(user.getFirstName(),
+                                                                    user.getLastName(),
+                                                                    user.getEmail()))
                                 .toList();
     }
 
-    public Optional<GetUserResponseDto> getUserById(String user_id) {
+    public Optional<GetUserResponseDto> getUserById(UUID user_id) {
         return userRepository.findById(user_id).map(user -> new GetUserResponseDto(user.getFirstName(), user.getLastName(), user.getEmail()));
     }
 
