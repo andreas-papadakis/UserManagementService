@@ -4,12 +4,14 @@ import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
 import com.agileactors.usermanagementservice.dto.CreateUserResponseDto;
 import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
+import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
 import com.agileactors.usermanagementservice.exception.UserNotFoundException;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +22,11 @@ class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
-    public CreateUserResponseDto createUser(CreateUserRequestDto createUserRequestDto) {
+    public CreateUserResponseDto createUser(CreateUserRequestDto createUserRequestDto, BindingResult errors) {
+        if(errors.hasErrors())
+            throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
+        if(!createUserRequestDto.email().matches("[a-zA-Z0-9]+@[a-zA-Z]+[.][a-zA-Z]+"))
+            throw new InvalidArgumentException("Invalid email.");
         User user = userRepository.save(new User(UUID.randomUUID().toString(),
                                                  createUserRequestDto.firstName(),
                                                  createUserRequestDto.lastName(),
