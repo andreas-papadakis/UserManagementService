@@ -6,14 +6,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 public record CreateUserRequestDto(@Schema(example = "John", description = "User's first name")
-                                   @NotBlank(message = "First name must not be blank")
-                                   @Size(min = 1, max = 100, message = "First name's length must not exceed 100 characters.")
+                                   @NotBlank(message = "First name must not be blank and up to 100 characters.")
+                                   @Size(min = 1, max = 100, message = "First name must not be blank and up to 100 characters.")
                                    String firstName,
                                    @Schema(example = "Doe", description = "User's last name")
-                                   @NotBlank(message = "Last name must not be blank")
-                                   @Size(min = 1, max = 100, message = "Last name's length must not exceed 100 characters.")String lastName,
+                                   @NotBlank(message = "Last name must not be blank and up to 100 characters.")
+                                   @Size(min = 1, max = 100, message = "Last name must not be blank and up to 100 characters.")String lastName,
                                    @Schema(name = "email", example = "johndoe@gmail.com", description = "User's e-mail")
-                                   @NotBlank(message = "e-mail must not be blank and in correct format.")
-                                   @Size(min = 5, max = 100, message = "e-mail's length must not exceed 100 characters.")
+                                   @NotBlank(message = "e-mail must not be blank and up to 100 characters.")
+                                   @Size(min = 5, max = 100, message = "e-mail must not be blank and up to 100 characters.")
                                    String email) {
 }
