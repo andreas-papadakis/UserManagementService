@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,6 +28,7 @@ public class UserController {
     /**
      * Upload user in DB
      * @param createUserRequestDto The user to be uploaded
+     * @param errors The errors valid annotation found
      * @return The uploaded user on success
      */
     @Operation(summary = "Create user",
@@ -38,11 +40,11 @@ public class UserController {
                      content = { @Content (mediaType = "application/json",
                                            schema = @Schema(implementation = CreateUserResponseDto.class)) } ),
         @ApiResponse(responseCode = "400",
-                     description = "User was NOT created. Check again the fields. Neither field must be blank and e-mail must be in correct format",
+                     description = "User was NOT created due to invalid given argument(s)",
                      content = @Content) } )
     @PostMapping(value = "/users")
-    public CreateUserResponseDto createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto) {
-        return userService.createUser(createUserRequestDto);
+    public CreateUserResponseDto createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto, BindingResult errors) {
+        return userService.createUser(createUserRequestDto, errors);
     }
 
     /**
