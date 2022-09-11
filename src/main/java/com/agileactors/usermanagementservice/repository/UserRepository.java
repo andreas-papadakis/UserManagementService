@@ -8,10 +8,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, UUID> {
+public interface UserRepository extends JpaRepository<User, String> {
     /**
      * Retrieve all users from database whose first name contains the search_term.
      * @param search_term The term that first_name must contain to retrieve the user
