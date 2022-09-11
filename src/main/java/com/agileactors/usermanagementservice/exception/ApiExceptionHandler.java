@@ -18,4 +18,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                      LocalDateTime.now()),
                                     HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler (value = InvalidArgumentException.class)
+    public ResponseEntity<Object> handleInvalidArgumentException(InvalidArgumentException invalidArgumentException) {
+        return new ResponseEntity<>(new ApiException(invalidArgumentException.getMessage(),
+                                                     HttpStatus.BAD_REQUEST,
+                                                     LocalDateTime.now()),
+                                    HttpStatus.BAD_REQUEST);
+    }
 }
