@@ -5,6 +5,7 @@ import com.agileactors.usermanagementservice.dto.CreateUserResponseDto;
 import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.model.User;
+import org.springframework.validation.BindingResult;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +15,10 @@ public interface UserService {
     /**
      * Upload user in DB
      * @param createUserRequestDto The user to be uploaded
+     * @param errors The validation errors of createUserRequestDto
      * @return The uploaded user on success
      */
-    CreateUserResponseDto createUser(CreateUserRequestDto createUserRequestDto);
+    CreateUserResponseDto createUser(CreateUserRequestDto createUserRequestDto, BindingResult errors);
 
     /**
      * Retrieve all users from database whose first name contains the search_term.
