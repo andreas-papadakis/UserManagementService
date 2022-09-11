@@ -52,7 +52,7 @@ class UserServiceImpl implements UserService {
     }
 
     public GetUserResponseDto getUserById(UUID user_id) {
-        User retrievedUser = userRepository.findById(user_id).orElseThrow(() -> new UserNotFoundException("User with ID: " + user_id + " does not exist"));
+        User retrievedUser = userRepository.findById(user_id.toString()).orElseThrow(() -> new UserNotFoundException("User with ID: " + user_id + " does not exist"));
         return new GetUserResponseDto(retrievedUser.getFirstName(),
                                       retrievedUser.getLastName(),
                                       retrievedUser.getEmail());
@@ -67,7 +67,7 @@ class UserServiceImpl implements UserService {
     }
 
     public User updateUser(UpdateUserRequestDto updateUserRequestDto) {
-        User existingUser = userRepository.findById(updateUserRequestDto.userId())
+        User existingUser = userRepository.findById(updateUserRequestDto.userId().toString())
                                           .orElseThrow(() -> new UserNotFoundException("User with ID: " + updateUserRequestDto.userId() + " does not exist"));
         User updatedUser  = new User(updateUserRequestDto.userId().toString(),
                                      updateUserRequestDto.firstName(),
