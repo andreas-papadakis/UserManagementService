@@ -1,39 +1,46 @@
 package com.agileactors.usermanagementservice.repository;
 
 import com.agileactors.usermanagementservice.model.User;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
+/**
+ * Interface to interact with DB.
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
-    /**
-     * Retrieve all users from database whose first name contains the search_term.
-     * @param search_term The term that first_name must contain to retrieve the user
-     * @return List with all the users whose first name contains search_term
-     */
-    List<User> findByFirstNameLike(String search_term);
+  /**
+   * Retrieve all users from database whose first name contains the searchTerm.
+   *
+   * @param searchTerm The term that user's first name must contain to be retrieved
+   *
+   * @return List with all the users whose first name contains searchTerm
+   */
+  List<User> findByFirstNameLike(String searchTerm);
 
-    /**
-     * Remove user with id from database and return the number of rows affected.
-     * @param id The id of user to remove
-     * @return The number of rows removed (0 if id not found).
-     */
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM users WHERE id=?", nativeQuery = true)
-    int deleteUserById(String id);
+  /**
+   * Remove user with id from database and return the number of rows affected.
+   *
+   * @param id The id of user to remove
+   *
+   * @return The number of rows removed (0 if id not found).
+   */
+  @Modifying
+  @Transactional
+  @Query(value = "DELETE FROM users WHERE id=?", nativeQuery = true)
+  int deleteUserById(String id);
 
-    /**
-     * Remove all users from database and return the number of rows affected.
-     * @return The number of rows removed (0 if db was empty).
-     */
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM users", nativeQuery = true)
-    int deleteAllUsers();
+  /**
+   * Remove all users from database and return the number of rows affected.
+   *
+   * @return The number of rows removed (0 if db was empty)
+   */
+  @Modifying
+  @Transactional
+  @Query(value = "DELETE FROM users", nativeQuery = true)
+  int deleteAllUsers();
 }

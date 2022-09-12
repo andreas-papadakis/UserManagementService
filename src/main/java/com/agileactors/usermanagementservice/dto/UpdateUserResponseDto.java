@@ -1,10 +1,26 @@
 package com.agileactors.usermanagementservice.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Dto with required info to be returned to client after user creation.
+ *
+ * @param id User's ID
+ *
+ * @param firstName User's first name
+ *
+ * @param lastName User's last name
+ *
+ * @param email User's email
+ *
+ * @param createdAt User's creation date
+ *
+ * @param updatedAt User's last update date
+ *
+ */
+@SuppressWarnings("checkstyle:LineLengthCheck")
 public record UpdateUserResponseDto(@Schema(name = "id", example = "123e4567-e89b-12d3-a456-426614174000", description = "User's unique identifier") UUID id,
                                     @Schema(name = "first_name", example = "John", description = "User's first name") String firstName,
                                     @Schema(name = "last_name", example = "Doe", description = "User's last name") String lastName,
