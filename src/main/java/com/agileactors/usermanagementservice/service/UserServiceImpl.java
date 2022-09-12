@@ -73,7 +73,13 @@ class UserServiceImpl implements UserService {
     return userRepository.deleteAllUsers();
   }
 
-  public User updateUser(UpdateUserRequestDto updateUserRequestDto) { //TODO: update signatures to add BindingResults errors as in createUser
+  public User updateUser(UpdateUserRequestDto updateUserRequestDto, BindingResult errors) {
+    if (errors.hasErrors()) {
+      throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
+    }
+    if (!updateUserRequestDto.email().matches("[a-zA-Z0-9]+@[a-zA-Z]+[.][a-zA-Z]+")) {
+      throw new InvalidArgumentException("Invalid email.");
+    }
     User existingUser = userRepository.findById(updateUserRequestDto.userId().toString())
                                       .orElseThrow(() -> new UserNotFoundException("User with ID: " + updateUserRequestDto.userId() + " does not exist"));
     User updatedUser  = new User(updateUserRequestDto.userId().toString(),

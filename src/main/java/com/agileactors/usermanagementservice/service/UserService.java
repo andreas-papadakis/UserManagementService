@@ -66,9 +66,11 @@ public interface UserService {
    *
    * @param updatedUser The dto containing the ID of user to update and the new values
    *
+   * @param errors The validation errors of createUserRequestDto
+   *
    * @return The updated user
    *
    * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not found
    */
-  User updateUser(UpdateUserRequestDto updatedUser); //TODO: update signatures to add BindingResults errors as in createUser
+  User updateUser(UpdateUserRequestDto updatedUser, BindingResult errors);
 }

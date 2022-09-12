@@ -26,5 +26,4 @@ public record CreateUserResponseDto(@Schema(name = "id", example = "123e4567-e89
                                     @Schema(name = "last_name", example = "Doe", description = "User's last name") String lastName,
                                     @Schema(name = "email", example = "johndoe@gmail.com", description = "User's e-mail") String email,
                                     @Schema(name = "created_at", description = "User's creation date") LocalDateTime createdAt,
-                                    @Schema(name = "updated_at", description = "User's last update date") LocalDateTime updatedAt) {
-}
+                                    @Schema(name = "updated_at", description = "User's last update date") LocalDateTime updatedAt) { }

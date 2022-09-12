@@ -168,12 +168,13 @@ public class UserController {
   })
   @PutMapping(value = "/users/{id}")
   public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
-                                          @RequestBody @Valid UpdateUserRequestDto updateUserRequestDto) {
+                                          @RequestBody @Valid UpdateUserRequestDto updateUserRequestDto,
+                                          BindingResult errors) {
     UpdateUserRequestDto updatedUserDto = new UpdateUserRequestDto(userId,
                                                                    updateUserRequestDto.firstName(),
                                                                    updateUserRequestDto.lastName(),
                                                                    updateUserRequestDto.email());
-    User updatedUser = userService.updateUser(updatedUserDto); //TODO: update signatures to add BindingResults errors as in createUser
+    User updatedUser = userService.updateUser(updatedUserDto, errors);
     return new UpdateUserResponseDto(UUID.fromString(updatedUser.getId()),
                                      updatedUser.getFirstName(),
                                      updatedUserDto.lastName(),
