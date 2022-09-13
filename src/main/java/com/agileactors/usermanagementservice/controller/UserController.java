@@ -57,7 +57,8 @@ public class UserController {
                                          schema = @Schema(implementation = CreateUserResponseDto.class))}),
       @ApiResponse(responseCode = "400",
                    description = "User was NOT created due to invalid given argument(s)",
-                   content = @Content)})
+                   content = { @Content (mediaType = "application/json",
+                                         schema = @Schema (implementation = ApiException.class))})})
   @PostMapping(value = "/users")
   public CreateUserResponseDto createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto,
                                           BindingResult errors) {
@@ -164,7 +165,11 @@ public class UserController {
       @ApiResponse(responseCode = "404",
                    description = "User with given ID does not exist",
                    content = { @Content (mediaType = "application/json",
-                                         schema = @Schema (implementation = ApiException.class))})
+                                         schema = @Schema (implementation = ApiException.class))}),
+      @ApiResponse(responseCode = "400",
+                  description = "User was NOT updated due to invalid given argument(s)",
+                  content = { @Content (mediaType = "application/json",
+                                        schema = @Schema (implementation = ApiException.class))})
   })
   @PutMapping(value = "/users/{id}")
   public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
