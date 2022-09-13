@@ -10,15 +10,17 @@ import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 @SuppressWarnings("checkstyle:LineLengthCheck")
 @Service
 class UserServiceImpl implements UserService {
-  @Autowired
-  UserRepository userRepository;
+  private final UserRepository userRepository;
+
+  UserServiceImpl(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
   public CreateUserResponseDto createUser(CreateUserRequestDto createUserRequestDto, BindingResult errors) {
     if (errors.hasErrors()) {

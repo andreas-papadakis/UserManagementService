@@ -3,7 +3,6 @@ package com.agileactors.usermanagementservice.main;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -12,8 +11,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class GetUserRepositoryTest {
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    GetUserRepositoryTest(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     /**
      * Test correct read of users. First create two users, then try to recover them.

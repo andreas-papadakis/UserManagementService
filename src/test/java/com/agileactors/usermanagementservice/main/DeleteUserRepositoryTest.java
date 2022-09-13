@@ -5,15 +5,17 @@ import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class DeleteUserRepositoryTest {
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    DeleteUserRepositoryTest(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     /**
      * Test correct deletion of user. First create a user, then delete and then try to recover by id.

@@ -3,15 +3,17 @@ package com.agileactors.usermanagementservice.main;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UpdateUserRepositoryTest {
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    UpdateUserRepositoryTest(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     /**
      * Test correct update of specific user.

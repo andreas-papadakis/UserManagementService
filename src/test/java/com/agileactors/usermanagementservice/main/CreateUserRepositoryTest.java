@@ -7,7 +7,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.validation.ConstraintViolation;
@@ -21,8 +20,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class CreateUserRepositoryTest {
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    CreateUserRepositoryTest(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     /**
      * Test correct creation of user. Create user in DB and try to get by ID.
