@@ -42,4 +42,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
                                                  LocalDateTime.now()),
                                 HttpStatus.BAD_REQUEST);
   }
+
+  /**
+   * Handle IllegalArgumentException.
+   *
+   * @param illegalArgumentException The exception
+   *
+   * @return ResponseEntity of type ApiException with standard message, 500 HTTP status and the time it occurred
+   */
+  @ExceptionHandler (value = IllegalArgumentException.class)
+  public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException illegalArgumentException) {
+    System.err.println(illegalArgumentException.getMessage());
+    return new ResponseEntity<>(new ApiException("Internal server error",
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            LocalDateTime.now()),
+            HttpStatus.INTERNAL_SERVER_ERROR);
+  }
 }
