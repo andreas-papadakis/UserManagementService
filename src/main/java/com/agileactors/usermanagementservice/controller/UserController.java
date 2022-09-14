@@ -184,11 +184,7 @@ public class UserController {
       @ApiResponse(responseCode = "400",
                   description = "User was NOT updated due to invalid given argument(s)",
                   content = { @Content (mediaType = "application/json",
-                                        schema = @Schema (implementation = ApiException.class))}),
-      @ApiResponse(responseCode = "400",
-                  description = "Something went wrong internally",
-                  content = { @Content (mediaType = "application/json",
-                                        schema = @Schema (implementation = ApiException.class))})//TODO: remove
+                                        schema = @Schema (implementation = ApiException.class))})
   })
   @PutMapping(value = "/users/{id}")
   public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
