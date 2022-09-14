@@ -13,6 +13,15 @@ import org.springframework.stereotype.Component;
 @SuppressWarnings("checkstyle:LineLengthCheck")
 @Component
 public class StringToUpdateUserRequestDtoConverter implements Converter<String, UpdateUserRequestDto> {
+  /**
+   * Convert String to UpdateUserRequestDtoConverter.
+   * String must be comma separated with UUID first, first name second,
+   * last name third and last the e-mail.
+   *
+   * @param from The string to convert to dto
+   *
+   * @return The dto
+   */
   @Override
   public UpdateUserRequestDto convert(String from) {
     String[] data = from.split(",");
