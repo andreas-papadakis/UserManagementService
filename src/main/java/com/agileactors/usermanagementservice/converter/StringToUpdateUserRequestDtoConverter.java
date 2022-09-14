@@ -28,7 +28,7 @@ public class StringToUpdateUserRequestDtoConverter implements Converter<String, 
 
     if (data.length < 4) {
       throw new IllegalArgumentException("Missing argument in StringToUpdateUserRequestDtoConverter. Should be 4.");
-    } else if (data.length > 5) {
+    } else if (data.length > 4) {
       throw new IllegalArgumentException("More than expected arguments in StringToUpdateUserRequestDtoConverter. Should be 4.");
     } else if (!data[0].contains("-") || !data[3].contains("@")) {
       throw new IllegalArgumentException("Wrong order of arguments in StringToUpdateUserRequestDtoConverter. "
