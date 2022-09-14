@@ -1,10 +1,7 @@
 package com.agileactors.usermanagementservice.service;
 
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
-import com.agileactors.usermanagementservice.dto.CreateUserResponseDto;
-import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
-import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
 import com.agileactors.usermanagementservice.exception.UserNotFoundException;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
@@ -23,12 +20,6 @@ class UserServiceImpl implements UserService {
   }
 
   public User createUser(CreateUserRequestDto createUserRequestDto, BindingResult errors) {
-    if (errors.hasErrors()) {
-      throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
-    }
-    if (!createUserRequestDto.email().matches("[a-zA-Z0-9]+@[a-zA-Z]+[.][a-zA-Z]+")) {
-      throw new InvalidArgumentException("Invalid email.");
-    }
     return userRepository.save(new User(UUID.randomUUID().toString(),
                                         createUserRequestDto.firstName(),
                                         createUserRequestDto.lastName(),
@@ -61,12 +52,6 @@ class UserServiceImpl implements UserService {
   }
 
   public User updateUser(UpdateUserRequestDto updateUserRequestDto, BindingResult errors) {
-    if (errors.hasErrors()) {
-      throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
-    }
-    if (!updateUserRequestDto.email().matches("[a-zA-Z0-9]+@[a-zA-Z]+[.][a-zA-Z]+")) {
-      throw new InvalidArgumentException("Invalid email.");
-    }
     User existingUser = userRepository.findById(updateUserRequestDto.userId().toString())
                                       .orElseThrow(() -> new UserNotFoundException("User with ID: " + updateUserRequestDto.userId() + " does not exist"));
     User updatedUser  = new User(updateUserRequestDto.userId().toString(),

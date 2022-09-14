@@ -6,6 +6,7 @@ import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserResponseDto;
 import com.agileactors.usermanagementservice.exception.ApiException;
+import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -68,6 +69,12 @@ public class UserController {
   @PostMapping(value = "/users")
   public CreateUserResponseDto createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto,
                                           BindingResult errors) {
+    if (errors.hasErrors()) {
+      throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
+    }
+    if (!createUserRequestDto.email().matches("[a-zA-Z0-9]+@[a-zA-Z]+[.][a-zA-Z]+")) {
+      throw new InvalidArgumentException("Invalid email.");
+    }
     return conversionService.convert(userService.createUser(createUserRequestDto, errors), CreateUserResponseDto.class);
   }
 
@@ -187,6 +194,12 @@ public class UserController {
   public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
                                           @RequestBody @Valid UpdateUserRequestDto updateUserRequestDto,
                                           BindingResult errors) {
+    if (errors.hasErrors()) {
+      throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
+    }
+    if (!updateUserRequestDto.email().matches("[a-zA-Z0-9]+@[a-zA-Z]+[.][a-zA-Z]+")) {
+      throw new InvalidArgumentException("Invalid email.");
+    }
     UpdateUserRequestDto updatedUserDto = new UpdateUserRequestDto(userId,
                                                                    updateUserRequestDto.firstName(),
                                                                    updateUserRequestDto.lastName(),
