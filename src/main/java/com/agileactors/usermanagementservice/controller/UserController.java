@@ -1,6 +1,6 @@
 package com.agileactors.usermanagementservice.controller;
 
-import com.agileactors.usermanagementservice.converter.StringToUpdateUserRequestDtoConverter;
+import com.agileactors.usermanagementservice.converter.UserToUpdateUserResponseDtoConverter;
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
 import com.agileactors.usermanagementservice.dto.CreateUserResponseDto;
 import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
@@ -36,11 +36,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class UserController {
   private final UserService userService;
-  private final StringToUpdateUserRequestDtoConverter stringToUpdateUserRequestDtoConverter;
+  private final UserToUpdateUserResponseDtoConverter userToUpdateUserResponseDtoConverter;
 
-  public UserController(UserService userService, StringToUpdateUserRequestDtoConverter stringToUpdateUserRequestDtoConverter) {
+  public UserController(UserService userService, UserToUpdateUserResponseDtoConverter userToUpdateUserResponseDtoConverter) {
     this.userService = userService;
-    this.stringToUpdateUserRequestDtoConverter = stringToUpdateUserRequestDtoConverter;
+    this.userToUpdateUserResponseDtoConverter = userToUpdateUserResponseDtoConverter;
   }
 
   /**
@@ -184,16 +184,11 @@ public class UserController {
   public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
                                           @RequestBody @Valid UpdateUserRequestDto updateUserRequestDto,
                                           BindingResult errors) {
-    UpdateUserRequestDto updatedUserDto = stringToUpdateUserRequestDtoConverter.convert(userId.toString() + ","
-                                                                                      + updateUserRequestDto.firstName() + ","
-                                                                                      + updateUserRequestDto.lastName() + ","
-                                                                                      + updateUserRequestDto.firstName());
+    UpdateUserRequestDto updatedUserDto = new UpdateUserRequestDto(userId,
+                                                                   updateUserRequestDto.firstName(),
+                                                                   updateUserRequestDto.lastName(),
+                                                                   updateUserRequestDto.firstName());
     User updatedUser = userService.updateUser(updatedUserDto, errors);
-    return new UpdateUserResponseDto(UUID.fromString(updatedUser.getId()),
-                                     updatedUser.getFirstName(),
-                                     updatedUser.getLastName(),
-                                     updatedUser.getEmail(),
-                                     updatedUser.getCreatedAt(),
-                                     updatedUser.getUpdatedAt());
+    return userToUpdateUserResponseDtoConverter.convert(updatedUser);
   }
 }
