@@ -9,6 +9,7 @@ import com.agileactors.usermanagementservice.exception.ApiException;
 import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.service.UserService;
+import com.agileactors.usermanagementservice.validations.Validator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,10 +40,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
   private final UserService userService;
   private final ConversionService conversionService;
+  private final Validator validator;
 
-  public UserController(UserService userService, ConversionService conversionService) {
+  /**
+   * Constructor of controller.
+   *
+   * @param userService The service layer to pass the web requests
+   *
+   * @param conversionService The conversion service to convert the data service returns
+   *
+   * @param validator The validator class to validate what needed
+   */
+  public UserController(UserService userService, ConversionService conversionService, Validator validator) {
     this.userService = userService;
     this.conversionService = conversionService;
+    this.validator = validator;
   }
 
   /**
@@ -72,9 +84,7 @@ public class UserController {
     if (errors.hasErrors()) {
       throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
     }
-    if (!createUserRequestDto.email().matches("[a-zA-Z0-9]+@[a-zA-Z]+[.][a-zA-Z]+")) {
-      throw new InvalidArgumentException("Invalid email.");
-    }
+    validator.validateEmail(createUserRequestDto.email());
     return conversionService.convert(userService.createUser(createUserRequestDto, errors), CreateUserResponseDto.class);
   }
 
@@ -193,9 +203,7 @@ public class UserController {
     if (errors.hasErrors()) {
       throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
     }
-    if (!updateUserRequestDto.email().matches("[a-zA-Z0-9]+@[a-zA-Z]+[.][a-zA-Z]+")) {
-      throw new InvalidArgumentException("Invalid email.");
-    }
+    validator.validateEmail(updateUserRequestDto.email());
     UpdateUserRequestDto updatedUserDto = new UpdateUserRequestDto(userId,
                                                                    updateUserRequestDto.firstName(),
                                                                    updateUserRequestDto.lastName(),
