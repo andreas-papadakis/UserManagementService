@@ -7,13 +7,13 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 /**
- * Convert User to UpdateUserRequestDto.
+ * Convert User to UpdateUserResponseDto.
  */
 @SuppressWarnings("checkstyle:LineLengthCheck")
 @Component
 public class UserToUpdateUserResponseDtoConverter implements Converter<User, UpdateUserResponseDto> {
   /**
-   * Convert User to UpdateUserRequestDto.
+   * Convert User to UpdateUserResponseDto.
    *
    * @param user The user to convert
    *
