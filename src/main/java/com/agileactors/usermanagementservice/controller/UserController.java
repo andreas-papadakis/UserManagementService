@@ -1,6 +1,5 @@
 package com.agileactors.usermanagementservice.controller;
 
-import com.agileactors.usermanagementservice.converter.UserToUpdateUserResponseDtoConverter;
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
 import com.agileactors.usermanagementservice.dto.CreateUserResponseDto;
 import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
@@ -14,9 +13,11 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,11 +37,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class UserController {
   private final UserService userService;
-  private final UserToUpdateUserResponseDtoConverter userToUpdateUserResponseDtoConverter;
+  private final ConversionService conversionService;
 
-  public UserController(UserService userService, UserToUpdateUserResponseDtoConverter userToUpdateUserResponseDtoConverter) {
+  public UserController(UserService userService, ConversionService conversionService) {
     this.userService = userService;
-    this.userToUpdateUserResponseDtoConverter = userToUpdateUserResponseDtoConverter;
+    this.conversionService = conversionService;
   }
 
   /**
@@ -67,7 +68,7 @@ public class UserController {
   @PostMapping(value = "/users")
   public CreateUserResponseDto createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto,
                                           BindingResult errors) {
-    return userService.createUser(createUserRequestDto, errors);
+    return conversionService.convert(userService.createUser(createUserRequestDto, errors), CreateUserResponseDto.class);
   }
 
   /**
@@ -86,7 +87,9 @@ public class UserController {
                                      schema = @Schema (implementation = GetUserResponseDto.class))})
   @GetMapping(value = "/users")
   public List<GetUserResponseDto> getAllUsers(@RequestParam(value = "firstName", defaultValue = "") String searchTerm) {
-    return userService.getAllUsers(searchTerm);
+    List<GetUserResponseDto> getUserResponseDtoList = new ArrayList<>();
+    userService.getAllUsers(searchTerm).forEach(user -> getUserResponseDtoList.add(conversionService.convert(user, GetUserResponseDto.class)));
+    return getUserResponseDtoList;
   }
 
   /**
@@ -110,7 +113,7 @@ public class UserController {
                                          schema = @Schema (implementation = ApiException.class))})})
   @GetMapping(value = "/users/{id}")
   public GetUserResponseDto getUserById(@PathVariable(value = "id") UUID userId) {
-    return userService.getUserById(userId);
+    return conversionService.convert(userService.getUserById(userId), GetUserResponseDto.class);
   }
 
   /**
@@ -178,7 +181,7 @@ public class UserController {
       @ApiResponse(responseCode = "400",
                   description = "Something went wrong internally",
                   content = { @Content (mediaType = "application/json",
-                                        schema = @Schema (implementation = ApiException.class))})
+                                        schema = @Schema (implementation = ApiException.class))})//TODO: remove
   })
   @PutMapping(value = "/users/{id}")
   public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
@@ -189,6 +192,6 @@ public class UserController {
                                                                    updateUserRequestDto.lastName(),
                                                                    updateUserRequestDto.firstName());
     User updatedUser = userService.updateUser(updatedUserDto, errors);
-    return userToUpdateUserResponseDtoConverter.convert(updatedUser);
+    return conversionService.convert(updatedUser, UpdateUserResponseDto.class);
   }
 }

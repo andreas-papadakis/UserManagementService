@@ -23,7 +23,7 @@ public interface UserService {
    *
    * @return The uploaded user on success
    */
-  CreateUserResponseDto createUser(CreateUserRequestDto createUserRequestDto, BindingResult errors);
+  User createUser(CreateUserRequestDto createUserRequestDto, BindingResult errors);
 
   /**
    * Retrieve all users from database. If searchTerm is not blank retrieve those whose first name contains the searchTerm.
@@ -32,7 +32,7 @@ public interface UserService {
    *
    * @return List with retrieved users
    */
-  List<GetUserResponseDto> getAllUsers(String searchTerm);
+  List<User> getAllUsers(String searchTerm);
 
   /**
    * Retrieve a specific user.
@@ -43,7 +43,7 @@ public interface UserService {
    *
    * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not found
    */
-  GetUserResponseDto getUserById(UUID userId);
+  User getUserById(UUID userId);
 
   /**
    * Remove user with userId from DB.
