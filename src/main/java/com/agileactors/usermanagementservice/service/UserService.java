@@ -1,8 +1,6 @@
 package com.agileactors.usermanagementservice.service;
 
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
-import com.agileactors.usermanagementservice.dto.CreateUserResponseDto;
-import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.model.User;
 import java.util.List;
