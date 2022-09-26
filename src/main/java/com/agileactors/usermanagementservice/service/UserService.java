@@ -50,7 +50,7 @@ public interface UserService {
    *
    * @return Number of users removed from DB
    */
-  int deleteUser(String userId);
+  int deleteUser(UUID userId);
 
   /**
    * Remove all users.

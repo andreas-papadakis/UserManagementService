@@ -2,7 +2,6 @@ package com.agileactors.usermanagementservice.converter;
 
 import com.agileactors.usermanagementservice.dto.UpdateUserResponseDto;
 import com.agileactors.usermanagementservice.model.User;
-import java.util.UUID;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +20,7 @@ public class UserToUpdateUserResponseDtoConverter implements Converter<User, Upd
    */
   @Override
   public UpdateUserResponseDto convert(User user) {
-    return new UpdateUserResponseDto(UUID.fromString(user.getId()),
+    return new UpdateUserResponseDto(user.getId(),
                                      user.getFirstName(),
                                      user.getLastName(),
                                      user.getEmail(),

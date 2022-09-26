@@ -1,6 +1,7 @@
 package com.agileactors.usermanagementservice.model;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,7 +24,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class User {
   @Id
   @Column(name = "id")
-  String id;
+  UUID id;
 
   @Column(name = "first_name")
   String firstName;

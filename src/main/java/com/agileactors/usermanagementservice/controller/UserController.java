@@ -149,7 +149,7 @@ public class UserController {
                                      schema = @Schema (implementation = Integer.class))}
   )
   @DeleteMapping(value = "/users/{id}")
-  public int deleteUser(@PathVariable(value = "id") String userId) {
+  public int deleteUser(@PathVariable(value = "id") UUID userId) {
     return userService.deleteUser(userId);
   }
 

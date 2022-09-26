@@ -30,7 +30,7 @@ public class UserManagementServiceApplication {
     return new OpenAPI().info(new Info().title("User Management API")
                                         .description("Simple API with CRUD operations on MySQL DB running on docker. "
                                                    + "The DB contains a single table called users with columns "
-                                                   + "id (type CHAR(36), primary key, not null), "
+                                                   + "id (type VARBINARY(16), primary key, not null), "
                                                    + "first_name (type VARCHAR(100), not null), "
                                                    + "last_name (type VARCHAR(100), not null), "
                                                    + "email (type VARCHAR(100), not null), "

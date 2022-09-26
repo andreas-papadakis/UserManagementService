@@ -2,7 +2,6 @@ package com.agileactors.usermanagementservice.converter;
 
 import com.agileactors.usermanagementservice.dto.CreateUserResponseDto;
 import com.agileactors.usermanagementservice.model.User;
-import java.util.UUID;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +20,7 @@ public class UserToCreateUserResponseDtoConverter implements Converter<User, Cre
    */
   @Override
   public CreateUserResponseDto convert(User user) {
-    return new CreateUserResponseDto(UUID.fromString(user.getId()),
+    return new CreateUserResponseDto(user.getId(),
                                      user.getFirstName(),
                                      user.getLastName(),
                                      user.getEmail(),
