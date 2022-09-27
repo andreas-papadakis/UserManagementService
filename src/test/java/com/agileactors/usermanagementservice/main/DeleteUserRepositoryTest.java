@@ -1,18 +1,20 @@
 package com.agileactors.usermanagementservice.main;
 
 import com.agileactors.usermanagementservice.model.User;
-
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.UUID;
 
 @SpringBootTest
 class DeleteUserRepositoryTest {
     private final UserRepository userRepository;
 
+    @Autowired
     DeleteUserRepositoryTest(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -22,7 +24,7 @@ class DeleteUserRepositoryTest {
      */
     @Test
     public void testDeleteUser() {
-        User testUser = new User("testFName", "testLName", "a@a.com");
+        User testUser = new User(UUID.randomUUID(), "testFName", "testLName", "a@a.com", null, null);
 
         userRepository.save(testUser);
         userRepository.deleteById(testUser.getId());
@@ -35,9 +37,9 @@ class DeleteUserRepositoryTest {
      */
     @Test
     public void testDeleteAllUsers() {
-        User testUser1 = new User("testFName", "testLName", "a@a.com");
-        User testUser2 = new User("testFName", "testLName", "a@a.com");
-        User testUser3 = new User("testFName", "testLName", "a@a.com");
+        User testUser1 = new User(UUID.randomUUID(), "testFName", "testLName", "a@a.com", null, null);
+        User testUser2 = new User(UUID.randomUUID(), "testFName", "testLName", "a@a.com", null, null);
+        User testUser3 = new User(UUID.randomUUID(), "testFName", "testLName", "a@a.com", null, null);
 
         userRepository.save(testUser1);
         userRepository.save(testUser2);

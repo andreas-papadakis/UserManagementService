@@ -3,7 +3,10 @@ package com.agileactors.usermanagementservice.main;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class UpdateUserRepositoryTest {
     private final UserRepository userRepository;
 
+    @Autowired
     UpdateUserRepositoryTest(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -23,13 +27,13 @@ class UpdateUserRepositoryTest {
      */
     @Test
     public void testUpdateUser() {
-        User testUser = new User("testFName", "testLName", "a@a.com");
-        String userIdBeforeUpdate;
+        User testUser = new User(UUID.randomUUID(), "testFName", "testLName", "a@a.com", null, null);
 
         testUser = userRepository.save(testUser);
-        userIdBeforeUpdate = testUser.getId();
 
-        testUser = new User(userIdBeforeUpdate, "uptdFName", "uptdLName", "uptdMail@a.com", testUser.getCreatedAt());
+        UUID userIdBeforeUpdate = testUser.getId();
+
+        testUser = new User(testUser.getId(), "uptdFName", "uptdLName", "uptdMail@a.com", testUser.getCreatedAt(), null);
 
         userRepository.save(testUser);
         testUser = userRepository.findById(testUser.getId()).get();

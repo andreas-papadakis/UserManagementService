@@ -3,9 +3,11 @@ package com.agileactors.usermanagementservice.main;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GetUserRepositoryTest {
     private final UserRepository userRepository;
 
+    @Autowired
     GetUserRepositoryTest(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -23,14 +26,13 @@ class GetUserRepositoryTest {
      */
     @Test
     public void testGetAllUsers() {
-        User testUser1 = new User("testFName", "testLName", "a@a.com");
-        User testUser2 = new User("testFirstName", "testLastName", "b@b.com");
+        User testUser1 = new User(UUID.randomUUID(), "testFName", "testLName", "a@a.com", null, null);
+        User testUser2 = new User(UUID.randomUUID(), "testFirstName", "testLastName", "b@b.com", null, null);
 
         userRepository.save(testUser1);
         userRepository.save(testUser2);
 
         List<User> retrievedUsers = userRepository.findAll();
-        retrievedUsers.forEach(user -> System.out.println(user.toString()));
 
         assertTrue(retrievedUsers.size() >= 2);
     }
@@ -40,7 +42,7 @@ class GetUserRepositoryTest {
      */
     @Test
     public void testGetUserById() {
-        User testUser1 = new User("testFName", "testLName", "a@a.com");
+        User testUser1 = new User(UUID.randomUUID(), "testFName", "testLName", "a@a.com", null, null);
 
         userRepository.save(testUser1);
 
@@ -53,8 +55,8 @@ class GetUserRepositoryTest {
      */
     @Test
     public void testGetAllUserFilteredByFirstName() {
-        User testUser1 = new User("testFName", "testLName", "a@a.com");
-        User testUser2 = new User("abctestFNameasdasdasdasdasd", "testLName", "a@a.com");
+        User testUser1 = new User(UUID.randomUUID(), "testFName", "testLName", "a@a.com", null, null);
+        User testUser2 = new User(UUID.randomUUID(), "abctestFNameasdasdasdasdasd", "testLName", "a@a.com", null, null);
 
         userRepository.save(testUser1);
         userRepository.save(testUser2);

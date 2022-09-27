@@ -1,28 +1,29 @@
 package com.agileactors.usermanagementservice.main;
 
+import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
+import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
 import com.agileactors.usermanagementservice.model.User;
-
 import com.agileactors.usermanagementservice.repository.UserRepository;
-import org.apache.commons.lang3.RandomStringUtils;
-
-import org.junit.jupiter.api.Test;
-
-import org.springframework.boot.test.context.SpringBootTest;
-
+import java.util.Set;
+import java.util.UUID;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.ValidatorFactory;
 import javax.validation.Validator;
-
-import java.util.Set;
-
+import org.apache.commons.lang3.RandomStringUtils;
+import com.agileactors.usermanagementservice.validations.ValidatorImpl;
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class CreateUserRepositoryTest {
     private final UserRepository userRepository;
 
-    CreateUserRepositoryTest(UserRepository userRepository) {
+    @Autowired
+    public CreateUserRepositoryTest(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -31,7 +32,7 @@ public class CreateUserRepositoryTest {
      */
     @Test
     public void testCreateUser() {
-        User testUser = new User("testFName", "testLName", "a@a.com");
+        User testUser = new User(UUID.randomUUID(), "testFName", "testLName", "a@a.com", null, null);
 
         userRepository.save(testUser);
 
@@ -43,11 +44,11 @@ public class CreateUserRepositoryTest {
      */
     @Test
     public void testValidationBlankFirstName() {
-        User testUser = new User("", "testLName", "a@a.com");
+        CreateUserRequestDto testUser = new CreateUserRequestDto("", "testLName", "a@a.com");
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<User>> violations = validator.validate(testUser);
+        Set<ConstraintViolation<CreateUserRequestDto>> violations = validator.validate(testUser);
 
         assertFalse(violations.isEmpty());
     }
@@ -57,11 +58,11 @@ public class CreateUserRepositoryTest {
      */
     @Test
     public void testValidationNoLargerThan1000CharsFirstName() {
-        User testUser = new User(RandomStringUtils.randomAlphabetic(101), "testLName", "a@a.com");
+        CreateUserRequestDto testUser = new CreateUserRequestDto(RandomStringUtils.randomAlphabetic(101), "testLName", "a@a.com");
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<User>> violations = validator.validate(testUser);
+        Set<ConstraintViolation<CreateUserRequestDto>> violations = validator.validate(testUser);
 
         assertFalse(violations.isEmpty());
     }
@@ -71,11 +72,11 @@ public class CreateUserRepositoryTest {
      */
     @Test
     public void testValidationBlankLastName() {
-        User testUser = new User("lala", " ", "a@a.com");
+        CreateUserRequestDto testUser = new CreateUserRequestDto("lala", " ", "a@a.com");
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<User>> violations = validator.validate(testUser);
+        Set<ConstraintViolation<CreateUserRequestDto>> violations = validator.validate(testUser);
 
         assertFalse(violations.isEmpty());
     }
@@ -85,11 +86,11 @@ public class CreateUserRepositoryTest {
      */
     @Test
     public void testValidationNoLargerThan1000CharsLastName() {
-        User testUser = new User("lala", RandomStringUtils.randomAlphabetic(101), "a@a.com");
+        CreateUserRequestDto testUser = new CreateUserRequestDto("lala", RandomStringUtils.randomAlphabetic(101), "a@a.com");
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<User>> violations = validator.validate(testUser);
+        Set<ConstraintViolation<CreateUserRequestDto>> violations = validator.validate(testUser);
 
         assertFalse(violations.isEmpty());
     }
@@ -99,11 +100,11 @@ public class CreateUserRepositoryTest {
      */
     @Test
     public void testValidationBlankeMail() {
-        User testUser = new User("lala", "lala", "   ");
+        CreateUserRequestDto testUser = new CreateUserRequestDto("lala", "lala", " ");
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<User>> violations = validator.validate(testUser);
+        Set<ConstraintViolation<CreateUserRequestDto>> violations = validator.validate(testUser);
 
         assertFalse(violations.isEmpty());
     }
@@ -113,11 +114,11 @@ public class CreateUserRepositoryTest {
      */
     @Test
     public void testValidationNoLargerThan1000CharseMail() {
-        User testUser = new User("lala", "lala", RandomStringUtils.randomAlphabetic(101));
+        CreateUserRequestDto testUser = new CreateUserRequestDto("lala", "lala", RandomStringUtils.randomAlphabetic(101));
 
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Set<ConstraintViolation<User>> violations = validator.validate(testUser);
+        Set<ConstraintViolation<CreateUserRequestDto>> violations = validator.validate(testUser);
 
         assertFalse(violations.isEmpty());
     }
@@ -127,12 +128,14 @@ public class CreateUserRepositoryTest {
      */
     @Test
     public void testValidationOfeMail() {
-        User testUser = new User("lala", "lala", "aaaa@");
-        
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<User>> violations = validator.validate(testUser);
+        com.agileactors.usermanagementservice.validations.Validator validator = new ValidatorImpl();
 
-        assertFalse(violations.isEmpty());
+        CreateUserRequestDto testUser = new CreateUserRequestDto("lala", "lala", "aaaa@");
+        
+        Exception exception = assertThrows(InvalidArgumentException.class, () ->  validator.validateEmail(testUser.email()));
+
+        String expectedMessage = "Invalid email.";
+
+        assertEquals(expectedMessage, exception.getMessage());
     }
 }
