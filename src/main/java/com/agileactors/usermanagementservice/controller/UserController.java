@@ -207,7 +207,7 @@ public class UserController {
     UpdateUserRequestDto updatedUserDto = new UpdateUserRequestDto(userId,
                                                                    updateUserRequestDto.firstName(),
                                                                    updateUserRequestDto.lastName(),
-                                                                   updateUserRequestDto.firstName());
+                                                                   updateUserRequestDto.email());
     User updatedUser = userService.updateUser(updatedUserDto, errors);
     return conversionService.convert(updatedUser, UpdateUserResponseDto.class);
   }
