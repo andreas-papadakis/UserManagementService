@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
- * Test users are properly deleted.
+ * Tests {@link com.agileactors.usermanagementservice.model.User users} are properly deleted.
  */
 @SpringBootTest
 class DeleteUserRepositoryTest {
@@ -23,7 +23,8 @@ class DeleteUserRepositoryTest {
   }
 
   /**
-   * Test correct deletion of user. First create a user, then delete and then try to recover by id.
+   * Tests correct deletion of {@link com.agileactors.usermanagementservice.model.User user}. First
+   * creates a user, then deletes and then tries to recover by id.
    */
   @Test
   public void testDeleteUser() {
@@ -41,8 +42,8 @@ class DeleteUserRepositoryTest {
   }
 
   /**
-   * Test correct deletion of all users.
-   * First create 3 users, then delete all and count the database.
+   * Tests correct deletion of all {@link com.agileactors.usermanagementservice.model.User users}.
+   * First creates 3 users, then deletes all of them and counts the database.
    */
   @Test
   public void testDeleteAllUsers() {

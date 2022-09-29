@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
- * Test correct retrieve of user(s).
+ * Tests correct retrieve of {@link com.agileactors.usermanagementservice.model.User user(s)}.
  */
 @SpringBootTest
 class GetUserRepositoryTest {
@@ -24,8 +24,9 @@ class GetUserRepositoryTest {
   }
 
   /**
-   * Test correct read of users. First create two users, then try to recover them.
-   * Check for at least 2 recovered users just in case some already existed in DB.
+   * Test correct read of {@link com.agileactors.usermanagementservice.model.User users}. First
+   * creates two users, then tries to recover them. Check for at least 2 recovered users, just in
+   * case some already existed in DB.
    */
   @Test
   public void testGetAllUsers() {
@@ -51,7 +52,8 @@ class GetUserRepositoryTest {
   }
 
   /**
-   * Test correct read of specific user. First create a user, then try to recover by id.
+   * Tests correct read of specific a {@link com.agileactors.usermanagementservice.model.User user}.
+   * First creates a user, then tries to recover by id.
    */
   @Test
   public void testGetUserById() {
@@ -68,8 +70,9 @@ class GetUserRepositoryTest {
   }
 
   /**
-   * Test correct read of all users filtered by first name.
-   * First create two users with similar first names, then try to recover them.
+   * Tests correct read of all {@link com.agileactors.usermanagementservice.model.User users}
+   * filtered by first name. First creates two users with similar first names, then tries to recover
+   * them.
    */
   @Test
   public void testGetAllUserFilteredByFirstName() {

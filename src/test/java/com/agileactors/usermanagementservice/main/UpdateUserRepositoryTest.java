@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
- * Test correct update of user.
+ * Tests correct update of {@link com.agileactors.usermanagementservice.model.User user}.
  */
 @SpringBootTest
 class UpdateUserRepositoryTest {
@@ -22,8 +22,8 @@ class UpdateUserRepositoryTest {
   }
 
   /**
-   * Test correct update of specific user.
-   * First create a user, then update all fields except ID and retrieve again.
+   * Test correct update of specific {@link com.agileactors.usermanagementservice.model.User user}.
+   * First create a user, then updates all fields except ID and retrieves again.
    * Compare retrieved values with expected.
    * No check for validations as already checked in {@link CreateUserRepositoryTest}
    */

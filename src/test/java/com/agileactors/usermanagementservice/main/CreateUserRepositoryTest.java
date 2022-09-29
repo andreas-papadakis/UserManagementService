@@ -22,8 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
- * Test users are being correctly saved in DB.
- * Also check that validations on DTOs work as expected.
+ * Tests {@link com.agileactors.usermanagementservice.model.User users} are being correctly saved in
+ * DB. Also, checks that validations on DTOs work as expected.
  */
 @SpringBootTest
 public class CreateUserRepositoryTest {
@@ -35,11 +35,17 @@ public class CreateUserRepositoryTest {
   }
 
   /**
-   * Test correct creation of user. Create user in DB and try to get by ID.
-  **/
+   * Tests correct creation of {@link com.agileactors.usermanagementservice.model.User user}.
+   * Creates user in DB and tries to get by ID.
+   */
   @Test
   public void testCreateUser() {
-    User testUser = new User(UUID.randomUUID(), "testFName", "testLName", "a@a.com", null, null);
+    User testUser = new User(UUID.randomUUID(),
+                             "testFName",
+                             "testLName",
+                             "a@a.com",
+                             null,
+                             null);
 
     userRepository.save(testUser);
 
@@ -47,11 +53,13 @@ public class CreateUserRepositoryTest {
   }
 
   /**
-   * Test that validation for not blank first name works.
+   * Tests that validation for not blank first name works.
    */
   @Test
   public void testValidationBlankFirstName() {
-    CreateUserRequestDto testUser = new CreateUserRequestDto("", "testLName", "a@a.com");
+    CreateUserRequestDto testUser = new CreateUserRequestDto("",
+                                                             "testLName",
+                                                             "a@a.com");
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
@@ -61,7 +69,7 @@ public class CreateUserRepositoryTest {
   }
 
   /**
-   * Test that validation for no larger than 100 chars first name works.
+   * Tests that validation for no larger than 100 chars first name works.
    */
   @Test
   public void testValidationNoLargerThan1000CharsFirstName() {
@@ -78,11 +86,13 @@ public class CreateUserRepositoryTest {
   }
 
   /**
-   * Test that validation for not blank last name works.
+   * Tests that validation for not blank last name works.
    */
   @Test
   public void testValidationBlankLastName() {
-    CreateUserRequestDto testUser = new CreateUserRequestDto("lala", " ", "a@a.com");
+    CreateUserRequestDto testUser = new CreateUserRequestDto("lala",
+                                                             " ",
+                                                             "a@a.com");
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
@@ -92,7 +102,7 @@ public class CreateUserRepositoryTest {
   }
 
   /**
-   * Test that validation for no larger than 100 chars last name works.
+   * Tests that validation for no larger than 100 chars last name works.
    */
   @Test
   public void testValidationNoLargerThan1000CharsLastName() {
@@ -109,11 +119,13 @@ public class CreateUserRepositoryTest {
   }
 
   /**
-   * Test that validation for not blank last name works.
+   * Tests that validation for not blank last name works.
    */
   @Test
   public void testValidationBlankeMail() {
-    CreateUserRequestDto testUser = new CreateUserRequestDto("lala", "lala", " ");
+    CreateUserRequestDto testUser = new CreateUserRequestDto("lala",
+                                                             "lala",
+                                                             " ");
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
@@ -123,13 +135,14 @@ public class CreateUserRepositoryTest {
   }
 
   /**
-   * Test that validation for no larger than 100 chars e-mail works.
+   * Tests that validation for no larger than 100 chars e-mail works.
    */
   @Test
   public void testValidationNoLargerThan1000CharseMail() {
     CreateUserRequestDto testUser = new CreateUserRequestDto(
                                           "lala",
-                                          "lala", RandomStringUtils.randomAlphabetic(101));
+                                          "lala",
+                                          RandomStringUtils.randomAlphabetic(101));
 
     ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
     Validator validator = factory.getValidator();
@@ -139,13 +152,15 @@ public class CreateUserRepositoryTest {
   }
 
   /**
-   * Test that e-mail form validation works.
+   * Tests that e-mail form validation works.
    */
   @Test
   public void testValidationOfeMail() {
     com.agileactors.usermanagementservice.validations.Validator validator = new ValidatorImpl();
 
-    CreateUserRequestDto testUser = new CreateUserRequestDto("lala", "lala", "aaaa@");
+    CreateUserRequestDto testUser = new CreateUserRequestDto("lala",
+                                                             "lala",
+                                                             "aaaa@");
         
     Exception exception = assertThrows(InvalidArgumentException.class,
                                        () ->  validator.validateEmail(testUser.email()));
@@ -155,5 +170,3 @@ public class CreateUserRepositoryTest {
     assertEquals(expectedMessage, exception.getMessage());
   }
 }
-
-//TODO: comply tests with checkstyle
