@@ -37,7 +37,7 @@ class UserServiceImpl implements UserService {
                             .toList();
   }
 
-  public User getUserById(UUID userId) {
+  public User getUserById(UUID userId) throws UserNotFoundException {
     return userRepository.findById(userId)
                          .orElseThrow(() -> new UserNotFoundException("User with ID: " + userId
                                                                     + " does not exist"));
@@ -51,7 +51,8 @@ class UserServiceImpl implements UserService {
     return userRepository.deleteAllUsers();
   }
 
-  public User updateUser(UpdateUserRequestDto updateUserRequestDto, BindingResult errors) {
+  public User updateUser(UpdateUserRequestDto updateUserRequestDto, BindingResult errors)
+                throws UserNotFoundException {
     User existingUser = userRepository.findById(updateUserRequestDto.userId())
                                       .orElseThrow(() -> new UserNotFoundException("User with ID: "
                                                                     + updateUserRequestDto.userId()

@@ -16,9 +16,10 @@ public class UserToUpdateUserResponseDtoConverter
    * Convert {@link com.agileactors.usermanagementservice.model.User user} to
    * {@link com.agileactors.usermanagementservice.dto.UpdateUserResponseDto}.
    *
-   * @param user The {@link com.agileactors.usermanagementservice.model.User} to convert
+   * @param user The {@link com.agileactors.usermanagementservice.model.User} to convert to
+   *             {@link com.agileactors.usermanagementservice.dto.UpdateUserResponseDto}
    *
-   * @return The dto
+   * @return The {@link com.agileactors.usermanagementservice.dto.UpdateUserResponseDto}
    */
   @Override
   public UpdateUserResponseDto convert(User user) {

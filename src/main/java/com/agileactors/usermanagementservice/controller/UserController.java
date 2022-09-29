@@ -32,7 +32,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Class responsible for getting the HTTP requests and passing them to service layer.
+ * Class responsible for getting the HTTP requests and passing them to
+ * {@link com.agileactors.usermanagementservice.service.UserService}.
  */
 @RestController
 @RequestMapping("/api")
@@ -42,11 +43,17 @@ public class UserController {
   private final Validator validator;
 
   /**
-   * Create new instance of {@link com.agileactors.usermanagementservice.controller.UserController}.
+   * Creates new instance of
+   * {@link com.agileactors.usermanagementservice.controller.UserController}.
    *
-   * @param userService The service layer to pass the web requests
-   * @param conversionService The conversion service to convert the data service returns
-   * @param validator The validator class to validate what needed
+   * @param userService The
+   *                    {@link com.agileactors.usermanagementservice.service.UserService service}
+   *                    to perform the requests
+   * @param conversionService The {@link ConversionService conversion service} to convert the data
+   *                          the {@link com.agileactors.usermanagementservice.service.UserService
+   *                          service} returns
+   * @param validator The {@link com.agileactors.usermanagementservice.validations.Validator} to
+   *                  validate what's needed
    */
   public UserController(UserService userService,
                         ConversionService conversionService,
@@ -57,31 +64,37 @@ public class UserController {
   }
 
   /**
-   * Creates a new user.
+   * Creates a new {@link com.agileactors.usermanagementservice.model.User user}, if
+   * createUserRequestDto param is valid. If it's not, throws an
+   * {@link com.agileactors.usermanagementservice.exception.InvalidArgumentException}.
    *
-   * @param createUserRequestDto The user to be uploaded
+   * @param createUserRequestDto The
+   *     {@link com.agileactors.usermanagementservice.dto.CreateUserRequestDto dto} holding
+   *     {@link com.agileactors.usermanagementservice.model.User user's} to be created data
    * @param errors The errors valid annotation found
    *
-   * @return The uploaded user on success
+   * @return The created {@link com.agileactors.usermanagementservice.model.User user}
+   *
+   * @throws InvalidArgumentException When createUserRequestDto failed to pass validation
    */
   @Operation(summary = "Create user",
-             description = "Create a new user in DB. All fields must be filled and e-mail must"
+             description = "Create a new user in DB. All fields must be filled and e-mail must "
                          + "contain '@' and a '.' afterwards.",
              tags = "POST")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200",
-                   description = "User successfully created",
+                   description = "User was successfully created",
                    content = { @Content
                                (mediaType = "application/json",
                                 schema = @Schema(implementation = CreateUserResponseDto.class))}),
       @ApiResponse(responseCode = "400",
-                   description = "User was NOT created due to invalid given argument(s)",
+                   description = "User was NOT created due to invalid argument(s)",
                    content = { @Content (mediaType = "application/json",
                                          schema = @Schema (implementation = ApiException.class))})})
   @PostMapping(value = "/users")
   public CreateUserResponseDto createUser(@RequestBody @Valid
                                           CreateUserRequestDto createUserRequestDto,
-                                          BindingResult errors) {
+                                          BindingResult errors) throws InvalidArgumentException {
     if (errors.hasErrors()) {
       throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
     }
@@ -91,19 +104,20 @@ public class UserController {
   }
 
   /**
-   * Retrieves all users from database. If searchTerm is not blank, retrieves those whose first name
-   * contains the searchTerm.
+   * Retrieves all {@link com.agileactors.usermanagementservice.model.User users}. If searchTerm is
+   * not blank, retrieves those whose first name contains the searchTerm.
    *
-   * @param searchTerm The term that user's first name must contain in order to be retrieved
+   * @param searchTerm The term that {@link com.agileactors.usermanagementservice.model.User user's}
+   *                   first name must contain in order to be retrieved
    *
    * @return List with retrieved users
    */
   @Operation(summary = "Get all users",
-             description = "Retrieve all users from DB. If parameter firstName exists, retrieve"
+             description = "Retrieve all users from DB. If parameter firstName exists, retrieve "
                          + "those whose first name contains the given value.",
              tags = "GET")
   @ApiResponse(responseCode = "200",
-               description = "Return a list with retrieved users. If no users were retrieved,"
+               description = "Returns a list with retrieved users. If no users were retrieved, "
                            + "list will be empty",
                content = { @Content (mediaType = "application/json",
                                      schema = @Schema (implementation = GetUserResponseDto.class))})
@@ -119,18 +133,19 @@ public class UserController {
   }
 
   /**
-   * Retrieves user with id userId.
+   * Retrieves {@link com.agileactors.usermanagementservice.model.User user} with id userId.
    *
-   * @param userId User's to be retrieved ID
+   * @param userId {@link com.agileactors.usermanagementservice.model.User User's} to be retrieved
+   *               ID
    *
-   * @return Retrieved user
+   * @return Retrieved {@link com.agileactors.usermanagementservice.model.User user}
    */
   @Operation(summary = "Get user by id",
              description = "Retrieve user with specific id",
              tags = "GET")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200",
-                   description = "Return retrieved user",
+                   description = "Returns retrieved user",
                    content = { @Content
                                (mediaType = "application/json",
                                 schema = @Schema (implementation = CreateUserResponseDto.class))}),
@@ -145,17 +160,19 @@ public class UserController {
   }
 
   /**
-   * Removes user with id userId.
+   * Removes {@link com.agileactors.usermanagementservice.model.User user} with id userId.
    *
-   * @param userId The ID of user to be deleted
+   * @param userId The ID of {@link com.agileactors.usermanagementservice.model.User user} to be
+   *               removed
    *
-   * @return Number of users removed from DB
+   * @return Number of {@link com.agileactors.usermanagementservice.model.User users} removed from
+   *         DB
    */
   @Operation(summary = "Remove user",
              description = "Remove user with given id from DB",
              tags = "DELETE")
   @ApiResponse(responseCode = "200",
-               description = "Return number of users removed from DB",
+               description = "Returns number of users removed from DB",
                content = { @Content (mediaType = "application/json",
                                      schema = @Schema (implementation = Integer.class))}
   )
@@ -165,15 +182,16 @@ public class UserController {
   }
 
   /**
-   * Removes all users.
+   * Removes all {@link com.agileactors.usermanagementservice.model.User users}.
    *
-   * @return Number of users removed from DB
+   * @return Number of {@link com.agileactors.usermanagementservice.model.User users} removed from
+   *         DB
    */
   @Operation(summary = "Remove all users",
-             description = "Remove all users",
+             description = "Removes all users",
              tags = "DELETE")
   @ApiResponse(responseCode = "200",
-               description = "Return number of users removed from DB",
+               description = "Returns number of users removed from DB",
                content = { @Content (mediaType = "application/json",
                                      schema = @Schema (implementation = Integer.class))})
   @DeleteMapping(value = "/users")
@@ -182,20 +200,27 @@ public class UserController {
   }
 
   /**
-   * Updates user with id userId to the values stored in updateUserRequestDto.
+   * Updates {@link com.agileactors.usermanagementservice.model.User user} with id userId to the
+   * values stored in updateUserRequestDto.
    *
-   * @param userId The ID of user to be updated
-   * @param updateUserRequestDto The dto holding the new values
+   * @param userId The ID of {@link com.agileactors.usermanagementservice.model.User user} to be
+   *               updated
+   * @param updateUserRequestDto The
+   *                      {@link com.agileactors.usermanagementservice.dto.UpdateUserRequestDto dto}
+   *                      holding the new values
    * @param errors The errors valid annotation found
    *
-   * @return All the info of the updated user
+   * @return All the info of the updated
+   *         {@link com.agileactors.usermanagementservice.model.User user}
+   *
+   * @throws InvalidArgumentException When updateUserRequestDto fails to pass validation
    */
   @Operation(summary = "Update user",
-             description = "Update a user's basic information",
+             description = "Updates a user's basic information",
              tags = "PUT")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200",
-                   description = "Return updated user",
+                   description = "Returns updated user",
                    content = { @Content
                                (mediaType = "application/json",
                                 schema = @Schema (implementation = CreateUserResponseDto.class))}),
@@ -204,7 +229,7 @@ public class UserController {
                    content = { @Content (mediaType = "application/json",
                                          schema = @Schema (implementation = ApiException.class))}),
       @ApiResponse(responseCode = "400",
-                  description = "User was NOT updated due to invalid given argument(s)",
+                  description = "User was NOT updated due to invalid argument(s)",
                   content = { @Content (mediaType = "application/json",
                                         schema = @Schema (implementation = ApiException.class))})
   })
@@ -212,7 +237,7 @@ public class UserController {
   public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
                                           @RequestBody @Valid
                                           UpdateUserRequestDto updateUserRequestDto,
-                                          BindingResult errors) {
+                                          BindingResult errors) throws InvalidArgumentException {
     if (errors.hasErrors()) {
       throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
     }

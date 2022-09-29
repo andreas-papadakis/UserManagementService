@@ -12,30 +12,34 @@ import javax.validation.constraints.Size;
  *
  * @param userId {@link com.agileactors.usermanagementservice.model.User User's} ID (Not shown in
  *     client)
- * @param firstName {@link com.agileactors.usermanagementservice.model.User User's} first name
- * @param lastName {@link com.agileactors.usermanagementservice.model.User User's} last name
- * @param email {@link com.agileactors.usermanagementservice.model.User User's} email
+ * @param firstName {@link com.agileactors.usermanagementservice.model.User User's} first name. Must
+ *                  not be blank and up to 100 chars.
+ * @param lastName {@link com.agileactors.usermanagementservice.model.User User's} last name. Must
+ *                  not be blank and up to 100 chars.
+ * @param email {@link com.agileactors.usermanagementservice.model.User User's} e-mail. Must not be
+ *              blank and from 5 up to 100 chars.
  */
 public record UpdateUserRequestDto(@JsonIgnore UUID userId,
                                    @Schema(example = "John", description = "User's first name")
-                                   @NotBlank(message = "First name must not be blank and up to 100"
+                                   @NotBlank(message = "First name must not be blank and up to 100 "
                                                      + "characters.")
-                                   @Size(min = 1, max = 100, message = "First name must not be"
-                                                                     + "blank and up to 100"
+                                   @Size(min = 1, max = 100, message = "First name must not be "
+                                                                     + "blank and up to 100 "
                                                                      + "characters.")
                                    String firstName,
                                    @Schema(example = "Doe", description = "User's last name")
-                                   @NotBlank(message = "Last name must not be blank and up to 100"
+                                   @NotBlank(message = "Last name must not be blank and up to 100 "
                                                      + "characters.")
-                                   @Size(min = 1, max = 100, message = "Last name must not be"
-                                                                     + "blank and up to 100"
+                                   @Size(min = 1, max = 100, message = "Last name must not be "
+                                                                     + "blank and up to 100 "
                                                                      + "characters.")
                                    String lastName,
                                    @Schema(name = "email",
                                            example = "johndoe@gmail.com",
                                            description = "User's e-mail")
-                                   @NotBlank(message = "e-mail must not be blank and up to 100"
+                                   @NotBlank(message = "e-mail must not be blank and up to 100 "
                                                      + "characters.")
-                                   @Size(min = 5, max = 100, message = "e-mail must not be blank"
-                                                                     + "and up to 100 characters.")
+                                   @Size(min = 5, max = 100, message = "e-mail must not be blank "
+                                                                     + "and from 5 up to 100"
+                                                                     + "characters.")
                                    String email) { }

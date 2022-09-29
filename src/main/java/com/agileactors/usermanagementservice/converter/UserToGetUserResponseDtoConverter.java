@@ -15,9 +15,10 @@ public class UserToGetUserResponseDtoConverter implements Converter<User, GetUse
    * Convert {@link com.agileactors.usermanagementservice.model.User user} to
    * {@link com.agileactors.usermanagementservice.dto.GetUserResponseDto}.
    *
-   * @param user The {@link com.agileactors.usermanagementservice.model.User} to convert to dto
+   * @param user The {@link com.agileactors.usermanagementservice.model.User} to convert to
+   *             {@link com.agileactors.usermanagementservice.dto.GetUserResponseDto}
    *
-   * @return The dto
+   * @return The {@link com.agileactors.usermanagementservice.dto.GetUserResponseDto}
    */
   @Override
   public GetUserResponseDto convert(User user) {

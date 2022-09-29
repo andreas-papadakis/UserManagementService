@@ -7,7 +7,7 @@ import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
  */
 public interface Validator {
   /**
-   * Validates email is in correct format. If it's not, throw
+   * Validates email is in correct format. If it's not, throws
    * {@link com.agileactors.usermanagementservice.exception.InvalidArgumentException
    * InvalidArgumentException}.
    *
@@ -15,5 +15,5 @@ public interface Validator {
    *
    * @throws InvalidArgumentException When email is in incorrect format
    */
-  void validateEmail(String email);
+  void validateEmail(String email) throws InvalidArgumentException;
 }

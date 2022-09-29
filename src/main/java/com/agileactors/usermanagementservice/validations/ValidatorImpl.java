@@ -9,10 +9,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ValidatorImpl implements Validator {
-  /**
-   * {@inheritDoc}
-   */
-  public void validateEmail(String email) {
+  /** {@inheritDoc} */
+  public void validateEmail(String email) throws InvalidArgumentException {
     if (!email.matches("[a-zA-Z0-9]+@[a-zA-Z]+[.][a-zA-Z]+")) {
       throw new InvalidArgumentException("Invalid email.");
     }

@@ -32,7 +32,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
    *
    * @param id The id of {@link com.agileactors.usermanagementservice.model.User user} to remove
    *
-   * @return The number of rows removed (0 if id not found).
+   * @return The number of rows removed (0 if id was not found).
    */
   @Modifying
   @Transactional
