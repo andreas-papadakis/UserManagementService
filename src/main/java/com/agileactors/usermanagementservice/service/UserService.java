@@ -8,36 +8,41 @@ import java.util.UUID;
 import org.springframework.validation.BindingResult;
 
 /**
- * Interface to connect the controller with the repository.
+ * Interface to connect the
+ * {@link com.agileactors.usermanagementservice.controller.UserController controller} with the
+ * {@link com.agileactors.usermanagementservice.repository.UserRepository repository}.
  */
 public interface UserService {
   /**
-   * Upload user in DB.
+   * Creates new {@link com.agileactors.usermanagementservice.model.User user}.
    *
-   * @param createUserRequestDto The user to be uploaded
+   * @param createUserRequestDto The {@link com.agileactors.usermanagementservice.model.User user}
+   *     to be uploaded
+   * @param errors The validation errors of
+   *     {@link com.agileactors.usermanagementservice.dto.CreateUserRequestDto createUserRequestDto}
    *
-   * @param errors The validation errors of createUserRequestDto
-   *
-   * @return The uploaded user on success
+   * @return The created {@link com.agileactors.usermanagementservice.model.User user} on success
    */
   User createUser(CreateUserRequestDto createUserRequestDto, BindingResult errors);
 
   /**
-   * Retrieve all users from database. If searchTerm is not blank retrieve those whose first name
-   * contains the searchTerm.
+   * Retrieves all {@link com.agileactors.usermanagementservice.model.User users} from database.
+   * If searchTerm is not blank retrieves those whose first name contains the searchTerm.
    *
-   * @param searchTerm The term that user's first name must contain to be retrieved
+   * @param searchTerm The term that {@link com.agileactors.usermanagementservice.model.User user's}
+   *     first name must contain to be retrieved
    *
-   * @return List with retrieved users
+   * @return List with retrieved {@link com.agileactors.usermanagementservice.model.User users}
    */
   List<User> getAllUsers(String searchTerm);
 
   /**
-   * Retrieve a specific user.
+   * Retrieves a specific {@link com.agileactors.usermanagementservice.model.User user}.
    *
-   * @param userId User's to be retrieved ID
+   * @param userId {@link com.agileactors.usermanagementservice.model.User User's} to be retrieved
+   *     ID
    *
-   * @return Retrieved user
+   * @return Retrieved {@link com.agileactors.usermanagementservice.model.User user}
    *
    * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not
    *     found
@@ -45,29 +50,31 @@ public interface UserService {
   User getUserById(UUID userId);
 
   /**
-   * Remove user with userId from DB.
+   * Removes {@link com.agileactors.usermanagementservice.model.User user} with id userId.
    *
-   * @param userId The ID of user to be deleted
+   * @param userId The ID of {@link com.agileactors.usermanagementservice.model.User user} to be
+   *     removed
    *
-   * @return Number of users removed from DB
+   * @return Number of {@link com.agileactors.usermanagementservice.model.User users} removed
    */
   int deleteUser(UUID userId);
 
   /**
-   * Remove all users.
+   * Removes all {@link com.agileactors.usermanagementservice.model.User users}.
    *
-   * @return Number of users removed from DB
+   * @return Number of {@link com.agileactors.usermanagementservice.model.User users} removed
    */
   int deleteAllUsers();
 
   /**
-   * Update user in DB.
+   * Updates {@link com.agileactors.usermanagementservice.model.User user}.
    *
-   * @param updatedUser The dto containing the ID of user to update and the new values
+   * @param updatedUser The dto containing the ID of
+   *     {@link com.agileactors.usermanagementservice.model.User user} to update and the new values
+   * @param errors The validation errors of
+   *     {@link com.agileactors.usermanagementservice.dto.CreateUserRequestDto createUserRequestDto}
    *
-   * @param errors The validation errors of createUserRequestDto
-   *
-   * @return The updated user
+   * @return The updated {@link com.agileactors.usermanagementservice.model.User user}
    *
    * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not
    *     found

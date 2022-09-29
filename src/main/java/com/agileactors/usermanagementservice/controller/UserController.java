@@ -42,12 +42,10 @@ public class UserController {
   private final Validator validator;
 
   /**
-   * Constructor of controller.
+   * Create new instance of {@link com.agileactors.usermanagementservice.controller.UserController}.
    *
    * @param userService The service layer to pass the web requests
-   *
    * @param conversionService The conversion service to convert the data service returns
-   *
    * @param validator The validator class to validate what needed
    */
   public UserController(UserService userService,
@@ -59,10 +57,9 @@ public class UserController {
   }
 
   /**
-   * Upload user in DB.
+   * Creates a new user.
    *
    * @param createUserRequestDto The user to be uploaded
-   *
    * @param errors The errors valid annotation found
    *
    * @return The uploaded user on success
@@ -94,7 +91,7 @@ public class UserController {
   }
 
   /**
-   * Retrieve all users from database. If searchTerm is not blank retrieve those whose first name
+   * Retrieves all users from database. If searchTerm is not blank, retrieves those whose first name
    * contains the searchTerm.
    *
    * @param searchTerm The term that user's first name must contain in order to be retrieved
@@ -122,7 +119,7 @@ public class UserController {
   }
 
   /**
-   * Retrieve user with userId.
+   * Retrieves user with id userId.
    *
    * @param userId User's to be retrieved ID
    *
@@ -148,7 +145,7 @@ public class UserController {
   }
 
   /**
-   * Remove user with userId from DB.
+   * Removes user with id userId.
    *
    * @param userId The ID of user to be deleted
    *
@@ -168,7 +165,7 @@ public class UserController {
   }
 
   /**
-   * Remove all users from DB.
+   * Removes all users.
    *
    * @return Number of users removed from DB
    */
@@ -185,11 +182,11 @@ public class UserController {
   }
 
   /**
-   * Update user with userId in DB with the values stored in updateUserRequestDto.
+   * Updates user with id userId to the values stored in updateUserRequestDto.
    *
    * @param userId The ID of user to be updated
-   *
    * @param updateUserRequestDto The dto holding the new values
+   * @param errors The errors valid annotation found
    *
    * @return All the info of the updated user
    */

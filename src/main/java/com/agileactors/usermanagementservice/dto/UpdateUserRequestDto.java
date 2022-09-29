@@ -7,14 +7,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Dto with required fields for client to update a user in DB.
+ * Dto with required fields for client to update a
+ * {@link com.agileactors.usermanagementservice.model.User} in DB.
  *
  * @param userId User's ID (Not shown in client)
- *
  * @param firstName User's first name
- *
  * @param lastName User's last name
- *
  * @param email User's email
  */
 public record UpdateUserRequestDto(@JsonIgnore UUID userId,

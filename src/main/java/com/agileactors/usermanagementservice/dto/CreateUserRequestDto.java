@@ -5,7 +5,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Dto with required fields for client to create a user in DB.
+ * Dto with required fields for client to create a
+ * {@link com.agileactors.usermanagementservice.model.User} in DB.
  *
  * @param firstName User's first name. Must not be blank and up to 100 chars.
  *

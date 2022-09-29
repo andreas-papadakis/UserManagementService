@@ -6,13 +6,15 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 /**
- * Convert User to CreateUserResponseDto.
+ * Converts {@link com.agileactors.usermanagementservice.model.User} to
+ * {@link com.agileactors.usermanagementservice.dto.CreateUserResponseDto}.
  */
 @Component
 public class UserToCreateUserResponseDtoConverter
        implements Converter<User, CreateUserResponseDto> {
   /**
-   * Convert User to CreateUserResponseDto.
+   * Converts {@link com.agileactors.usermanagementservice.model.User} to
+   * {@link com.agileactors.usermanagementservice.dto.CreateUserResponseDto}.
    *
    * @param user The user to convert to dto
    *

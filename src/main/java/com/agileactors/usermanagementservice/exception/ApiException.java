@@ -8,9 +8,7 @@ import org.springframework.http.HttpStatus;
  * Exception to be returned to client.
  *
  * @param message Exception's message
- *
  * @param httpStatus HTTP status to be returned to client
- *
  * @param timestamp The time the error occurred
  */
 public record ApiException(@Schema (name = "message",

@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
- * Class responsible for handling exceptions.
+ * Class responsible for handling {@link Exception}.
  */
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   /**
-   * Handle UserNotFoundException.
+   * Handle {@link com.agileactors.usermanagementservice.exception.UserNotFoundException}.
    *
    * @param userNotFoundException The exception
    *
@@ -30,7 +30,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * Handle InvalidArgumentException.
+   * Handle {@link com.agileactors.usermanagementservice.exception.InvalidArgumentException}.
    *
    * @param invalidArgumentException The exception
    *
@@ -47,7 +47,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * Handle IllegalArgumentException.
+   * Handle {@link IllegalArgumentException}.
    *
    * @param illegalArgumentException The exception
    *
