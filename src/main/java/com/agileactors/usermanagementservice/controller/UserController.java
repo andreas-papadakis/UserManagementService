@@ -107,8 +107,8 @@ public class UserController {
    * Retrieves all {@link com.agileactors.usermanagementservice.model.User users}. If searchTerm is
    * not blank, retrieves those whose first name contains the searchTerm.
    *
-   * @param searchTerm The term that {@link com.agileactors.usermanagementservice.model.User user's}
-   *                   first name must contain in order to be retrieved
+   * @param firstName The term that {@link com.agileactors.usermanagementservice.model.User user's}
+   *                  first name must contain in order to be retrieved
    *
    * @return List with retrieved users
    */
@@ -122,10 +122,9 @@ public class UserController {
                content = { @Content (mediaType = "application/json",
                                      schema = @Schema (implementation = GetUserResponseDto.class))})
   @GetMapping(value = "/users")
-  public List<GetUserResponseDto> getAllUsers(@RequestParam(value = "firstName", defaultValue = "")
-                                              String searchTerm) {
+  public List<GetUserResponseDto> getAllUsers(@RequestParam(defaultValue = "") String firstName) {
     List<GetUserResponseDto> getUserResponseDtoList = new ArrayList<>();
-    userService.getAllUsers(searchTerm)
+    userService.getAllUsers(firstName)
                .forEach(
                  user -> getUserResponseDtoList.add(
                            conversionService.convert(user, GetUserResponseDto.class)));
