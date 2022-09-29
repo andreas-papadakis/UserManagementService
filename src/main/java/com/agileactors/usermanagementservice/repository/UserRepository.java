@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface UserRepository extends JpaRepository<User, UUID> {
   /**
-   * Retrieve all {@link com.agileactors.usermanagementservice.model.User users} from database whose
-   * first name contains the searchTerm.
+   * Retrieves all {@link com.agileactors.usermanagementservice.model.User users} from database
+   * whose first name contains the searchTerm.
    *
    * @param searchTerm The term that {@link com.agileactors.usermanagementservice.model.User user's}
    *     first name must contain to be retrieved
@@ -27,8 +27,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
   List<User> findByFirstNameLike(String searchTerm);
 
   /**
-   * Remove {@link com.agileactors.usermanagementservice.model.User user} with id from database and
-   * return the number of rows affected.
+   * Removes {@link com.agileactors.usermanagementservice.model.User user} with id and returns the
+   * number of rows affected.
    *
    * @param id The id of {@link com.agileactors.usermanagementservice.model.User user} to remove
    *
@@ -40,8 +40,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
   int deleteUserById(UUID id);
 
   /**
-   * Remove all {@link com.agileactors.usermanagementservice.model.User users} from database and
-   * return the number of rows affected.
+   * Removes all {@link com.agileactors.usermanagementservice.model.User users} and returns the
+   * number of rows affected.
    *
    * @return The number of rows removed (0 if db was empty)
    */

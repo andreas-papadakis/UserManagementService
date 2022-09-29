@@ -1,7 +1,7 @@
 package com.agileactors.usermanagementservice.exception;
 
 /**
- * Custom exception for not finding user in DB.
+ * Custom {@link RuntimeException} for not finding user in DB.
  */
 public class UserNotFoundException extends RuntimeException {
   public UserNotFoundException(String message) {

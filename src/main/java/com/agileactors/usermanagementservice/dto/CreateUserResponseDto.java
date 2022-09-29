@@ -6,14 +6,14 @@ import java.util.UUID;
 
 /**
  * Dto with required info to be returned to client after
- * {@link com.agileactors.usermanagementservice.model.User} creation.
+ * {@link com.agileactors.usermanagementservice.model.User user} creation.
  *
- * @param id User's ID
- * @param firstName User's first name
- * @param lastName User's last name
- * @param email User's e-mail
- * @param createdAt User's creation date
- * @param updatedAt User's last update date
+ * @param id {@link com.agileactors.usermanagementservice.model.User User's} ID
+ * @param firstName {@link com.agileactors.usermanagementservice.model.User User's} first name
+ * @param lastName {@link com.agileactors.usermanagementservice.model.User User's} last name
+ * @param email {@link com.agileactors.usermanagementservice.model.User User's} e-mail
+ * @param createdAt {@link com.agileactors.usermanagementservice.model.User User's} creation date
+ * @param updatedAt {@link com.agileactors.usermanagementservice.model.User User's} last update date
  */
 public record CreateUserResponseDto(@Schema(name = "id",
                                             example = "123e4567-e89b-12d3-a456-426614174000",

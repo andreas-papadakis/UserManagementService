@@ -1,7 +1,7 @@
 package com.agileactors.usermanagementservice.exception;
 
 /**
- * Custom exception for invalid arguments.
+ * Custom {@link RuntimeException} for invalid arguments.
  */
 public class InvalidArgumentException extends RuntimeException {
   public InvalidArgumentException(String message) {
