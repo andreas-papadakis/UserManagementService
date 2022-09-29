@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 /**
  * Convert User to GetUserResponseDto.
  */
-@SuppressWarnings("checkstyle:LineLengthCheck")
 @Component
 public class UserToGetUserResponseDtoConverter implements Converter<User, GetUserResponseDto> {
   /**

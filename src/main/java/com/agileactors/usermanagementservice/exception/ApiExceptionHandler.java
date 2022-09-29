@@ -10,7 +10,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 /**
  * Class responsible for handling exceptions.
  */
-@SuppressWarnings("checkstyle:LineLengthCheck")
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   /**
@@ -18,10 +17,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
    *
    * @param userNotFoundException The exception
    *
-   * @return ResponseEntity of type ApiException with exception's message, 404 HTTP status and the time it occurred
+   * @return ResponseEntity of type ApiException with exception's message, 404 HTTP status and the
+   *     time it occurred
    */
   @ExceptionHandler (value = UserNotFoundException.class)
-  public ResponseEntity<ApiException> handleUserNotFoundException(UserNotFoundException userNotFoundException) {
+  public ResponseEntity<ApiException> handleUserNotFoundException(UserNotFoundException
+                                                                    userNotFoundException) {
     return new ResponseEntity<>(new ApiException(userNotFoundException.getMessage(),
                                                  HttpStatus.NOT_FOUND,
                                                  LocalDateTime.now()),
@@ -33,10 +34,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
    *
    * @param invalidArgumentException The exception
    *
-   * @return ResponseEntity of type ApiException with exception's message, 400 HTTP status and the time it occurred
+   * @return ResponseEntity of type ApiException with exception's message, 400 HTTP status and the
+   *     time it occurred
    */
   @ExceptionHandler (value = InvalidArgumentException.class)
-  public ResponseEntity<Object> handleInvalidArgumentException(InvalidArgumentException invalidArgumentException) {
+  public ResponseEntity<Object> handleInvalidArgumentException(InvalidArgumentException
+                                                                 invalidArgumentException) {
     return new ResponseEntity<>(new ApiException(invalidArgumentException.getMessage(),
                                                  HttpStatus.BAD_REQUEST,
                                                  LocalDateTime.now()),
@@ -48,10 +51,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
    *
    * @param illegalArgumentException The exception
    *
-   * @return ResponseEntity of type ApiException with standard message, 500 HTTP status and the time it occurred
+   * @return ResponseEntity of type ApiException with standard message, 500 HTTP status and the time
+   *     it occurred
    */
   @ExceptionHandler (value = IllegalArgumentException.class)
-  public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException illegalArgumentException) {
+  public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException
+                                                                 illegalArgumentException) {
     System.err.println(illegalArgumentException.getMessage());
     return new ResponseEntity<>(new ApiException("Internal server error",
             HttpStatus.INTERNAL_SERVER_ERROR,

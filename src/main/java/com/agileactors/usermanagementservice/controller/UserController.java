@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Class responsible for getting the HTTP requests and passing them to service layer.
  */
-@SuppressWarnings("checkstyle:LineLengthCheck")
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -51,7 +50,9 @@ public class UserController {
    *
    * @param validator The validator class to validate what needed
    */
-  public UserController(UserService userService, ConversionService conversionService, Validator validator) {
+  public UserController(UserService userService,
+                        ConversionService conversionService,
+                        Validator validator) {
     this.userService = userService;
     this.conversionService = conversionService;
     this.validator = validator;
@@ -67,45 +68,56 @@ public class UserController {
    * @return The uploaded user on success
    */
   @Operation(summary = "Create user",
-             description = "Create a new user in DB. All fields must be filled and e-mail must contain '@' and a '.' afterwards.",
+             description = "Create a new user in DB. All fields must be filled and e-mail must"
+                         + "contain '@' and a '.' afterwards.",
              tags = "POST")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200",
                    description = "User successfully created",
-                   content = { @Content (mediaType = "application/json",
-                                         schema = @Schema(implementation = CreateUserResponseDto.class))}),
+                   content = { @Content
+                               (mediaType = "application/json",
+                                schema = @Schema(implementation = CreateUserResponseDto.class))}),
       @ApiResponse(responseCode = "400",
                    description = "User was NOT created due to invalid given argument(s)",
                    content = { @Content (mediaType = "application/json",
                                          schema = @Schema (implementation = ApiException.class))})})
   @PostMapping(value = "/users")
-  public CreateUserResponseDto createUser(@RequestBody @Valid CreateUserRequestDto createUserRequestDto,
+  public CreateUserResponseDto createUser(@RequestBody @Valid
+                                          CreateUserRequestDto createUserRequestDto,
                                           BindingResult errors) {
     if (errors.hasErrors()) {
       throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
     }
     validator.validateEmail(createUserRequestDto.email());
-    return conversionService.convert(userService.createUser(createUserRequestDto, errors), CreateUserResponseDto.class);
+    return conversionService.convert(userService.createUser(createUserRequestDto, errors),
+                                     CreateUserResponseDto.class);
   }
 
   /**
-   * Retrieve all users from database. If searchTerm is not blank retrieve those whose first name contains the searchTerm.
+   * Retrieve all users from database. If searchTerm is not blank retrieve those whose first name
+   * contains the searchTerm.
    *
    * @param searchTerm The term that user's first name must contain in order to be retrieved
    *
    * @return List with retrieved users
    */
   @Operation(summary = "Get all users",
-             description = "Retrieve all users from DB. If parameter firstName exists, retrieve those whose first name contains the given value.",
+             description = "Retrieve all users from DB. If parameter firstName exists, retrieve"
+                         + "those whose first name contains the given value.",
              tags = "GET")
   @ApiResponse(responseCode = "200",
-               description = "Return a list with retrieved users. If no users were retrieved, list will be empty",
+               description = "Return a list with retrieved users. If no users were retrieved,"
+                           + "list will be empty",
                content = { @Content (mediaType = "application/json",
                                      schema = @Schema (implementation = GetUserResponseDto.class))})
   @GetMapping(value = "/users")
-  public List<GetUserResponseDto> getAllUsers(@RequestParam(value = "firstName", defaultValue = "") String searchTerm) {
+  public List<GetUserResponseDto> getAllUsers(@RequestParam(value = "firstName", defaultValue = "")
+                                              String searchTerm) {
     List<GetUserResponseDto> getUserResponseDtoList = new ArrayList<>();
-    userService.getAllUsers(searchTerm).forEach(user -> getUserResponseDtoList.add(conversionService.convert(user, GetUserResponseDto.class)));
+    userService.getAllUsers(searchTerm)
+               .forEach(
+                 user -> getUserResponseDtoList.add(
+                           conversionService.convert(user, GetUserResponseDto.class)));
     return getUserResponseDtoList;
   }
 
@@ -122,12 +134,14 @@ public class UserController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200",
                    description = "Return retrieved user",
-                   content = { @Content (mediaType = "application/json",
-                                         schema = @Schema (implementation = CreateUserResponseDto.class))}),
+                   content = { @Content
+                               (mediaType = "application/json",
+                                schema = @Schema (implementation = CreateUserResponseDto.class))}),
       @ApiResponse(responseCode = "404",
                    description = "User with given ID does not exist",
-                   content = { @Content (mediaType = "application/json",
-                                         schema = @Schema (implementation = ApiException.class))})})
+                   content = { @Content
+                               (mediaType = "application/json",
+                                schema = @Schema (implementation = ApiException.class))})})
   @GetMapping(value = "/users/{id}")
   public GetUserResponseDto getUserById(@PathVariable(value = "id") UUID userId) {
     return conversionService.convert(userService.getUserById(userId), GetUserResponseDto.class);
@@ -185,8 +199,9 @@ public class UserController {
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200",
                    description = "Return updated user",
-                   content = { @Content (mediaType = "application/json",
-                                         schema = @Schema (implementation = CreateUserResponseDto.class))}),
+                   content = { @Content
+                               (mediaType = "application/json",
+                                schema = @Schema (implementation = CreateUserResponseDto.class))}),
       @ApiResponse(responseCode = "404",
                    description = "User with given ID does not exist",
                    content = { @Content (mediaType = "application/json",
@@ -198,7 +213,8 @@ public class UserController {
   })
   @PutMapping(value = "/users/{id}")
   public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
-                                          @RequestBody @Valid UpdateUserRequestDto updateUserRequestDto,
+                                          @RequestBody @Valid
+                                          UpdateUserRequestDto updateUserRequestDto,
                                           BindingResult errors) {
     if (errors.hasErrors()) {
       throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());

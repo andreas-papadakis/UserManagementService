@@ -13,10 +13,11 @@ import org.springframework.http.HttpStatus;
  *
  * @param timestamp The time the error occurred
  */
-@SuppressWarnings("checkstyle:LineLengthCheck")
 public record ApiException(@Schema (name = "message",
-                                    example = "User with ID 123e4567-e89b-12d3-a456-426614174000 does not exist",
-                                    description = "Message providing detailed info about occurred error")
+                                    example = "User with ID 123e4567-e89b-12d3-a456-426614174000"
+                                            + "does not exist",
+                                    description = "Message providing detailed info about occurred"
+                                                + "error")
                            String message,
                            @Schema (name = "httpStatus",
                                    example = "404 NOT_FOUND",

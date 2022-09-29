@@ -10,7 +10,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-@SuppressWarnings("checkstyle:LineLengthCheck")
 @Service
 class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
@@ -40,7 +39,8 @@ class UserServiceImpl implements UserService {
 
   public User getUserById(UUID userId) {
     return userRepository.findById(userId)
-                                       .orElseThrow(() -> new UserNotFoundException("User with ID: " + userId + " does not exist"));
+                         .orElseThrow(() -> new UserNotFoundException("User with ID: " + userId
+                                                                    + " does not exist"));
   }
 
   public int deleteUser(UUID userId) {
@@ -53,7 +53,9 @@ class UserServiceImpl implements UserService {
 
   public User updateUser(UpdateUserRequestDto updateUserRequestDto, BindingResult errors) {
     User existingUser = userRepository.findById(updateUserRequestDto.userId())
-                                      .orElseThrow(() -> new UserNotFoundException("User with ID: " + updateUserRequestDto.userId() + " does not exist"));
+                                      .orElseThrow(() -> new UserNotFoundException("User with ID: "
+                                                                    + updateUserRequestDto.userId()
+                                                                    + " does not exist"));
     User updatedUser  = new User(updateUserRequestDto.userId(),
                                  updateUserRequestDto.firstName(),
                                  updateUserRequestDto.lastName(),

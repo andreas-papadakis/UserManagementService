@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 /**
  * Interface to connect the controller with the repository.
  */
-@SuppressWarnings("checkstyle:LineLengthCheck")
 public interface UserService {
   /**
    * Upload user in DB.
@@ -24,7 +23,8 @@ public interface UserService {
   User createUser(CreateUserRequestDto createUserRequestDto, BindingResult errors);
 
   /**
-   * Retrieve all users from database. If searchTerm is not blank retrieve those whose first name contains the searchTerm.
+   * Retrieve all users from database. If searchTerm is not blank retrieve those whose first name
+   * contains the searchTerm.
    *
    * @param searchTerm The term that user's first name must contain to be retrieved
    *
@@ -39,7 +39,8 @@ public interface UserService {
    *
    * @return Retrieved user
    *
-   * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not found
+   * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not
+   *     found
    */
   User getUserById(UUID userId);
 
@@ -68,7 +69,8 @@ public interface UserService {
    *
    * @return The updated user
    *
-   * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not found
+   * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not
+   *     found
    */
   User updateUser(UpdateUserRequestDto updatedUser, BindingResult errors);
 }

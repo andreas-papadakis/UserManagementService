@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 /**
  * Convert User to UpdateUserResponseDto.
  */
-@SuppressWarnings("checkstyle:LineLengthCheck")
 @Component
-public class UserToUpdateUserResponseDtoConverter implements Converter<User, UpdateUserResponseDto> {
+public class UserToUpdateUserResponseDtoConverter
+       implements Converter<User, UpdateUserResponseDto> {
   /**
    * Convert User to UpdateUserResponseDto.
    *
