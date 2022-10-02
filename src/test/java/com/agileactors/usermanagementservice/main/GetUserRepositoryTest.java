@@ -1,15 +1,15 @@
 package com.agileactors.usermanagementservice.main;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests correct retrieve of {@link com.agileactors.usermanagementservice.model.User user(s)}.
@@ -67,8 +67,10 @@ class GetUserRepositoryTest {
                               null);
 
     userRepository.save(testUser1);
+    Optional<User> retrievedUser = userRepository.findById(testUser1.getId());
 
-    assertNotNull(userRepository.findById(testUser1.getId()).get()); //TODO: correct the assertion
+    assertTrue(retrievedUser.isPresent());
+    assertNotNull(userRepository.findById(testUser1.getId()).get());
   }
 
   /**
