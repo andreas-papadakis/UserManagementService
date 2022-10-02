@@ -22,12 +22,10 @@ public interface UserService {
    *
    * @param createUserRequestDto The {@link com.agileactors.usermanagementservice.model.User user}
    *                             to be uploaded
-   * @param errors The validation errors of
-   *     {@link com.agileactors.usermanagementservice.dto.CreateUserRequestDto createUserRequestDto}
    *
    * @return The created {@link com.agileactors.usermanagementservice.model.User user} on success
    */
-  User createUser(CreateUserRequestDto createUserRequestDto, BindingResult errors);
+  User createUser(CreateUserRequestDto createUserRequestDto);
 
   /**
    * Retrieves all {@link com.agileactors.usermanagementservice.model.User users} from database.
@@ -76,14 +74,11 @@ public interface UserService {
    * @param updatedUser The dto containing the ID of
    *                    {@link com.agileactors.usermanagementservice.model.User user} to update and
    *                    the new values
-   * @param errors The validation errors of
-   *     {@link com.agileactors.usermanagementservice.dto.CreateUserRequestDto createUserRequestDto}
    *
    * @return The updated {@link com.agileactors.usermanagementservice.model.User user}
    *
    * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not
    *                                                                               found
    */
-  User updateUser(UpdateUserRequestDto updatedUser, BindingResult errors)
-          throws UserNotFoundException;
+  User updateUser(UpdateUserRequestDto updatedUser) throws UserNotFoundException;
 }

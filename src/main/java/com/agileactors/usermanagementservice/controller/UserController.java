@@ -39,7 +39,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
   private final UserService userService;
   private final ConversionService conversionService;
-  private final Validator validator;
 
   /**
    * Creates new instance of
@@ -51,15 +50,10 @@ public class UserController {
    * @param conversionService The {@link ConversionService conversion service} to convert the data
    *                          the {@link com.agileactors.usermanagementservice.service.UserService
    *                          service} returns
-   * @param validator The {@link com.agileactors.usermanagementservice.validations.Validator} to
-   *                  validate what's needed
    */
-  public UserController(UserService userService,
-                        ConversionService conversionService,
-                        Validator validator) {
+  public UserController(UserService userService, ConversionService conversionService) {
     this.userService = userService;
     this.conversionService = conversionService;
-    this.validator = validator;
   }
 
   /**
@@ -97,8 +91,8 @@ public class UserController {
     if (errors.hasErrors()) {
       throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
     }
-    validator.validateEmail(createUserRequestDto.email());
-    return conversionService.convert(userService.createUser(createUserRequestDto, errors),
+
+    return conversionService.convert(userService.createUser(createUserRequestDto),
                                      CreateUserResponseDto.class);
   }
 
@@ -230,12 +224,11 @@ public class UserController {
     if (errors.hasErrors()) {
       throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
     }
-    validator.validateEmail(updateUserRequestDto.email());
     UpdateUserRequestDto updatedUserDto = new UpdateUserRequestDto(userId,
                                                                    updateUserRequestDto.firstName(),
                                                                    updateUserRequestDto.lastName(),
                                                                    updateUserRequestDto.email());
-    User updatedUser = userService.updateUser(updatedUserDto, errors);
-    return conversionService.convert(updatedUser, UpdateUserResponseDto.class);
+    return conversionService.convert(userService.updateUser(updatedUserDto),
+                                     UpdateUserResponseDto.class);
   }
 }

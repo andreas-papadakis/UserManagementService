@@ -6,22 +6,24 @@ import com.agileactors.usermanagementservice.exception.UserNotFoundException;
 import com.agileactors.usermanagementservice.model.GetUserModel;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
+import com.agileactors.usermanagementservice.validations.Validator;
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 @Service
 class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
+  private final Validator validator;
 
-  UserServiceImpl(UserRepository userRepository) {
+  UserServiceImpl(UserRepository userRepository, Validator validator) {
     this.userRepository = userRepository;
+    this.validator = validator;
   }
 
-  public User createUser(CreateUserRequestDto createUserRequestDto, BindingResult errors) {
+  public User createUser(CreateUserRequestDto createUserRequestDto) {
+    validator.validateEmail(createUserRequestDto.email());
     return userRepository.save(new User(UUID.randomUUID(),
                                         createUserRequestDto.firstName(),
                                         createUserRequestDto.lastName(),
@@ -61,8 +63,8 @@ class UserServiceImpl implements UserService {
     userRepository.deleteAllUsers();
   }
 
-  public User updateUser(UpdateUserRequestDto updateUserRequestDto, BindingResult errors)
-                throws UserNotFoundException {
+  public User updateUser(UpdateUserRequestDto updateUserRequestDto) throws UserNotFoundException {
+    validator.validateEmail(updateUserRequestDto.email());
     User existingUser = userRepository.findById(updateUserRequestDto.userId())
                                       .orElseThrow(() -> new UserNotFoundException("User with ID: "
                                                                     + updateUserRequestDto.userId()
