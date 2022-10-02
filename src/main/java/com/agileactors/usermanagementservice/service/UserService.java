@@ -7,6 +7,8 @@ import com.agileactors.usermanagementservice.model.GetUserModel;
 import com.agileactors.usermanagementservice.model.User;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.validation.BindingResult;
 
 /**
@@ -57,16 +59,16 @@ public interface UserService {
    * @param userId The ID of {@link com.agileactors.usermanagementservice.model.User user} to be
    *               removed
    *
-   * @return Number of {@link com.agileactors.usermanagementservice.model.User users} removed
+   * @throws EmptyResultDataAccessException When
+   *         {@link com.agileactors.usermanagementservice.model.User user} with id userID does not
+   *         exist
    */
-  int deleteUser(UUID userId);
+  void deleteUser(UUID userId) throws EmptyResultDataAccessException;
 
   /**
    * Removes all {@link com.agileactors.usermanagementservice.model.User users}.
-   *
-   * @return Number of {@link com.agileactors.usermanagementservice.model.User users} removed
    */
-  int deleteAllUsers();
+  void deleteAllUsers();
 
   /**
    * Updates {@link com.agileactors.usermanagementservice.model.User user}.

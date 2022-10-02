@@ -8,6 +8,8 @@ import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import java.util.List;
 import java.util.UUID;
+
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
@@ -51,12 +53,12 @@ class UserServiceImpl implements UserService {
                                                                     + " does not exist"));
   }
 
-  public int deleteUser(UUID userId) {
-    return userRepository.deleteUserById(userId);
+  public void deleteUser(UUID userId) throws EmptyResultDataAccessException {
+    userRepository.deleteById(userId);
   }
 
-  public int deleteAllUsers() {
-    return userRepository.deleteAllUsers();
+  public void deleteAllUsers() {
+    userRepository.deleteAllUsers();
   }
 
   public User updateUser(UpdateUserRequestDto updateUserRequestDto, BindingResult errors)

@@ -161,39 +161,31 @@ public class UserController {
    *
    * @param userId The ID of {@link com.agileactors.usermanagementservice.model.User user} to be
    *               removed
-   *
-   * @return Number of {@link com.agileactors.usermanagementservice.model.User users} removed from
-   *         DB
    */
   @Operation(summary = "Remove user",
              description = "Remove user with given id from DB",
              tags = "DELETE")
-  @ApiResponse(responseCode = "200",
-               description = "Returns number of users removed from DB",
-               content = { @Content (mediaType = "application/json",
-                                     schema = @Schema (implementation = Integer.class))}
-  )
+  @ApiResponses(value = {
+    @ApiResponse(responseCode = "200",
+            description = "User was successfully removed"),
+    @ApiResponse(responseCode = "404",
+            description = "User with such ID does not exists")})
   @DeleteMapping(value = "/users/{id}")
-  public int deleteUser(@PathVariable(value = "id") UUID userId) {
-    return userService.deleteUser(userId);
+  public void deleteUser(@PathVariable(value = "id") UUID userId) {
+    userService.deleteUser(userId);
   }
 
   /**
    * Removes all {@link com.agileactors.usermanagementservice.model.User users}.
-   *
-   * @return Number of {@link com.agileactors.usermanagementservice.model.User users} removed from
-   *         DB
    */
   @Operation(summary = "Remove all users",
              description = "Removes all users",
              tags = "DELETE")
   @ApiResponse(responseCode = "200",
-               description = "Returns number of users removed from DB",
-               content = { @Content (mediaType = "application/json",
-                                     schema = @Schema (implementation = Integer.class))})
+               description = "The DB is now empty")
   @DeleteMapping(value = "/users")
-  public int deleteAllUsers() {
-    return userService.deleteAllUsers();
+  public void deleteAllUsers() {
+    userService.deleteAllUsers();
   }
 
   /**
