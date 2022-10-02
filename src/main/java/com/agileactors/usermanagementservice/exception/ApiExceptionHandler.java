@@ -1,6 +1,7 @@
 package com.agileactors.usermanagementservice.exception;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,20 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   /**
-   * Handle {@link com.agileactors.usermanagementservice.exception.UserNotFoundException}.
+   * Handles {@link com.agileactors.usermanagementservice.exception.UserNotFoundException}.<br>
+   * The exception is thrown when the ID of a
+   * {@link com.agileactors.usermanagementservice.model.User user} was not found in DB.<br>
+   * Creates and returns a new {@link ResponseEntity}<
+   * {@link com.agileactors.usermanagementservice.exception.ApiException}> with exception's
+   * message, 404 HTTP status and the time it occurred
    *
-   * @param userNotFoundException The exception
+   * @param userNotFoundException The exception thrown when the ID of
+   *                              {@link com.agileactors.usermanagementservice.model.User user} was
+   *                              not found in DB
    *
    * @return {@link ResponseEntity} of type
-   *     {@link com.agileactors.usermanagementservice.exception.ApiException} with exception's
-   *     message, 404 HTTP status and the time it occurred
+   *         {@link com.agileactors.usermanagementservice.exception.ApiException} with exception's
+   *         message, 404 HTTP status and the time it occurred
    */
   @ExceptionHandler (value = UserNotFoundException.class)
   public ResponseEntity<ApiException> handleUserNotFoundException(UserNotFoundException
@@ -32,9 +40,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * Handle {@link com.agileactors.usermanagementservice.exception.InvalidArgumentException}.
+   * Handles {@link com.agileactors.usermanagementservice.exception.InvalidArgumentException}.<br>
+   * The exception is thrown when the arguments that were given are invalid.<br>
+   * Creates and returns a new {@link ResponseEntity}<
+   * {@link com.agileactors.usermanagementservice.exception.ApiException}> with exception's
+   * message, 400 HTTP status and the time it occurred
    *
-   * @param invalidArgumentException The exception
+   * @param invalidArgumentException The exception thrown when an argument is invalid
    *
    * @return {@link ResponseEntity} of type
    *     {@link com.agileactors.usermanagementservice.exception.ApiException} with exception's
@@ -50,9 +62,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * Handle {@link IllegalArgumentException}.
+   * Handles {@link IllegalArgumentException}.<br>
+   * The exception is thrown when an illegal or inappropriate parameter has been passed to a method.
+   * Creates and returns a new {@link ResponseEntity}<
+   * {@link com.agileactors.usermanagementservice.exception.ApiException}> with a standard message,
+   * 400 HTTP status and the time it occurred
    *
-   * @param illegalArgumentException The exception
+   * @param illegalArgumentException The exception thrown when an illegal or inappropriate parameter
+   *                                 has been passed to a method
    *
    * @return {@link ResponseEntity} of type
    *         {@link com.agileactors.usermanagementservice.exception.ApiException} with standard
@@ -69,9 +86,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   /**
-   * Handle {@link EmptyResultDataAccessException}.
+   * Handles {@link EmptyResultDataAccessException}.<br>
+   * The exception is thrown when a method tries to access data on an empty data structure (e.g.
+   * {@link com.agileactors.usermanagementservice.service.UserService#deleteUser(UUID)
+   * deletion of a specific user}).<br>
+   * Creates and returns a new {@link ResponseEntity}<
+   * {@link com.agileactors.usermanagementservice.exception.ApiException}> with the exception's
+   * message, 404 HTTP status and the time it occurred
    *
-   * @param emptyResultDataAccessException The exception
+   * @param emptyResultDataAccessException The exception thrown when a method tries to access data
+   *                                       on an empty data structure
    *
    * @return {@link ResponseEntity} of type
    *         {@link com.agileactors.usermanagementservice.exception.ApiException} with the
