@@ -1,12 +1,20 @@
 package com.agileactors.usermanagementservice.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.lang.Nullable;
 
 /**
  * Class responsible for retrieving a specific {@link User user}. In order to do so, it holds only
  * the supported filters.
  */
-public record GetUserModel(@Nullable String firstName, @Nullable String lastName) {
+public record GetUserModel(@Nullable
+                           @Schema(example = "John",
+                                   description = "User's first name")
+                           String firstName,
+                           @Nullable
+                           @Schema(example = "Doe",
+                                   description = "User's last name")
+                           String lastName) {
   /**
    * Checks if {@link GetUserModel} contains any data.
    *
