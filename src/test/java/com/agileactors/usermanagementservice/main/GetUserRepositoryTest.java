@@ -66,7 +66,7 @@ class GetUserRepositoryTest {
 
     userRepository.save(testUser1);
 
-    assertNotNull(userRepository.findById(testUser1.getId()).get());
+    assertNotNull(userRepository.findById(testUser1.getId()).get()); //TODO: correct the assertion
   }
 
   /**
@@ -94,6 +94,62 @@ class GetUserRepositoryTest {
 
     List<User> retrievedUsers = userRepository.findByFirstNameLike(testUser1.getFirstName());
 
-    assertTrue(retrievedUsers.size() >= 2);
+    assertTrue(retrievedUsers.size() >= 2); //TODO: clear the DB before test runs and check size is exactly equal to 2 and not also greater than
+  }
+
+  /**
+   * Tests correct read of all {@link com.agileactors.usermanagementservice.model.User users}
+   * filtered by last name. First creates two users with similar last names, then tries to recover
+   * them.
+   */
+  @Test
+  public void testGetAllUserFilteredByLastName() {
+    User testUser1 = new User(UUID.randomUUID(),
+            "testFName",
+            "testLName",
+            "a@a.com",
+            null,
+            null);
+    User testUser2 = new User(UUID.randomUUID(),
+            "testFName",
+            "sadfasdftestLNameasdfasdf",
+            "a@a.com",
+            null,
+            null);
+
+    userRepository.save(testUser1);
+    userRepository.save(testUser2);
+
+    List<User> retrievedUsers = userRepository.findByLastNameLike(testUser1.getLastName());
+
+    assertTrue(retrievedUsers.size() >= 2); //TODO: clear the DB before test runs and check size is exactly equal to 2 and not also greater than
+  }
+
+  /**
+   * Tests correct read of all {@link com.agileactors.usermanagementservice.model.User users}
+   * filtered by first and last name. First creates two users with similar first and last names,
+   * then tries to recover them.
+   */
+  @Test
+  public void testGetAllUserFilteredByFirstAndLastName() {
+    User testUser1 = new User(UUID.randomUUID(),
+            "testFName",
+            "testLName",
+            "a@a.com",
+            null,
+            null);
+    User testUser2 = new User(UUID.randomUUID(),
+            "testFName",
+            "sadfasdftestLNameasdfasdf",
+            "a@a.com",
+            null,
+            null);
+
+    userRepository.save(testUser1);
+    userRepository.save(testUser2);
+
+    List<User> retrievedUsers = userRepository.findByLastNameLike(testUser1.getLastName());
+
+    assertTrue(retrievedUsers.size() >= 2); //TODO: clear the DB before test runs and check size is exactly equal to 2 and not also greater than
   }
 }
