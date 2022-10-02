@@ -1,4 +1,4 @@
-package com.agileactors.usermanagementservice.main;
+package com.agileactors.usermanagementservice.update;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,9 +23,11 @@ class UpdateUserRepositoryTest {
 
   /**
    * Test correct update of specific {@link com.agileactors.usermanagementservice.model.User user}.
-   * First create a user, then updates all fields except ID and retrieves again.
-   * Compare retrieved values with expected.
-   * No check for validations as already checked in {@link CreateUserRepositoryTest}
+   * First creates a user, then updates all fields except ID and retrieves again.
+   * Compares retrieved values with expected.
+   * No check for validations as already checked in
+   * {@link com.agileactors.usermanagementservice.create.CreateUserRepositoryTest
+   * CreateUserRepositoryTest}.
    */
   @Test
   public void testUpdateUser() {

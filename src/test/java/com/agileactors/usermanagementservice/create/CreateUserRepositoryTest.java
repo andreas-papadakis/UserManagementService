@@ -1,4 +1,4 @@
-package com.agileactors.usermanagementservice.main;
+package com.agileactors.usermanagementservice.create;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
