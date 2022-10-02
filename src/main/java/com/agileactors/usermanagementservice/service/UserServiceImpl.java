@@ -3,6 +3,7 @@ package com.agileactors.usermanagementservice.service;
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.exception.UserNotFoundException;
+import com.agileactors.usermanagementservice.model.GetUserModel;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import java.util.List;
@@ -27,14 +28,21 @@ class UserServiceImpl implements UserService {
                                         null));
   }
 
-  public List<User> getAllUsers(String searchTerm) {
-    return (searchTerm.isBlank())
-            ? userRepository.findAll()
-                            .stream()
-                            .toList()
-            : userRepository.findByFirstNameLike("%" + searchTerm + "%")
-                            .stream()
-                            .toList();
+  public List<User> getAllUsers(GetUserModel getUserModel) {
+    if (getUserModel.containsData()) {
+      return userRepository.findAll().stream().toList();
+    } else if (getUserModel.containsOnlyFirstName()) {
+      return userRepository.findByFirstNameLike("%" + getUserModel.firstName() + "%")
+                           .stream()
+                           .toList();
+    } else if (getUserModel.containsOnlyLastName()) {
+      return userRepository.findByLastNameLike("%" + getUserModel.lastName() + "%")
+                           .stream()
+                           .toList();
+    } else {
+      return userRepository.findByFirstNameLikeAndLastNameLike("%" + getUserModel.firstName() + "%",
+                                                               "%" + getUserModel.lastName() + "%");
+    }
   }
 
   public User getUserById(UUID userId) throws UserNotFoundException {

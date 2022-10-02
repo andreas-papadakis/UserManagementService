@@ -19,12 +19,40 @@ public interface UserRepository extends JpaRepository<User, UUID> {
    * whose first name contains the searchTerm.
    *
    * @param searchTerm The term that {@link com.agileactors.usermanagementservice.model.User user's}
-   *     first name must contain to be retrieved
+   *                   first name must contain to be retrieved
    *
    * @return List with all the {@link com.agileactors.usermanagementservice.model.User users} whose
-   *     first name contains searchTerm
+   *         first name contains searchTerm
    */
   List<User> findByFirstNameLike(String searchTerm);
+
+  /**
+   * Retrieves all {@link com.agileactors.usermanagementservice.model.User users} from database
+   * whose last name contains the searchTerm.
+   *
+   * @param searchTerm The term that {@link com.agileactors.usermanagementservice.model.User user's}
+   *                   last name must contain to be retrieved
+   *
+   * @return List with all the {@link com.agileactors.usermanagementservice.model.User users} whose
+   *         last name contains searchTerm
+   */
+  List<User> findByLastNameLike(String searchTerm);
+
+  /**
+   * Retrieves all {@link com.agileactors.usermanagementservice.model.User users} from database
+   * whose first name and last name contain firstName and lastName respectively.
+   *
+   * @param firstName The string that
+   *                  {@link com.agileactors.usermanagementservice.model.User user's} first name
+   *                  must contain to be retrieved
+   * @param lastName The string that
+   *                 {@link com.agileactors.usermanagementservice.model.User user's} last name
+   *                 must contain to be retrieved
+   *
+   * @return List with all the {@link com.agileactors.usermanagementservice.model.User users} whose
+   *         first and last name contain firstName and lastName respectively
+   */
+  List<User> findByFirstNameLikeAndLastNameLike(String firstName, String lastName);
 
   /**
    * Removes {@link com.agileactors.usermanagementservice.model.User user} with id and returns the

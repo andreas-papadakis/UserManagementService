@@ -3,6 +3,7 @@ package com.agileactors.usermanagementservice.service;
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.exception.UserNotFoundException;
+import com.agileactors.usermanagementservice.model.GetUserModel;
 import com.agileactors.usermanagementservice.model.User;
 import java.util.List;
 import java.util.UUID;
@@ -28,14 +29,14 @@ public interface UserService {
 
   /**
    * Retrieves all {@link com.agileactors.usermanagementservice.model.User users} from database.
-   * If searchTerm is not blank, retrieves those whose first name contains the searchTerm.
+   * If getUserModel contains data, filter by first and/or last name.
    *
-   * @param searchTerm The term that {@link com.agileactors.usermanagementservice.model.User user's}
-   *     first name must contain to be retrieved
+   * @param getUserModel The {@link com.agileactors.usermanagementservice.model.GetUserModel}
+   *                     containing data for filtering
    *
    * @return List with retrieved {@link com.agileactors.usermanagementservice.model.User users}
    */
-  List<User> getAllUsers(String searchTerm);
+  List<User> getAllUsers(GetUserModel getUserModel);
 
   /**
    * Retrieves a specific {@link com.agileactors.usermanagementservice.model.User user}.

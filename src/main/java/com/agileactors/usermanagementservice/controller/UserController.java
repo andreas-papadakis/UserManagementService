@@ -7,6 +7,7 @@ import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserResponseDto;
 import com.agileactors.usermanagementservice.exception.ApiException;
 import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
+import com.agileactors.usermanagementservice.model.GetUserModel;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.service.UserService;
 import com.agileactors.usermanagementservice.validations.Validator;
@@ -15,7 +16,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -104,17 +103,18 @@ public class UserController {
   }
 
   /**
-   * Retrieves all {@link com.agileactors.usermanagementservice.model.User users}. If searchTerm is
-   * not blank, retrieves those whose first name contains the searchTerm.
+   * Retrieves all {@link com.agileactors.usermanagementservice.model.User users}. If getUserModel
+   * contains any data, retrieves those who match (filtered by first and/or last name).
    *
-   * @param firstName The term that {@link com.agileactors.usermanagementservice.model.User user's}
-   *                  first name must contain in order to be retrieved
+   * @param getUserModel The {@link com.agileactors.usermanagementservice.model.GetUserModel}
+   *                     containing the filters (first and/or last name)
    *
    * @return List with retrieved users
    */
   @Operation(summary = "Get all users",
-             description = "Retrieve all users from DB. If parameter firstName exists, retrieve "
-                         + "those whose first name contains the given value.",
+             description = "Retrieve all users from DB. If first and/or last name are provided, "
+                         + "retrieve those whose first and/or last name contains the given "
+                         + "value(s).",
              tags = "GET")
   @ApiResponse(responseCode = "200",
                description = "Returns a list with retrieved users. If no users were retrieved, "
@@ -122,13 +122,11 @@ public class UserController {
                content = { @Content (mediaType = "application/json",
                                      schema = @Schema (implementation = GetUserResponseDto.class))})
   @GetMapping(value = "/users")
-  public List<GetUserResponseDto> getAllUsers(@RequestParam(defaultValue = "") String firstName) {
-    List<GetUserResponseDto> getUserResponseDtoList = new ArrayList<>();
-    userService.getAllUsers(firstName)
-               .forEach(
-                 user -> getUserResponseDtoList.add(
-                           conversionService.convert(user, GetUserResponseDto.class)));
-    return getUserResponseDtoList;
+  public List<GetUserResponseDto> getAllUsers(GetUserModel getUserModel) { //TODO: Create a POJO for first name and last name params
+    return userService.getAllUsers(getUserModel)
+                      .stream()
+                      .map(user -> conversionService.convert(user, GetUserResponseDto.class))
+                      .toList();
   }
 
   /**
