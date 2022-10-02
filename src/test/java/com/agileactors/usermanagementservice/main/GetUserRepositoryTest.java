@@ -1,7 +1,7 @@
 package com.agileactors.usermanagementservice.main;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
@@ -30,6 +30,8 @@ class GetUserRepositoryTest {
    */
   @Test
   public void testGetAllUsers() {
+    userRepository.deleteAllUsers();
+
     User testUser1 = new User(UUID.randomUUID(),
                               "testFName",
                               "testLName",
@@ -48,7 +50,7 @@ class GetUserRepositoryTest {
 
     List<User> retrievedUsers = userRepository.findAll();
 
-    assertTrue(retrievedUsers.size() >= 2);
+    assertEquals(2, retrievedUsers.size());
   }
 
   /**
@@ -76,6 +78,8 @@ class GetUserRepositoryTest {
    */
   @Test
   public void testGetAllUserFilteredByFirstName() {
+    userRepository.deleteAllUsers();
+
     User testUser1 = new User(UUID.randomUUID(),
                               "testFName",
                               "testLName",
@@ -92,9 +96,10 @@ class GetUserRepositoryTest {
     userRepository.save(testUser1);
     userRepository.save(testUser2);
 
-    List<User> retrievedUsers = userRepository.findByFirstNameLike(testUser1.getFirstName());
+    List<User> retrievedUsers =
+            userRepository.findByFirstNameLike("%" + testUser1.getFirstName() + "%");
 
-    assertTrue(retrievedUsers.size() >= 2); //TODO: clear the DB before test runs and check size is exactly equal to 2 and not also greater than
+    assertEquals(2, retrievedUsers.size());
   }
 
   /**
@@ -104,6 +109,8 @@ class GetUserRepositoryTest {
    */
   @Test
   public void testGetAllUserFilteredByLastName() {
+    userRepository.deleteAllUsers();
+
     User testUser1 = new User(UUID.randomUUID(),
             "testFName",
             "testLName",
@@ -120,9 +127,10 @@ class GetUserRepositoryTest {
     userRepository.save(testUser1);
     userRepository.save(testUser2);
 
-    List<User> retrievedUsers = userRepository.findByLastNameLike(testUser1.getLastName());
+    List<User> retrievedUsers =
+            userRepository.findByLastNameLike("%" + testUser1.getLastName() + "%");
 
-    assertTrue(retrievedUsers.size() >= 2); //TODO: clear the DB before test runs and check size is exactly equal to 2 and not also greater than
+    assertEquals(2, retrievedUsers.size());
   }
 
   /**
@@ -132,6 +140,8 @@ class GetUserRepositoryTest {
    */
   @Test
   public void testGetAllUserFilteredByFirstAndLastName() {
+    userRepository.deleteAllUsers();
+
     User testUser1 = new User(UUID.randomUUID(),
             "testFName",
             "testLName",
@@ -148,8 +158,10 @@ class GetUserRepositoryTest {
     userRepository.save(testUser1);
     userRepository.save(testUser2);
 
-    List<User> retrievedUsers = userRepository.findByLastNameLike(testUser1.getLastName());
+    List<User> retrievedUsers =
+            userRepository.findByFirstNameLikeAndLastNameLike("%" + testUser1.getFirstName() + "%",
+                                                              "%" + testUser1.getLastName() + "%");
 
-    assertTrue(retrievedUsers.size() >= 2); //TODO: clear the DB before test runs and check size is exactly equal to 2 and not also greater than
+    assertEquals(2, retrievedUsers.size());
   }
 }
