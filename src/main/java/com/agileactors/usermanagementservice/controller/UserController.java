@@ -122,7 +122,7 @@ public class UserController {
                content = { @Content (mediaType = "application/json",
                                      schema = @Schema (implementation = GetUserResponseDto.class))})
   @GetMapping(value = "/users")
-  public List<GetUserResponseDto> getAllUsers(GetUserModel getUserModel) { //TODO: Create a POJO for first name and last name params
+  public List<GetUserResponseDto> getAllUsers(GetUserModel getUserModel) {
     return userService.getAllUsers(getUserModel)
                       .stream()
                       .map(user -> conversionService.convert(user, GetUserResponseDto.class))
