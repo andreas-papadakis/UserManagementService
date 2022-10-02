@@ -78,7 +78,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler (value = IllegalArgumentException.class)
   public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException
                                                                  illegalArgumentException) {
-    System.err.println(illegalArgumentException.getMessage()); //TODO: remove
     return new ResponseEntity<>(new ApiException("Internal server error",
                                                  HttpStatus.INTERNAL_SERVER_ERROR,
                                                  LocalDateTime.now()),
