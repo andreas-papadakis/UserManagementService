@@ -1,11 +1,11 @@
-package com.agileactors.usermanagementservice.get;
+package com.agileactors.usermanagementservice.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.agileactors.usermanagementservice.model.User;
-import com.agileactors.usermanagementservice.repository.UserRepository;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,11 +17,11 @@ import org.springframework.boot.test.context.SpringBootTest;
  * Tests correct retrieve of {@link com.agileactors.usermanagementservice.model.User user(s)}.
  */
 @SpringBootTest
-class GetUserRepositoryTest {
+class GetUserTest {
   private final UserRepository userRepository;
 
   @Autowired
-  GetUserRepositoryTest(UserRepository userRepository) {
+  GetUserTest(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 

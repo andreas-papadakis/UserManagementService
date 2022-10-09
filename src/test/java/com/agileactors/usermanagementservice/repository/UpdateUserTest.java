@@ -1,9 +1,9 @@
-package com.agileactors.usermanagementservice.update;
+package com.agileactors.usermanagementservice.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.agileactors.usermanagementservice.model.User;
-import com.agileactors.usermanagementservice.repository.UserRepository;
+
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,11 @@ import org.springframework.boot.test.context.SpringBootTest;
  * Tests correct update of {@link com.agileactors.usermanagementservice.model.User user}.
  */
 @SpringBootTest
-class UpdateUserRepositoryTest {
+class UpdateUserTest {
   private final UserRepository userRepository;
 
   @Autowired
-  UpdateUserRepositoryTest(UserRepository userRepository) {
+  UpdateUserTest(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 
@@ -26,7 +26,7 @@ class UpdateUserRepositoryTest {
    * First creates a user, then updates all fields except ID and retrieves again.
    * Compares retrieved values with expected.
    * No check for validations as already checked in
-   * {@link com.agileactors.usermanagementservice.create.CreateUserRepositoryTest
+   * {@link CreateUserTest
    * CreateUserRepositoryTest}.
    */
   @Test

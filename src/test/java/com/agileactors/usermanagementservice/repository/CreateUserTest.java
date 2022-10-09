@@ -1,4 +1,4 @@
-package com.agileactors.usermanagementservice.create;
+package com.agileactors.usermanagementservice.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
 import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
 import com.agileactors.usermanagementservice.model.User;
-import com.agileactors.usermanagementservice.repository.UserRepository;
 import com.agileactors.usermanagementservice.validations.ValidatorImpl;
 import java.util.Set;
 import java.util.UUID;
@@ -26,11 +25,11 @@ import org.springframework.boot.test.context.SpringBootTest;
  * DB. Also, checks that validations on DTOs work as expected.
  */
 @SpringBootTest
-public class CreateUserRepositoryTest {
+public class CreateUserTest {
   private final UserRepository userRepository;
 
   @Autowired
-  public CreateUserRepositoryTest(UserRepository userRepository) {
+  public CreateUserTest(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 

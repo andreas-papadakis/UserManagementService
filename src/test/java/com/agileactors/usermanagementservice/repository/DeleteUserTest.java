@@ -1,10 +1,10 @@
-package com.agileactors.usermanagementservice.delete;
+package com.agileactors.usermanagementservice.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.agileactors.usermanagementservice.model.User;
-import com.agileactors.usermanagementservice.repository.UserRepository;
+
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
  * Tests {@link com.agileactors.usermanagementservice.model.User users} are properly deleted.
  */
 @SpringBootTest
-class DeleteUserRepositoryTest {
+class DeleteUserTest {
   private final UserRepository userRepository;
 
   @Autowired
-  DeleteUserRepositoryTest(UserRepository userRepository) {
+  DeleteUserTest(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
 
