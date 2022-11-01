@@ -60,7 +60,7 @@ class UserServiceImpl implements UserService {
   }
 
   public void deleteAllUsers() {
-    userRepository.deleteAllUsers();
+    userRepository.deleteAll();
   }
 
   public User updateUser(UpdateUserRequestDto updateUserRequestDto) throws UserNotFoundException {
