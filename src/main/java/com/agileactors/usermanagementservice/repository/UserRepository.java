@@ -55,19 +55,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
   List<User> findByFirstNameLikeAndLastNameLike(String firstName, String lastName);
 
   /**
-   * Removes {@link com.agileactors.usermanagementservice.model.User user} with id and returns the
-   * number of rows affected.
-   *
-   * @param id The id of {@link com.agileactors.usermanagementservice.model.User user} to remove
-   *
-   * @return The number of rows removed (0 if id was not found).
-   */
-  @Modifying
-  @Transactional
-  @Query(value = "DELETE FROM users WHERE id = ?", nativeQuery = true)
-  int deleteUserById(UUID id);
-
-  /**
    * Removes all {@link com.agileactors.usermanagementservice.model.User users} and returns the
    * number of rows affected.
    *
