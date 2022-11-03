@@ -70,7 +70,7 @@ class DeleteUserTest {
     userRepository.save(testUser2);
     userRepository.save(testUser3);
 
-    userRepository.deleteAllUsers();
+    userRepository.deleteAll();
 
     assertEquals(0, userRepository.count());
   }

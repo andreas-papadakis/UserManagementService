@@ -32,7 +32,7 @@ class GetUserTest {
    */
   @Test
   public void testGetAllUsers() {
-    userRepository.deleteAllUsers();
+    userRepository.deleteAll();
 
     User testUser1 = new User(UUID.randomUUID(),
                               "testFName",
@@ -82,7 +82,7 @@ class GetUserTest {
    */
   @Test
   public void testGetAllUserFilteredByFirstName() {
-    userRepository.deleteAllUsers();
+    userRepository.deleteAll();
 
     User testUser1 = new User(UUID.randomUUID(),
                               "testFName",
@@ -113,7 +113,7 @@ class GetUserTest {
    */
   @Test
   public void testGetAllUserFilteredByLastName() {
-    userRepository.deleteAllUsers();
+    userRepository.deleteAll();
 
     User testUser1 = new User(UUID.randomUUID(),
             "testFName",
@@ -144,7 +144,7 @@ class GetUserTest {
    */
   @Test
   public void testGetAllUserFilteredByFirstAndLastName() {
-    userRepository.deleteAllUsers();
+    userRepository.deleteAll();
 
     User testUser1 = new User(UUID.randomUUID(),
             "testFName",
