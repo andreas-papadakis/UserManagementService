@@ -30,7 +30,8 @@ class DeleteUserSpecification extends Specification {
                             "testLName",
                             "a@a.com",
                             null,
-                            null);
+                            null)
+
     and: "saved in DB"
     userRepository.save(newUser)
 
@@ -39,5 +40,38 @@ class DeleteUserSpecification extends Specification {
 
     then: "user can no longer be retrieved"
     !userRepository.findById(newUser.id).isPresent()
+  }
+
+  def "should delete all users"() {
+    given: "3 new users are created"
+    User newUser1 = new User(UUID.randomUUID(),
+                             "testFName",
+                             "testLName",
+                             "a@a.com",
+                             null,
+                             null)
+    User newUser2 = new User(UUID.randomUUID(),
+                             "testFName",
+                             "testLName",
+                             "a@a.com",
+                             null,
+                             null)
+    User newUser3 = new User(UUID.randomUUID(),
+                             "testFName",
+                             "testLName",
+                             "a@a.com",
+                             null,
+                             null)
+
+    and: "users are saved in DB"
+    userRepository.save(newUser1)
+    userRepository.save(newUser2)
+    userRepository.save(newUser3)
+
+    when: "the users are deleted"
+    userRepository.deleteAll()
+
+    then: "the DB is empty"
+    userRepository.count() == 0
   }
 }
