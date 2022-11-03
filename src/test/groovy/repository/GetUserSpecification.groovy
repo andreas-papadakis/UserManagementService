@@ -96,7 +96,42 @@ class GetUserSpecification extends Specification {
     userRepository.save(newUser3)
 
     when: "users with first name containing newUser1's first name are retrieved in list"
-    retrievedUsers = userRepository.findByFirstNameLike("%" + newUser1.getFirstName() + "%")
+    retrievedUsers = userRepository.findByFirstNameLike("%" + newUser1.firstName + "%")
+
+    then: "the list contains newUser1 and newUser2"
+    retrievedUsers.size()    == 2
+    retrievedUsers.id.contains(newUser1.id)
+    retrievedUsers.id.contains(newUser2.id)
+  }
+
+  def "should get user by last name"() {
+    given: "3 new users are created"
+    User newUser1 = new User(UUID.randomUUID(),
+                             "testFName",
+                             "testLName",
+                             "a@a.com",
+                             null,
+                             null)
+    User newUser2 = new User(UUID.randomUUID(),
+                             "testFName",
+                             "sadfasdftestLNameasdfasdf",
+                             "a@a.com",
+                             null,
+                             null)
+    User newUser3 = new User(UUID.randomUUID(),
+                             "firstName",
+                             "lastName",
+                             "b@b.com",
+                             null,
+                             null)
+
+    and: "users are saved in DB"
+    userRepository.save(newUser1)
+    userRepository.save(newUser2)
+    userRepository.save(newUser3)
+
+    when: "users with last name containing newUser1's last name are retrieved in list"
+    retrievedUsers = userRepository.findByLastNameLike("%" + newUser1.lastName + "%")
 
     then: "the list contains newUser1 and newUser2"
     retrievedUsers.size()    == 2
