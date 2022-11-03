@@ -20,12 +20,8 @@ class CreateUserSpecification extends Specification {
   @Autowired
   private UserRepository userRepository
 
-  /**
-   * Tests correct creation of {@link com.agileactors.usermanagementservice.model.User user}.
-   * Creates user in DB and tries to get by ID.
-   */
   def "should create user"() {
-    given:
+    given: "a new user is created"
     def newUser = new User(UUID.randomUUID(),
                            "testFName",
                            "testLName",
@@ -33,10 +29,10 @@ class CreateUserSpecification extends Specification {
                            null,
                            null)
 
-    when:
+    when: "the user is saved in DB"
     userRepository.save(newUser)
 
-    then:
+    then: "the user can be retrieved by looking for the id"
     userRepository.findById(newUser.getId()).isPresent()
   }
 
