@@ -49,4 +49,23 @@ class GetUserSpecification extends Specification {
     then: "the number of retrieved users is 2"
     retrievedUsers.size() == 2
   }
+
+  def "should get user by ID"() {
+    given: "a new user is created"
+    User newUser = new User(UUID.randomUUID(),
+            "testFName",
+            "testLName",
+            "a@a.com",
+            null,
+            null)
+
+    and: "user is saved in DB"
+    userRepository.save(newUser)
+
+    when: "user is retrieved from DB"
+    def retrievedUser = userRepository.findById(newUser.id).get()
+
+    then: "the id of the retrieved user is equal to the id of created user"
+    retrievedUser.id == newUser.id
+  }
 }
