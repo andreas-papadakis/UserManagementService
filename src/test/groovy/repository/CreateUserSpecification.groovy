@@ -1,9 +1,11 @@
 package repository
 
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto
+import com.agileactors.usermanagementservice.exception.InvalidArgumentException
 import com.agileactors.usermanagementservice.model.User
 import com.agileactors.usermanagementservice.repository.UserRepository
 import com.agileactors.usermanagementservice.UserManagementServiceApplication
+import com.agileactors.usermanagementservice.validations.ValidatorImpl
 
 import javax.validation.Validation
 
@@ -30,8 +32,10 @@ class CreateUserSpecification extends Specification {
                            "a@a.com",
                            null,
                            null)
+
     when:
     userRepository.save(newUser)
+
     then:
     userRepository.findById(newUser.getId()).isPresent()
   }
@@ -62,5 +66,22 @@ class CreateUserSpecification extends Specification {
              new CreateUserRequestDto("lala",
                                       "lala",
                                       RandomStringUtils.randomAlphabetic(101))]
+  }
+
+  def "should fail to pass validation due to invalid e-mail format"() {
+    given: "user has invalid e-mail format"
+    def invalidUser = new CreateUserRequestDto("lala",
+                                               "lala",
+                                               "aaaa@")
+    def validator   = new ValidatorImpl()
+
+    when: "validator checks e-mail's validity"
+    validator.validateEmail(invalidUser.email)
+
+    then: "InvalidArgumentException is thrown"
+    def exception = thrown(InvalidArgumentException)
+
+    and: "it's message is Invalid email."
+    exception.message == "Invalid email."
   }
 }
