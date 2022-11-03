@@ -21,19 +21,23 @@ class CreateUserSpecification extends Specification {
   private UserRepository userRepository
 
   def "should create user"() {
-    given: "a new user is created"
+    given: "a new user is created and the DB is empty"
     def newUser = new User(UUID.randomUUID(),
                            "testFName",
                            "testLName",
                            "a@a.com",
                            null,
                            null)
+    userRepository.deleteAll()
 
     when: "the user is saved in DB"
     userRepository.save(newUser)
 
     then: "the user can be retrieved by looking for the id"
     userRepository.findById(newUser.getId()).isPresent()
+
+    cleanup: "clear the DB afterwards"
+    userRepository.deleteAll()
   }
 
   def "#user should fail to pass validation"() {
