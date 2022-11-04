@@ -99,7 +99,7 @@ class GetUserSpecification extends Specification {
     retrievedUsers = userRepository.findByFirstNameLike("%" + newUser1.firstName + "%")
 
     then: "the list contains newUser1 and newUser2"
-    retrievedUsers.size()    == 2
+    retrievedUsers.size() == 2
     retrievedUsers.id.contains(newUser1.id)
     retrievedUsers.id.contains(newUser2.id)
   }
@@ -134,7 +134,51 @@ class GetUserSpecification extends Specification {
     retrievedUsers = userRepository.findByLastNameLike("%" + newUser1.lastName + "%")
 
     then: "the list contains newUser1 and newUser2"
-    retrievedUsers.size()    == 2
+    retrievedUsers.size() == 2
+    retrievedUsers.id.contains(newUser1.id)
+    retrievedUsers.id.contains(newUser2.id)
+  }
+
+  def "should get user by first and last name"() {
+    given: "4 new users are created"
+    User newUser1 = new User(UUID.randomUUID(),
+                             "testFName",
+                             "testLName",
+                             "a@a.com",
+                             null,
+                             null)
+    User newUser2 = new User(UUID.randomUUID(),
+                             "asdtestFNameasd",
+                             "sadfasdftestLNameasdfasdf",
+                             "a@a.com",
+                             null,
+                             null)
+    User newUser3 = new User(UUID.randomUUID(),
+                             "asdtestFName",
+                             "lastName",
+                             "b@b.com",
+                             null,
+                             null)
+    User newUser4 = new User(UUID.randomUUID(),
+                             "firstName",
+                             "testLNameasd",
+                             "b@b.com",
+                             null,
+                             null)
+
+    and: "users are saved in DB"
+    userRepository.save(newUser1)
+    userRepository.save(newUser2)
+    userRepository.save(newUser3)
+    userRepository.save(newUser4)
+
+    when: "users with last name containing newUser1's last name are retrieved in list"
+    retrievedUsers = userRepository.findByFirstNameLikeAndLastNameLike(
+                                      "%" + newUser1.firstName + "%",
+                                      "%" + newUser1.lastName + "%")
+
+    then: "the list contains newUser1 and newUser2"
+    retrievedUsers.size() == 2
     retrievedUsers.id.contains(newUser1.id)
     retrievedUsers.id.contains(newUser2.id)
   }
