@@ -182,4 +182,8 @@ class GetUserSpecification extends Specification {
     retrievedUsers.id.contains(newUser1.id)
     retrievedUsers.id.contains(newUser2.id)
   }
+
+  def cleanup() {
+    userRepository.deleteAll()
+  }
 }
