@@ -1,4 +1,4 @@
-package repository
+package com.agileactors.usermanagementservice.repository
 
 import com.agileactors.usermanagementservice.UserManagementServiceApplication
 import com.agileactors.usermanagementservice.model.User
@@ -183,6 +183,9 @@ class GetUserSpecification extends Specification {
     retrievedUsers.id.contains(newUser2.id)
   }
 
+  /**
+   * Clear the DB after the run of every specification
+   */
   def cleanup() {
     userRepository.deleteAll()
   }

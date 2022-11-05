@@ -1,4 +1,4 @@
-package repository
+package com.agileactors.usermanagementservice.repository
 
 import com.agileactors.usermanagementservice.UserManagementServiceApplication
 import com.agileactors.usermanagementservice.model.User

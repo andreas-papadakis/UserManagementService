@@ -1,4 +1,4 @@
-package repository
+package com.agileactors.usermanagementservice.repository
 
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto
 import com.agileactors.usermanagementservice.exception.InvalidArgumentException
