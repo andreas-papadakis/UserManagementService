@@ -9,6 +9,7 @@ import com.agileactors.usermanagementservice.repository.UserRepository;
 import com.agileactors.usermanagementservice.validations.Validator;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -16,20 +17,19 @@ import org.springframework.stereotype.Service;
 class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final Validator validator;
+  private final ConversionService conversionService;
 
-  UserServiceImpl(UserRepository userRepository, Validator validator) {
-    this.userRepository = userRepository;
-    this.validator = validator;
+  UserServiceImpl(UserRepository userRepository,
+                  Validator validator,
+                  ConversionService conversionService) {
+    this.userRepository    = userRepository;
+    this.validator         = validator;
+    this.conversionService = conversionService;
   }
 
   public User createUser(CreateUserRequestDto createUserRequestDto) {
     validator.validateEmail(createUserRequestDto.email());
-    return userRepository.save(new User(UUID.randomUUID(),
-                                        createUserRequestDto.firstName(),
-                                        createUserRequestDto.lastName(),
-                                        createUserRequestDto.email(),
-                                        null,
-                                        null));
+    return userRepository.save(conversionService.convert(createUserRequestDto, User.class));
   }
 
   public List<User> getAllUsers(GetUserModel getUserModel) {
