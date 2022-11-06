@@ -38,6 +38,20 @@ class GetUserSpecification extends Specification {
     0 * userRepository.findByFirstNameLikeAndLastNameLike(_ as String, _ as String)
   }
 
+  def "should get all users by first name"() {
+    given: "a request to retrieve those users who match the provided first name from DB arrived"
+    GetUserModel getUserModel = new GetUserModel(_ as String, null)
+
+    when: "service method to retrieve the users is called"
+    userService.getAllUsers(getUserModel)
+
+    then: "service layer calls only findByFirstNameLike method from repository"
+    0 * userRepository.findAll()
+    1 * userRepository.findByFirstNameLike(_ as String) >> new ArrayList<User>()
+    0 * userRepository.findByLastNameLike(_ as String)
+    0 * userRepository.findByFirstNameLikeAndLastNameLike(_ as String, _ as String)
+  }
+
   def cleanup() {
     userService = null
   }
