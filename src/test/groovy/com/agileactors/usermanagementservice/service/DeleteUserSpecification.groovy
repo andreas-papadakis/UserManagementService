@@ -29,8 +29,16 @@ class DeleteUserSpecification extends Specification {
     when: "service layer tries to delete the user linked to that UUID"
     userService.deleteUser(uuid)
 
-    then:
+    then: "deleteById from repository is called on the provided UUID"
     1 * userRepository.deleteById(uuid)
+  }
+
+  def "should delete all users"() {
+    when: "service layer tries to delete all users"
+    userService.deleteAllUsers()
+
+    then: "deleteAll from repository is called"
+    1 * userRepository.deleteAll()
   }
 
   /**
