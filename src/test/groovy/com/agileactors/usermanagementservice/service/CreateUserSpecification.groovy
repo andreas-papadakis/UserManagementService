@@ -1,13 +1,11 @@
 package com.agileactors.usermanagementservice.service
 
-import com.agileactors.usermanagementservice.converter.CreateUserRequestDtoToUserConverter
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto
 import com.agileactors.usermanagementservice.model.User
 import com.agileactors.usermanagementservice.repository.UserRepository
 import com.agileactors.usermanagementservice.validations.Validator
-import org.springframework.core.convert.ConversionService
-
 import java.time.LocalDateTime
+import org.springframework.core.convert.ConversionService
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 import spock.lang.Subject
