@@ -111,6 +111,9 @@ class GetUserSpecification extends Specification {
     thrown(UserNotFoundException)
   }
 
+  /**
+   * After any specification delete the user service
+   */
   def cleanup() {
     userService = null
   }
