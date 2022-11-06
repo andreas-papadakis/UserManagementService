@@ -1,5 +1,6 @@
 package com.agileactors.usermanagementservice.service
 
+import com.agileactors.usermanagementservice.exception.UserNotFoundException
 import com.agileactors.usermanagementservice.model.GetUserModel
 import com.agileactors.usermanagementservice.model.User
 import com.agileactors.usermanagementservice.repository.UserRepository
@@ -79,6 +80,21 @@ class GetUserSpecification extends Specification {
     0 * userRepository.findByLastNameLike(_ as String)
     1 * userRepository.findByFirstNameLikeAndLastNameLike(_ as String, _ as String) >>
             new ArrayList<User>()
+  }
+
+  def "should successfully get user by Id"() {
+    given: "a UUID was provided"
+    UUID uuid = UUID.randomUUID()
+
+    and: "a user with such UUID exists in DB"
+    def user = new User(uuid, "", "", "", null, null)
+    Optional<User> userFound = Optional.of(user)
+
+    when: "service layer tries to retrieve that user"
+    userService.getUserById(uuid)
+
+    then: "findById by repository is called and an optional with that user is returned"
+    1 * userRepository.findById(uuid) >>> userFound
   }
 
   def cleanup() {
