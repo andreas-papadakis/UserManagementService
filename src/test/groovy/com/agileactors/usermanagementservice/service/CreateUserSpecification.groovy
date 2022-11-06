@@ -31,7 +31,7 @@ class CreateUserSpecification extends Specification {
                                                                    "testLName",
                                                                    "a@a.com")
 
-    and: "a user has been set up as the expected response of repository's save method"
+    and: "a user has been setup as the expected response of repository's save method"
     User responseUser = new User(UUID.randomUUID(),
                                  userRequestDto.firstName,
                                  userRequestDto.lastName,
