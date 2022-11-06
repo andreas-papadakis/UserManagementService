@@ -34,15 +34,11 @@ class UserServiceImpl implements UserService {
 
   public List<User> getAllUsers(GetUserModel getUserModel) {
     if (getUserModel.isEmpty()) {
-      return userRepository.findAll().stream().toList();
+      return userRepository.findAll();
     } else if (getUserModel.containsOnlyFirstName()) {
-      return userRepository.findByFirstNameLike("%" + getUserModel.firstName() + "%")
-                           .stream()
-                           .toList();
+      return userRepository.findByFirstNameLike("%" + getUserModel.firstName() + "%");
     } else if (getUserModel.containsOnlyLastName()) {
-      return userRepository.findByLastNameLike("%" + getUserModel.lastName() + "%")
-                           .stream()
-                           .toList();
+      return userRepository.findByLastNameLike("%" + getUserModel.lastName() + "%");
     } else {
       return userRepository.findByFirstNameLikeAndLastNameLike("%" + getUserModel.firstName() + "%",
                                                                "%" + getUserModel.lastName() + "%");
