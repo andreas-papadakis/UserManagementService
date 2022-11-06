@@ -1,14 +1,10 @@
 package com.agileactors.usermanagementservice.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
-import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
 import com.agileactors.usermanagementservice.model.User;
-import com.agileactors.usermanagementservice.validations.ValidatorImpl;
 import java.util.Set;
 import java.util.UUID;
 import javax.validation.ConstraintViolation;
@@ -148,24 +144,5 @@ public class CreateUserTest {
     Set<ConstraintViolation<CreateUserRequestDto>> violations = validator.validate(testUser);
 
     assertFalse(violations.isEmpty());
-  }
-
-  /**
-   * Tests that e-mail form validation works.
-   */
-  @Test
-  public void testValidationOfeMail() {
-    com.agileactors.usermanagementservice.validations.Validator validator = new ValidatorImpl();
-
-    CreateUserRequestDto testUser = new CreateUserRequestDto("lala",
-                                                             "lala",
-                                                             "aaaa@");
-        
-    Exception exception = assertThrows(InvalidArgumentException.class,
-                                       () ->  validator.validateEmail(testUser.email()));
-
-    String expectedMessage = "Invalid email.";
-
-    assertEquals(expectedMessage, exception.getMessage());
   }
 }
