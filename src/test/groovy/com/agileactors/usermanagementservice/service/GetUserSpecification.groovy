@@ -97,6 +97,20 @@ class GetUserSpecification extends Specification {
     1 * userRepository.findById(uuid) >>> userFound
   }
 
+  def "should throw UserNotFoundException when provided ID does not exist in DB"() {
+    given: "the UUID does not exists then optional to be returned will be empty"
+    Optional<User> userNotFound = Optional.empty()
+
+    when: "service layer tries to retrieve a user with such ID"
+    userService.getUserById(UUID.randomUUID())
+
+    then: "findById by repository is called and return an empty optional"
+    1 * userRepository.findById(_ as UUID) >>> [userNotFound]
+
+    and: "that results in a UserNotFoundException to be thrown"
+    thrown(UserNotFoundException)
+  }
+
   def cleanup() {
     userService = null
   }
