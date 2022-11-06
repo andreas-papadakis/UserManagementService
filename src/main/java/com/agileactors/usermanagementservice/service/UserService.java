@@ -7,9 +7,7 @@ import com.agileactors.usermanagementservice.model.GetUserModel;
 import com.agileactors.usermanagementservice.model.User;
 import java.util.List;
 import java.util.UUID;
-
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.validation.BindingResult;
 
 /**
  * Interface to connect the
