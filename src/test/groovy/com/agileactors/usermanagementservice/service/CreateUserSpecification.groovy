@@ -1,9 +1,12 @@
 package com.agileactors.usermanagementservice.service
 
+import com.agileactors.usermanagementservice.converter.CreateUserRequestDtoToUserConverter
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto
 import com.agileactors.usermanagementservice.model.User
 import com.agileactors.usermanagementservice.repository.UserRepository
 import com.agileactors.usermanagementservice.validations.Validator
+import org.springframework.core.convert.ConversionService
+
 import java.time.LocalDateTime
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -11,8 +14,9 @@ import spock.lang.Subject
 
 @SpringBootTest
 class CreateUserSpecification extends Specification {
-  private UserRepository userRepository = Mock()
-  private Validator validator           = Mock()
+  private UserRepository userRepository       = Mock()
+  private Validator validator                 = Mock()
+  private ConversionService conversionService = Mock()
   @Subject
   private UserServiceImpl userService
 
@@ -20,7 +24,7 @@ class CreateUserSpecification extends Specification {
    * Setup user service before any specification
    */
   def setup() {
-    userService = new UserServiceImpl(userRepository, validator)
+    userService = new UserServiceImpl(userRepository, validator, conversionService)
   }
 
   def "should save user"() {
@@ -40,8 +44,13 @@ class CreateUserSpecification extends Specification {
     when: "the user is saved in DB"
     User savedUser = userService.createUser(userRequestDto)
 
-    then: "validateEmail was called once on create user request's email as well as save on any User and save method returns the demo user"
+    then: "validateEmail was called once on create user request's email "
     1 * validator.validateEmail(userRequestDto.email)
+
+    and: "convert was called once on userRequestDto and returns responseUser"
+    1 * conversionService.convert(userRequestDto, User.class) >> responseUser
+
+    and: "save was called once on any User and returns the demo user"
     1 * userRepository.save(_ as User) >> responseUser
 
     and: "the user that was saved in DB is the one requested to be saved"
