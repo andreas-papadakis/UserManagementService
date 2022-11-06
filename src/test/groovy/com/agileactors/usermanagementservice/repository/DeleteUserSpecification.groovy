@@ -2,11 +2,8 @@ package com.agileactors.usermanagementservice.repository
 
 import com.agileactors.usermanagementservice.UserManagementServiceApplication
 import com.agileactors.usermanagementservice.model.User
-import com.agileactors.usermanagementservice.repository.UserRepository
-
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-
 import spock.lang.Specification
 import spock.lang.Subject
 

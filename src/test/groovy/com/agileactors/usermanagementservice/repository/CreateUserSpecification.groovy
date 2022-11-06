@@ -3,19 +3,15 @@ package com.agileactors.usermanagementservice.repository
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto
 import com.agileactors.usermanagementservice.exception.InvalidArgumentException
 import com.agileactors.usermanagementservice.model.User
-import com.agileactors.usermanagementservice.repository.UserRepository
-import com.agileactors.usermanagementservice.UserManagementServiceApplication
 import com.agileactors.usermanagementservice.validations.ValidatorImpl
-
 import javax.validation.Validation
-
 import org.apache.commons.lang3.RandomStringUtils
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 
 import spock.lang.Specification
 
-@SpringBootTest(classes = UserManagementServiceApplication)
+@SpringBootTest
 class CreateUserSpecification extends Specification {
   @Autowired
   private UserRepository userRepository
