@@ -20,7 +20,7 @@ public record GetUserModel(@Nullable
    *
    * @return True if neither parameter contains data, false if at least one does
    */
-  public boolean containsData() {
+  public boolean isEmpty() {
     return (firstName == null || firstName.isBlank()) && (lastName == null || lastName.isBlank());
   }
 

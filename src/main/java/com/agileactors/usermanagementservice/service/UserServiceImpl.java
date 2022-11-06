@@ -33,7 +33,7 @@ class UserServiceImpl implements UserService {
   }
 
   public List<User> getAllUsers(GetUserModel getUserModel) {
-    if (getUserModel.containsData()) {
+    if (getUserModel.isEmpty()) {
       return userRepository.findAll().stream().toList();
     } else if (getUserModel.containsOnlyFirstName()) {
       return userRepository.findByFirstNameLike("%" + getUserModel.firstName() + "%")
