@@ -105,7 +105,7 @@ class GetUserSpecification extends Specification {
     userService.getUserById(UUID.randomUUID())
 
     then: "findById by repository is called and return an empty optional"
-    1 * userRepository.findById(_ as UUID) >>> [userNotFound]
+    1 * userRepository.findById(_ as UUID) >>> userNotFound
 
     and: "that results in a UserNotFoundException to be thrown"
     thrown(UserNotFoundException)
