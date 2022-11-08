@@ -34,9 +34,7 @@ class GetUserSpecification extends Specification {
 
     then: "service layer calls only findAll method from repository"
     1 * userRepository.findAll() >> new ArrayList<User>()
-    0 * userRepository.findByFirstNameLike(_ as String)
-    0 * userRepository.findByLastNameLike(_ as String)
-    0 * userRepository.findByFirstNameLikeAndLastNameLike(_ as String, _ as String)
+    0 * _
   }
 
   def "should get all users by first name"() {
@@ -47,10 +45,7 @@ class GetUserSpecification extends Specification {
     userService.getAllUsers(getUserModel)
 
     then: "service layer calls only findByFirstNameLike method from repository"
-    0 * userRepository.findAll()
     1 * userRepository.findByFirstNameLike(_ as String) >> new ArrayList<User>()
-    0 * userRepository.findByLastNameLike(_ as String)
-    0 * userRepository.findByFirstNameLikeAndLastNameLike(_ as String, _ as String)
   }
 
   def "should get all users by last name"() {
@@ -60,11 +55,8 @@ class GetUserSpecification extends Specification {
     when: "service method to retrieve the users is called"
     userService.getAllUsers(getUserModel)
 
-    then: "service layer calls only findByLastNameLike method from repository"
-    0 * userRepository.findAll()
-    0 * userRepository.findByFirstNameLike(_ as String)
+    then: "service layer calls findByLastNameLike method from repository"
     1 * userRepository.findByLastNameLike(_ as String) >> new ArrayList<User>()
-    0 * userRepository.findByFirstNameLikeAndLastNameLike(_ as String, _ as String)
   }
 
   def "should get all users by first and last name"() {
@@ -75,9 +67,6 @@ class GetUserSpecification extends Specification {
     userService.getAllUsers(getUserModel)
 
     then: "service layer calls only findByFirstNameLikeAndLastNameLike method from repository"
-    0 * userRepository.findAll()
-    0 * userRepository.findByFirstNameLike(_ as String)
-    0 * userRepository.findByLastNameLike(_ as String)
     1 * userRepository.findByFirstNameLikeAndLastNameLike(_ as String, _ as String) >>
             new ArrayList<User>()
   }
