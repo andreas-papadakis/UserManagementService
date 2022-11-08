@@ -4,7 +4,6 @@ import com.agileactors.usermanagementservice.dto.CreateUserRequestDto
 import com.agileactors.usermanagementservice.model.User
 import com.agileactors.usermanagementservice.repository.UserRepository
 import com.agileactors.usermanagementservice.validations.Validator
-import java.time.LocalDateTime
 import org.springframework.core.convert.ConversionService
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -31,30 +30,17 @@ class CreateUserSpecification extends Specification {
                                                                    "testLName",
                                                                    "a@a.com")
 
-    and: "a user has been setup as the expected response of repository's save method"
-    User responseUser = new User(UUID.randomUUID(),
-                                 userRequestDto.firstName,
-                                 userRequestDto.lastName,
-                                 userRequestDto.email,
-                                 LocalDateTime.now(),
-                                 null)
-
     when: "the user is saved in DB"
-    User savedUser = userService.createUser(userRequestDto)
+    userService.createUser(userRequestDto)
 
-    then: "validateEmail was called once on create user request's email "
+    then: "validateEmail is called once on create user request's email "
     1 * validator.validateEmail(userRequestDto.email)
 
-    and: "convert was called once on userRequestDto and returns responseUser"
-    1 * conversionService.convert(userRequestDto, User.class) >> responseUser
+    and: "convert is called once on userRequestDto and returns a user"
+    1 * conversionService.convert(userRequestDto, User.class) >> new User()
 
-    and: "save was called once on any User and returns the demo user"
-    1 * userRepository.save(_ as User) >> responseUser
-
-    and: "the user that was saved in DB is the one requested to be saved"
-    savedUser.firstName == responseUser.firstName
-    savedUser.lastName  == responseUser.lastName
-    savedUser.email     == responseUser.email
+    and: "save is called once on any user"
+    1 * userRepository.save(_ as User)
   }
 
   /**
