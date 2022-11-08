@@ -40,7 +40,6 @@ class UpdateUserSpecification extends Specification {
                                  "originalEmail",
                                  LocalDateTime.now(),
                                  null)
-    Optional<User> userFound = Optional.of(existingUser)
 
     when: "service layer updates the user"
     userService.updateUser(userRequestDto)
@@ -49,7 +48,7 @@ class UpdateUserSpecification extends Specification {
     1 * validator.validateEmail(userRequestDto.email)
 
     and: "findById was called once to retrieve the user"
-    1 * userRepository.findById(userRequestDto.userId) >> userFound
+    1 * userRepository.findById(userRequestDto.userId) >> Optional.of(existingUser)
 
     and: "save called once to update the user"
     1 * userRepository.save(_ as User)
