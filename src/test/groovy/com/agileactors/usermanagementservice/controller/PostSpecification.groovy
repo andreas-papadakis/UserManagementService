@@ -1,15 +1,10 @@
 package com.agileactors.usermanagementservice.controller
 
-import com.agileactors.usermanagementservice.exception.ApiException
-import com.agileactors.usermanagementservice.exception.ApiExceptionHandler
-import org.springframework.http.HttpStatus
-import org.springframework.web.util.NestedServletException
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 import com.agileactors.usermanagementservice.dto.CreateUserRequestDto
 import com.agileactors.usermanagementservice.dto.CreateUserResponseDto
+import com.agileactors.usermanagementservice.exception.ApiExceptionHandler
 import com.agileactors.usermanagementservice.exception.InvalidArgumentException
 import com.agileactors.usermanagementservice.model.User
 import com.agileactors.usermanagementservice.service.UserService
@@ -18,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.core.convert.ConversionService
+import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.MvcResult
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
