@@ -10,6 +10,7 @@ import com.agileactors.usermanagementservice.model.User
 import com.agileactors.usermanagementservice.service.UserService
 import com.agileactors.usermanagementservice.UserManagementServiceApplication
 import com.fasterxml.jackson.databind.ObjectMapper
+import java.time.LocalDateTime
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.core.convert.ConversionService
@@ -45,6 +46,24 @@ class PostSpecification extends Specification {
     CreateUserRequestDto createUserRequestDto = new CreateUserRequestDto("firstName",
                                                                          "lastName",
                                                                          "a@a.com")
+
+    and: "a demo user has been setup as the return value of createUser method of service"
+    def now = LocalDateTime.now()
+    def demoUser        = new User(UUID.randomUUID(),
+                                   createUserRequestDto.firstName,
+                                   createUserRequestDto.lastName,
+                                   createUserRequestDto.email,
+                                   now,
+                                   now.plusDays(2))
+
+    and: "a dto has been setup as the return value of conversionService in controller"
+    def responseDto = new CreateUserResponseDto(demoUser.id,
+                                                demoUser.firstName,
+                                                demoUser.lastName,
+                                                demoUser.email,
+                                                demoUser.createdAt,
+                                                demoUser.updatedAt)
+
     when: "controller executes the post request"
     MvcResult result = mockMvc.perform(post("/api/users")
                                            .contentType("application/json")
@@ -55,11 +74,32 @@ class PostSpecification extends Specification {
     then: "Http status of 200 is returned"
     result.getResponse().status == HttpStatus.OK.value()
 
+    and: "the data of dto are contained in response"
+    String createdAt = "[" + responseDto.createdAt().year +
+                       "," + responseDto.createdAt().monthValue +
+                       "," + responseDto.createdAt().dayOfMonth +
+                       "," + responseDto.createdAt().hour +
+                       "," + responseDto.createdAt().minute +
+                       "," + responseDto.createdAt().second
+    String updatedAt = "[" + responseDto.updatedAt().year +
+                       "," + responseDto.updatedAt().monthValue +
+                       "," + responseDto.updatedAt().dayOfMonth +
+                       "," + responseDto.updatedAt().hour +
+                       "," + responseDto.updatedAt().minute +
+                       "," + responseDto.updatedAt().second
+    def responseContent = result.getResponse().getContentAsString()
+    responseContent.contains(responseDto.id as String)
+    responseContent.contains(responseDto.firstName)
+    responseContent.contains(responseDto.lastName)
+    responseContent.contains(responseDto.email)
+    responseContent.contains(createdAt)
+    responseContent.contains(updatedAt)
+
     and: "createUser from service layer was called once"
-    1 * userService.createUser(_ as CreateUserRequestDto) >> new User()
+    1 * userService.createUser(createUserRequestDto) >> demoUser
 
     and: "controller converts the returned user from createUser to CreateUserResponseDto"
-    1 * conversionService.convert(_ as User, CreateUserResponseDto.class)
+    1 * conversionService.convert(demoUser, CreateUserResponseDto.class) >> responseDto
   }
 
   def "on invalid create user request, controller should throw an exception and exception handler return http status of 400"() {
@@ -80,6 +120,9 @@ class PostSpecification extends Specification {
 
     and: "it set an http status of 400"
     result.getResponse().status == HttpStatus.BAD_REQUEST.value()
+
+    and:
+    result.getResponse().getContentAsString().contains("First name must not be blank and up to 100 characters.")
   }
 
   /**
