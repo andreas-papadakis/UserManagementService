@@ -8,9 +8,7 @@ import com.agileactors.usermanagementservice.dto.UpdateUserResponseDto;
 import com.agileactors.usermanagementservice.exception.ApiException;
 import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
 import com.agileactors.usermanagementservice.model.GetUserModel;
-import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.service.UserService;
-import com.agileactors.usermanagementservice.validations.Validator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -41,15 +39,12 @@ public class UserController {
   private final ConversionService conversionService;
 
   /**
-   * Creates new instance of
-   * {@link com.agileactors.usermanagementservice.controller.UserController}.
+   * Creates new instance of {@link UserController}.
    *
    * @param userService The
-   *                    {@link com.agileactors.usermanagementservice.service.UserService service}
-   *                    to perform the requests
+   *                    {@link UserService service} to perform the requests
    * @param conversionService The {@link ConversionService conversion service} to convert the data
-   *                          the {@link com.agileactors.usermanagementservice.service.UserService
-   *                          service} returns
+   *                          the {@link UserService service layer} returns
    */
   public UserController(UserService userService, ConversionService conversionService) {
     this.userService = userService;
@@ -58,11 +53,10 @@ public class UserController {
 
   /**
    * Creates a new {@link com.agileactors.usermanagementservice.model.User user}, if
-   * createUserRequestDto param is valid. If it's not, throws an
-   * {@link com.agileactors.usermanagementservice.exception.InvalidArgumentException}.
+   * createUserRequestDto param is valid. If it's not, throws an {@link InvalidArgumentException}.
    *
    * @param createUserRequestDto The
-   *     {@link com.agileactors.usermanagementservice.dto.CreateUserRequestDto dto} holding
+   *     {@link CreateUserRequestDto dto} holding
    *     {@link com.agileactors.usermanagementservice.model.User user's} to be created data
    * @param errors The errors valid annotation found
    *
@@ -100,8 +94,7 @@ public class UserController {
    * Retrieves all {@link com.agileactors.usermanagementservice.model.User users}. If getUserModel
    * contains any data, retrieves those who match (filtered by first and/or last name).
    *
-   * @param getUserModel The {@link com.agileactors.usermanagementservice.model.GetUserModel}
-   *                     containing the filters (first and/or last name)
+   * @param getUserModel The {@link GetUserModel} containing the filters (first and/or last name)
    *
    * @return List with retrieved users
    */
@@ -189,8 +182,7 @@ public class UserController {
    * @param userId The ID of {@link com.agileactors.usermanagementservice.model.User user} to be
    *               updated
    * @param updateUserRequestDto The
-   *                      {@link com.agileactors.usermanagementservice.dto.UpdateUserRequestDto dto}
-   *                      holding the new values
+   *                      {@link UpdateUserRequestDto dto} holding the new values
    * @param errors The errors valid annotation found
    *
    * @return All the info of the updated
