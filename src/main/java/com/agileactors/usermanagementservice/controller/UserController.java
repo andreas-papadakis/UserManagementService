@@ -109,7 +109,7 @@ public class UserController {
                content = { @Content (mediaType = "application/json",
                                      schema = @Schema (implementation = GetUserResponseDto.class))})
   @GetMapping(value = "/users")
-  public List<GetUserResponseDto> getAllUsers(GetUserModel getUserModel) {
+  public List<GetUserResponseDto> getAllUsers(@RequestBody GetUserModel getUserModel) {
     return userService.getAllUsers(getUserModel)
                       .stream()
                       .map(user -> conversionService.convert(user, GetUserResponseDto.class))
