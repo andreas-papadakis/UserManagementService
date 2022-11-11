@@ -33,8 +33,10 @@ public interface UserService {
    *                     containing data for filtering
    *
    * @return List with retrieved {@link com.agileactors.usermanagementservice.model.User users}
+   *
+   * @throws IllegalArgumentException When getUserModel's data cannot be checked
    */
-  List<User> getAllUsers(GetUserModel getUserModel);
+  List<User> getAllUsers(GetUserModel getUserModel) throws IllegalArgumentException;
 
   /**
    * Retrieves a specific {@link com.agileactors.usermanagementservice.model.User user}.

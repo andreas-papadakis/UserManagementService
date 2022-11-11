@@ -103,11 +103,16 @@ public class UserController {
                          + "retrieve those whose first and/or last name contains the given "
                          + "value(s).",
              tags = "GET")
-  @ApiResponse(responseCode = "200",
-               description = "Returns a list with retrieved users. If no users were retrieved, "
-                           + "list will be empty",
-               content = { @Content (mediaType = "application/json",
-                                     schema = @Schema (implementation = GetUserResponseDto.class))})
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200",
+                      description = "Returns a list with retrieved users. If no users were "
+                                  + "retrieved, list will be empty",
+                      content = { @Content (mediaType = "application/json",
+                              schema = @Schema (implementation = GetUserResponseDto.class))}),
+          @ApiResponse(responseCode = "500",
+                      description = "Something is wrong with provided parameter(s)",
+                      content = { @Content (mediaType = "application/json",
+                              schema = @Schema (implementation = ApiException.class))})})
   @GetMapping(value = "/users")
   public List<GetUserResponseDto> getAllUsers(GetUserModel getUserModel) {
     return userService.getAllUsers(getUserModel)

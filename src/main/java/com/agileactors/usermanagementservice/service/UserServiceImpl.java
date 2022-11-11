@@ -7,7 +7,10 @@ import com.agileactors.usermanagementservice.model.GetUserModel;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import com.agileactors.usermanagementservice.validations.Validator;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -32,16 +35,18 @@ class UserServiceImpl implements UserService {
     return userRepository.save(conversionService.convert(createUserRequestDto, User.class));
   }
 
-  public List<User> getAllUsers(GetUserModel getUserModel) {
+  public List<User> getAllUsers(GetUserModel getUserModel) throws IllegalArgumentException {
     if (getUserModel.isEmpty()) {
       return userRepository.findAll();
     } else if (getUserModel.containsOnlyFirstName()) {
       return userRepository.findByFirstNameLike("%" + getUserModel.firstName() + "%");
     } else if (getUserModel.containsOnlyLastName()) {
       return userRepository.findByLastNameLike("%" + getUserModel.lastName() + "%");
-    } else {
+    } else if (getUserModel.containsAllData()) {
       return userRepository.findByFirstNameLikeAndLastNameLike("%" + getUserModel.firstName() + "%",
-                                                               "%" + getUserModel.lastName() + "%");
+                "%" + getUserModel.lastName() + "%");
+    } else {
+      throw new IllegalArgumentException();
     }
   }
 
