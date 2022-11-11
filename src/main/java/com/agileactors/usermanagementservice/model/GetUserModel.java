@@ -1,5 +1,6 @@
 package com.agileactors.usermanagementservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.lang.Nullable;
 
@@ -20,6 +21,9 @@ public record GetUserModel(@Nullable
    *
    * @return True if neither parameter contains data, false if at least one does
    */
+  @JsonIgnore /* For some reason, in swagger, boolean method return type and method name starting
+                 with 'is' generate a boolean property with name equal to whatever is after 'is'
+                 in method name */
   public boolean isEmpty() {
     return (firstName == null || firstName.isBlank()) && (lastName == null || lastName.isBlank());
   }
