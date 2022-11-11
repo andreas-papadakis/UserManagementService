@@ -71,6 +71,9 @@ class GetSpecification extends Specification {
     then: "convert was called as many times as demoList's size to convert each user to dto"
     demoList.size() * conversionService.convert(demoUser, GetUserResponseDto.class) >> responseDto
 
+    then: "no other method is called"
+    0 * _
+
     then: "the get request is successfully completed"
     result.getResponse().status == HttpStatus.OK.value()
 
