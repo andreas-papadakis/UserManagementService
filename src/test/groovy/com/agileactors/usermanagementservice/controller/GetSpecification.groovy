@@ -1,5 +1,7 @@
 package com.agileactors.usermanagementservice.controller
 
+import org.springframework.util.MultiValueMap
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 
 import com.agileactors.usermanagementservice.UserManagementServiceApplication
@@ -79,6 +81,48 @@ class GetSpecification extends Specification {
 
     and: "no other user"
     response.split("},").size() == demoList.size()
+  }
+
+  def "should get user by ID"() {
+    given: "a get request arrived on /api/users/{id}"
+    UUID id = UUID.randomUUID()
+
+    and: "a demo user has been setup as the expected response from service"
+    def firstName = RandomStringUtils.randomAlphabetic(10)
+    def lastName  = RandomStringUtils.randomAlphabetic(10)
+    def email     = RandomStringUtils.randomAlphabetic(10)
+    def demoUser = new User(id,
+                            firstName,
+                            lastName,
+                            email,
+                            null,
+                            null)
+
+    and: "a dto has been setup as the result of convert"
+    def dto = new GetUserResponseDto(demoUser.firstName, demoUser.lastName, demoUser.email)
+
+    when: "controller executes the get request"
+    MvcResult result = mockMvc.perform(get("/api/users/{id}", id))
+                              .andReturn()
+    def response = result.getResponse().getContentAsString()
+
+    then: "getUserById was called once with the provided id as parameter"
+    1 * userService.getUserById(id) >> demoUser
+
+    then: "conversion service converts once the returned user from getUserById to GetUserResponseDto"
+    1 * conversionService.convert(demoUser, GetUserResponseDto.class) >> dto
+
+    then: "no other method is called"
+    0 * _
+
+    and: "the get request is successfully completed"
+    result.getResponse().status == HttpStatus.OK.value()
+
+    and: "the dto returned from convert method is also returned by getUserById from controller"
+    response == "{\"firstName\":\"" + demoUser.firstName +
+                "\",\"lastName\":\"" + demoUser.lastName +
+                "\",\"email\":\"" + demoUser.email +
+                "\"}"
   }
 
   /**
