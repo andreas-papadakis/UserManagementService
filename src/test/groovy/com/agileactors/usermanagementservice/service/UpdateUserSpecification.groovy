@@ -1,15 +1,15 @@
 package com.agileactors.usermanagementservice.service
 
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto
+import com.agileactors.usermanagementservice.exception.UserNotFoundException
 import com.agileactors.usermanagementservice.model.User
 import com.agileactors.usermanagementservice.repository.UserRepository
 import com.agileactors.usermanagementservice.validations.Validator
+import java.time.LocalDateTime
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.convert.ConversionService
 import spock.lang.Specification
 import spock.lang.Subject
-
-import java.time.LocalDateTime
 
 @SpringBootTest
 class UpdateUserSpecification extends Specification {
@@ -63,6 +63,29 @@ class UpdateUserSpecification extends Specification {
 
     then: "no other method is called"
     0 * _
+  }
+
+  def "should fail to update user because it does not exist"() {
+    given: "a new update user request arrived"
+    UpdateUserRequestDto userRequestDto = new UpdateUserRequestDto(UUID.randomUUID(),
+                                                                   "updatedFirstName",
+                                                                   "updatedLastName",
+                                                                   "a@a.com")
+
+    and: "the user does not exist"
+    Optional<User> userNotFound = Optional.empty()
+
+    when: "service layer tries to update the user"
+    userService.updateUser(userRequestDto)
+
+    then: "the provided email is being validated"
+    1 * validator.validateEmail(userRequestDto.email)
+
+    then: "findById is called once to retrieve the user"
+    1 * userRepository.findById(userRequestDto.userId) >> userNotFound
+
+    then:
+    thrown(UserNotFoundException)
   }
 
   /**

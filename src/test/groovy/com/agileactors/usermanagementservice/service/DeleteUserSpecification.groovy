@@ -4,6 +4,7 @@ import com.agileactors.usermanagementservice.repository.UserRepository
 import com.agileactors.usermanagementservice.validations.Validator
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.convert.ConversionService
+import org.springframework.dao.EmptyResultDataAccessException
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -34,6 +35,23 @@ class DeleteUserSpecification extends Specification {
 
     then: "no other method is called"
     0 * _
+  }
+
+  def "should fail to delete a user because id does not exist"() {
+    given: "a UUID was provided"
+    UUID uuid = UUID.randomUUID()
+
+    when: "service layer tries to delete the user linked to that UUID"
+    userService.deleteUser(uuid)
+
+    then: "deleteById from repository is called on the provided UUID"
+    1 * userRepository.deleteById(uuid) >> { throw new EmptyResultDataAccessException("", 1)}
+
+    then: "no other method is called"
+    0 * _
+
+    and:
+    thrown(EmptyResultDataAccessException)
   }
 
   def "should delete all users"() {
