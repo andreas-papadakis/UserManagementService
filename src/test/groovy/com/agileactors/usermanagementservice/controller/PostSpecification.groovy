@@ -118,6 +118,9 @@ class PostSpecification extends Specification {
                               .writeValueAsString(createUserRequestDto)))
                    .andReturn()
 
+    then: "no method is called"
+    0 * _
+
     then: "an InvalidArgumentException was thrown and exception handler caught it"
     result.getResolvedException() instanceof InvalidArgumentException
 
