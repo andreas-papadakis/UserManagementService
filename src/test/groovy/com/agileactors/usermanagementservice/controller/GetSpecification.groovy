@@ -1,5 +1,6 @@
 package com.agileactors.usermanagementservice.controller
 
+import com.agileactors.usermanagementservice.exception.UserNotFoundException
 import org.springframework.util.MultiValueMap
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -126,6 +127,32 @@ class GetSpecification extends Specification {
                 "\",\"lastName\":\"" + demoUser.lastName +
                 "\",\"email\":\"" + demoUser.email +
                 "\"}"
+  }
+
+  def "should fail to get user by ID because it does not exist"() {
+    given: "an ID that does not exist in DB"
+    UUID id = UUID.randomUUID()
+
+    and: "a message for the exception has been setup"
+    def msg = "User with ID: " + id + " does not exist"
+
+    when: "controller executes the get request"
+    MvcResult result = mockMvc.perform(get("/api/users/{id}", id))
+                              .andReturn()
+
+    then: "getUserById from service is called once with provided id as parameter and throws a UserNotFoundException"
+    1 * userService.getUserById(id) >> { throw new UserNotFoundException(msg)}
+
+    then: "no other method is called"
+    0 * _
+
+    and: "response http status is 404"
+    result.getResponse().status == HttpStatus.NOT_FOUND.value()
+
+    and: "the exception's message is contained in the response"
+    result.getResponse()
+          .getContentAsString()
+          .contains(msg)
   }
 
   /**
