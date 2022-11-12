@@ -30,17 +30,23 @@ class CreateUserSpecification extends Specification {
                                                                    "testLName",
                                                                    "a@a.com")
 
+    and: "a demo user has been setup as the return value of convert method"
+    def user = new User()
+
     when: "the user is saved in DB"
     userService.createUser(userRequestDto)
 
     then: "validateEmail is called once on create user request's email "
     1 * validator.validateEmail(userRequestDto.email)
 
-    and: "convert is called once on userRequestDto and returns a user"
-    1 * conversionService.convert(userRequestDto, User.class) >> new User()
+    then: "convert is called once on userRequestDto and returns a user"
+    1 * conversionService.convert(userRequestDto, User.class) >> user
 
-    and: "save is called once on any user"
-    1 * userRepository.save(_ as User)
+    then: "save is called once on the return value of convert method"
+    1 * userRepository.save(user)
+
+    then: "no other method is called"
+    0 * _
   }
 
   /**

@@ -31,6 +31,9 @@ class DeleteUserSpecification extends Specification {
 
     then: "deleteById from repository is called on the provided UUID"
     1 * userRepository.deleteById(uuid)
+
+    then: "no other method is called"
+    0 * _
   }
 
   def "should delete all users"() {
@@ -39,6 +42,9 @@ class DeleteUserSpecification extends Specification {
 
     then: "deleteAll from repository is called"
     1 * userRepository.deleteAll()
+
+    then: "no other method is called"
+    0 * _
   }
 
   /**

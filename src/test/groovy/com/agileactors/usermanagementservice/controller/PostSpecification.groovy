@@ -71,7 +71,16 @@ class PostSpecification extends Specification {
                                                       .writeValueAsString(createUserRequestDto)))
                                            .andReturn()
 
-    then: "Http status of 200 is returned"
+    then: "createUser from service layer was called once"
+    1 * userService.createUser(createUserRequestDto) >> demoUser
+
+    then: "controller converts the returned user from createUser to CreateUserResponseDto"
+    1 * conversionService.convert(demoUser, CreateUserResponseDto.class) >> responseDto
+
+    then: "no other method is called"
+    0 * _
+
+    and: "Http status of 200 is returned"
     result.getResponse().status == HttpStatus.OK.value()
 
     and: "the data of dto are contained in response"
@@ -94,12 +103,6 @@ class PostSpecification extends Specification {
     responseContent.contains(responseDto.email)
     responseContent.contains(createdAt)
     responseContent.contains(updatedAt)
-
-    and: "createUser from service layer was called once"
-    1 * userService.createUser(createUserRequestDto) >> demoUser
-
-    and: "controller converts the returned user from createUser to CreateUserResponseDto"
-    1 * conversionService.convert(demoUser, CreateUserResponseDto.class) >> responseDto
   }
 
   def "on invalid create user request, controller should throw an exception and exception handler return http status of 400"() {
@@ -122,7 +125,9 @@ class PostSpecification extends Specification {
     result.getResponse().status == HttpStatus.BAD_REQUEST.value()
 
     and:
-    result.getResponse().getContentAsString().contains("First name must not be blank and up to 100 characters.")
+    result.getResponse()
+          .getContentAsString()
+          .contains("First name must not be blank and up to 100 characters.")
   }
 
   /**

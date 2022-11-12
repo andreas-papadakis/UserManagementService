@@ -41,17 +41,28 @@ class UpdateUserSpecification extends Specification {
                                  LocalDateTime.now(),
                                  null)
 
+    and: "a demo user has been setup representing the user's state after the update"
+    def demoUser = new User(userRequestDto.userId,
+                            userRequestDto.firstName,
+                            userRequestDto.lastName,
+                            userRequestDto.email,
+                            existingUser.createdAt,
+                            null)
+
     when: "service layer updates the user"
     userService.updateUser(userRequestDto)
 
     then: "to achieve that, validateEmail was called once"
     1 * validator.validateEmail(userRequestDto.email)
 
-    and: "findById was called once to retrieve the user"
+    then: "findById was called once to retrieve the user"
     1 * userRepository.findById(userRequestDto.userId) >> Optional.of(existingUser)
 
-    and: "save called once to update the user"
-    1 * userRepository.save(_ as User)
+    then: "save called once to update the user"
+    1 * userRepository.save(demoUser)
+
+    then: "no other method is called"
+    0 * _
   }
 
   /**

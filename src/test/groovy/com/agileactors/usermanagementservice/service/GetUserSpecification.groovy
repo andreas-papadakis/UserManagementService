@@ -5,6 +5,7 @@ import com.agileactors.usermanagementservice.model.GetUserModel
 import com.agileactors.usermanagementservice.model.User
 import com.agileactors.usermanagementservice.repository.UserRepository
 import com.agileactors.usermanagementservice.validations.Validator
+import org.apache.commons.lang3.RandomStringUtils
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.convert.ConversionService
 import spock.lang.Specification
@@ -32,43 +33,59 @@ class GetUserSpecification extends Specification {
     when: "service method to retrieve the users is called"
     userService.getAllUsers(getUserModel)
 
-    then: "service layer calls only findAll method from repository"
+    then: "service layer calls findAll method from repository"
     1 * userRepository.findAll() >> new ArrayList<User>()
+
+    then: "no other method is called"
     0 * _
   }
 
   def "should get all users by first name"() {
     given: "a request to retrieve those users who match the provided first name from DB arrived"
-    GetUserModel getUserModel = new GetUserModel(_ as String, null)
+    def firstName       = RandomStringUtils.randomAlphabetic(10)
+    GetUserModel getUserModel = new GetUserModel(firstName, null)
 
     when: "service method to retrieve the users is called"
     userService.getAllUsers(getUserModel)
 
-    then: "service layer calls only findByFirstNameLike method from repository"
-    1 * userRepository.findByFirstNameLike(_ as String) >> new ArrayList<User>()
+    then: "service layer calls findByFirstNameLike method from repository with provided first name as parameter"
+    1 * userRepository.findByFirstNameLike("%" + firstName + "%") >> new ArrayList<User>()
+
+    then: "no other method is called"
+    0 * _
   }
 
   def "should get all users by last name"() {
     given: "a request to retrieve those users who match the provided last name from DB arrived"
-    GetUserModel getUserModel = new GetUserModel(null, _ as String)
+    def lastName        = RandomStringUtils.randomAlphabetic(10)
+    GetUserModel getUserModel = new GetUserModel(null, lastName)
 
     when: "service method to retrieve the users is called"
     userService.getAllUsers(getUserModel)
 
-    then: "service layer calls findByLastNameLike method from repository"
-    1 * userRepository.findByLastNameLike(_ as String) >> new ArrayList<User>()
+    then: "service layer calls findByLastNameLike method from repository with provided last name as parameter"
+    1 * userRepository.findByLastNameLike("%" + lastName + "%") >> new ArrayList<User>()
+
+    then: "no other method is called"
+    0 * _
   }
 
   def "should get all users by first and last name"() {
     given: "a request to retrieve those users who match the provided first and last name from DB arrived"
-    GetUserModel getUserModel = new GetUserModel(_ as String, _ as String)
+    def firstName = RandomStringUtils.randomAlphabetic(10)
+    def lastName = RandomStringUtils.randomAlphabetic(10)
+    GetUserModel getUserModel = new GetUserModel(firstName, lastName)
 
     when: "service method to retrieve the users is called"
     userService.getAllUsers(getUserModel)
 
-    then: "service layer calls only findByFirstNameLikeAndLastNameLike method from repository"
-    1 * userRepository.findByFirstNameLikeAndLastNameLike(_ as String, _ as String) >>
+    then: "service layer calls findByFirstNameLikeAndLastNameLike method from repository with provided first and last names as parameters"
+    1 * userRepository.findByFirstNameLikeAndLastNameLike("%" + firstName + "%",
+                                                          "%" + lastName + "%") >>
             new ArrayList<User>()
+
+    then: "no other method is called"
+    0 * _
   }
 
   def "should successfully get user by Id"() {
@@ -83,17 +100,26 @@ class GetUserSpecification extends Specification {
 
     then: "findById by repository is called and an optional with that user is returned"
     1 * userRepository.findById(uuid) >> Optional.of(user)
+
+    then: "no other method is called"
+    0 * _
   }
 
   def "should throw UserNotFoundException when provided ID does not exist in DB"() {
+    given: "an ID was provided"
+    UUID id = UUID.randomUUID()
+
     when: "service layer tries to retrieve a user that does not exist"
-    userService.getUserById(UUID.randomUUID())
+    userService.getUserById(id)
 
     then: "findById by repository is called and returns an empty optional"
-    1 * userRepository.findById(_ as UUID) >> Optional.empty()
+    1 * userRepository.findById(id) >> Optional.empty()
 
-    and: "that results in a UserNotFoundException to be thrown"
+    then: "that results in a UserNotFoundException to be thrown"
     thrown(UserNotFoundException)
+
+    then: "no other method is called"
+    0 * _
   }
 
   /**
