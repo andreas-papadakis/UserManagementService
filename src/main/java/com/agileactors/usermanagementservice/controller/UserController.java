@@ -228,7 +228,8 @@ public class UserController {
   public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
                                           @RequestBody @Valid
                                           UpdateUserRequestDto updateUserRequestDto,
-                                          BindingResult errors) throws InvalidArgumentException {
+                                          BindingResult errors) throws InvalidArgumentException,
+                                                                       UserNotFoundException {
     if (errors.hasErrors()) {
       throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
     }
