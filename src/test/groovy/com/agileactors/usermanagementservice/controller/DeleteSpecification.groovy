@@ -70,19 +70,29 @@ class DeleteSpecification extends Specification {
     given: "an id was provided"
     UUID id = UUID.randomUUID()
 
+    and: "an exception message has been setup"
+    def msg = "No class com.agileactors.usermanagementservice.model.User entity with id " + id  +
+              " exists!"
+
     when: "a delete user by id request arrives"
     MvcResult result = mockMvc.perform(delete("/api/users/{id}", id))
                               .andReturn()
 
     then: "deleteUser() from service is called once but throws an EmptyResultDataAccessException"
-    1 * userService.deleteUser(id) >> { throw new EmptyResultDataAccessException("No class " +
-            "com.agileactors.usermanagementservice.model.User entity with id " + id  + " exists!",1)
-            }
+    1 * userService.deleteUser(id) >> { throw new EmptyResultDataAccessException(msg, 1) }
 
     then: "no other method is called"
     0 * _
 
-    and: "the request return http status of 404"
+    and: "the request returns http status of 404"
     result.getResponse().status == HttpStatus.NOT_FOUND.value()
+
+    and: "the exception that was returned is the EmptyResultDataAccessException"
+    result.getResolvedException() instanceof EmptyResultDataAccessException
+
+    and: "the response contains the exception's message"
+    result.getResponse()
+          .getContentAsString()
+          .contains(msg)
   }
 }

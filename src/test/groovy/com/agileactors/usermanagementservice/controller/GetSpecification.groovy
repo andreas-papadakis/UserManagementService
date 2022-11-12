@@ -1,13 +1,11 @@
 package com.agileactors.usermanagementservice.controller
 
-import com.agileactors.usermanagementservice.exception.UserNotFoundException
-import org.springframework.util.MultiValueMap
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 
 import com.agileactors.usermanagementservice.UserManagementServiceApplication
 import com.agileactors.usermanagementservice.dto.GetUserResponseDto
 import com.agileactors.usermanagementservice.exception.ApiExceptionHandler
+import com.agileactors.usermanagementservice.exception.UserNotFoundException
 import com.agileactors.usermanagementservice.model.GetUserModel
 import com.agileactors.usermanagementservice.model.User
 import com.agileactors.usermanagementservice.service.UserService
@@ -148,6 +146,9 @@ class GetSpecification extends Specification {
 
     and: "response http status is 404"
     result.getResponse().status == HttpStatus.NOT_FOUND.value()
+
+    and: "the exception that was returned is the UserNotFoundException"
+    result.getResolvedException() instanceof UserNotFoundException
 
     and: "the exception's message is contained in the response"
     result.getResponse()
