@@ -7,6 +7,7 @@ import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserResponseDto;
 import com.agileactors.usermanagementservice.exception.ApiException;
 import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
+import com.agileactors.usermanagementservice.exception.UserNotFoundException;
 import com.agileactors.usermanagementservice.model.GetUserModel;
 import com.agileactors.usermanagementservice.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 import javax.validation.Valid;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -97,6 +99,8 @@ public class UserController {
    * @param getUserModel The {@link GetUserModel} containing the filters (first and/or last name)
    *
    * @return List with retrieved users
+   *
+   * @throws IllegalArgumentException When getUserModel's data cannot be checked
    */
   @Operation(summary = "Get all users",
              description = "Retrieve all users from DB. If first and/or last name are provided, "
@@ -114,7 +118,8 @@ public class UserController {
                       content = { @Content (mediaType = "application/json",
                               schema = @Schema (implementation = ApiException.class))})})
   @GetMapping(value = "/users")
-  public List<GetUserResponseDto> getAllUsers(GetUserModel getUserModel) {
+  public List<GetUserResponseDto> getAllUsers(GetUserModel getUserModel)
+          throws IllegalArgumentException {
     return userService.getAllUsers(getUserModel)
                       .stream()
                       .map(user -> conversionService.convert(user, GetUserResponseDto.class))
@@ -128,6 +133,8 @@ public class UserController {
    *               ID
    *
    * @return Retrieved {@link com.agileactors.usermanagementservice.model.User user}
+   *
+   * @throws UserNotFoundException When a user with userId does not exist
    */
   @Operation(summary = "Get user by id",
              description = "Retrieve user with specific id",
@@ -144,7 +151,8 @@ public class UserController {
                                (mediaType = "application/json",
                                 schema = @Schema (implementation = ApiException.class))})})
   @GetMapping(value = "/users/{id}")
-  public GetUserResponseDto getUserById(@PathVariable(value = "id") UUID userId) {
+  public GetUserResponseDto getUserById(@PathVariable(value = "id") UUID userId)
+          throws UserNotFoundException {
     return conversionService.convert(userService.getUserById(userId), GetUserResponseDto.class);
   }
 
@@ -153,6 +161,8 @@ public class UserController {
    *
    * @param userId The ID of {@link com.agileactors.usermanagementservice.model.User user} to be
    *               removed
+   *
+   * @throws EmptyResultDataAccessException When user with userId does not exist
    */
   @Operation(summary = "Remove user",
              description = "Remove user with given id from DB",
@@ -163,7 +173,8 @@ public class UserController {
     @ApiResponse(responseCode = "404",
             description = "User with such ID does not exists")})
   @DeleteMapping(value = "/users/{id}")
-  public void deleteUser(@PathVariable(value = "id") UUID userId) {
+  public void deleteUser(@PathVariable(value = "id") UUID userId)
+          throws EmptyResultDataAccessException {
     userService.deleteUser(userId);
   }
 
