@@ -127,7 +127,7 @@ class PostSpecification extends Specification {
     and: "it set an http status of 400"
     result.getResponse().status == HttpStatus.BAD_REQUEST.value()
 
-    and:
+    and: "the validation error message is contained in http response"
     result.getResponse()
           .getContentAsString()
           .contains("First name must not be blank and up to 100 characters.")
