@@ -4,6 +4,7 @@ import com.agileactors.usermanagementservice.UserManagementServiceApplication
 import com.agileactors.usermanagementservice.model.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.dao.EmptyResultDataAccessException
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -37,6 +38,17 @@ class DeleteUserSpecification extends Specification {
 
     then: "user can no longer be retrieved"
     !userRepository.findById(newUser.id).isPresent()
+  }
+
+  def "should fail to delete user because it does not exist"() {
+    when: "repository tries to delete a user that does not exist"
+    userRepository.deleteById(UUID.randomUUID())
+
+    then:
+    thrown(EmptyResultDataAccessException)
+
+    then:
+    0 * _
   }
 
   def "should delete all users"() {
