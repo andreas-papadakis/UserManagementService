@@ -7,10 +7,7 @@ import com.agileactors.usermanagementservice.model.GetUserModel;
 import com.agileactors.usermanagementservice.model.User;
 import com.agileactors.usermanagementservice.repository.UserRepository;
 import com.agileactors.usermanagementservice.validations.Validator;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
