@@ -1,0 +1,12 @@
+version: Compose specification
+services:
+  mysqldb:
+    container_name: mysql_new
+    image: mysql
+    volumes:
+      - ./mysqldata:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: myDB
+      MYSQL_ROOT_PASSWORD: 123456
