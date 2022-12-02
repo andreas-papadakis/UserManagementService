@@ -1,12 +1,24 @@
 version: Compose specification
 services:
+  app_container:
+    image: user_management_service_app
+    build: .
+    ports:
+      - "8080:8080"
+    networks:
+      - mysql_network
+    depends_on:
+      - mysqldb
+
   mysqldb:
-    container_name: mysql_new
     image: mysql
     volumes:
       - ./mysqldata:/var/lib/mysql
-    ports:
-      - 3306:3306
+    networks:
+      - mysql_network
     environment:
       MYSQL_DATABASE: myDB
       MYSQL_ROOT_PASSWORD: 123456
+
+networks:
+  mysql_network:
