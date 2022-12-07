@@ -300,7 +300,7 @@
 				<configuration>
 					<includes>
 						<include>**/*Test</include>
-						<include>**/*Specification</include>
+						<include>**/*Spec</include>
 					</includes>
 				</configuration>
 			</plugin>
