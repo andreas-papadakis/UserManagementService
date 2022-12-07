@@ -19,6 +19,7 @@
 	</properties>
 
 	<dependencies>
+		<!-- Needed to handle persistent data -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -54,6 +55,7 @@
 			</exclusions>
 		</dependency>
 
+		<!-- Needed for web operations (PUT/DELETE/PUSH/GET) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -101,6 +103,7 @@
 			</exclusions>
 		</dependency>
 
+		<!-- Needed for validating web incoming data -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -128,11 +131,13 @@
 			</exclusions>
 		</dependency>
 
+		<!-- Needed for sql files in resources to create db and other operations like handling errors -->
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-mysql</artifactId>
 		</dependency>
 
+		<!-- Needed for springdoc documentation -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
@@ -169,12 +174,14 @@
 			</exclusions>
 		</dependency>
 
+		<!-- Needed to connect to mySQL db -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- Needed to use lombok -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -182,6 +189,7 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- Needed to test spring boot applications -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -218,6 +226,7 @@
 			</exclusions>
 		</dependency>
 
+		<!-- Needed to write spock specifications -->
 		<dependency>
 			<groupId>org.spockframework</groupId>
 			<artifactId>spock-spring</artifactId>
@@ -246,11 +255,13 @@
 
 	<build>
 		<plugins>
+			<!-- Needed to compile spring boot applications -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
+			<!-- Needed to compile spock specifications. Also, set specifications' directories -->
 			<plugin>
 				<groupId>org.codehaus.gmavenplus</groupId>
 				<artifactId>gmavenplus-plugin</artifactId>
@@ -258,13 +269,13 @@
 				<configuration>
 					<testSources>
 						<fileset>
-							<directory>src/unitTesting/groovy</directory>
+							<directory>src/unittest/groovy</directory>
 							<includes>
 								<include>**/*.groovy</include>
 							</includes>
 						</fileset>
 						<fileset>
-							<directory>src/functionalTesting/groovy</directory>
+							<directory>src/functionaltest/groovy</directory>
 							<includes>
 								<include>**/*.groovy</include>
 							</includes>
@@ -281,6 +292,7 @@
 				</executions>
 			</plugin>
 
+			<!-- Needed to set which compiled tests/specifications will run -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
