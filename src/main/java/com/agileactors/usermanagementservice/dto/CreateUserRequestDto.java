@@ -21,7 +21,7 @@ public record CreateUserRequestDto(@Schema(example = "John", description = "User
                                                                      + "characters.")
                                    String firstName,
                                    @Schema(example = "Doe", description = "User's last name")
-                                   @Size(min = 1, max = 100, message = "Last name must not be"
+                                   @Size(min = 1, max = 100, message = "Last name must not be "
                                                                      + "blank and up to 100 "
                                                                      + "characters.")
                                    String lastName,
