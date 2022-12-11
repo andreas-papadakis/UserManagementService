@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -85,7 +86,11 @@ public class UserController {
                                           CreateUserRequestDto createUserRequestDto,
                                           BindingResult errors) throws InvalidArgumentException {
     if (errors.hasErrors()) {
-      throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
+      String errorMessages = "";
+      for(ObjectError error : errors.getAllErrors()) {
+        errorMessages = errorMessages + error.getDefaultMessage() + " ";
+      }
+      throw new InvalidArgumentException(errorMessages);
     }
 
     return conversionService.convert(userService.createUser(createUserRequestDto),
