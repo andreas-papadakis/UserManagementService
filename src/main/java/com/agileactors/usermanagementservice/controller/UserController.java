@@ -236,7 +236,11 @@ public class UserController {
                                           BindingResult errors) throws InvalidArgumentException,
                                                                        UserNotFoundException {
     if (errors.hasErrors()) {
-      throw new InvalidArgumentException(errors.getAllErrors().get(0).getDefaultMessage());
+      String errorMessages = "";
+      for(ObjectError error : errors.getAllErrors()) {
+        errorMessages = errorMessages + error.getDefaultMessage() + " ";
+      }
+      throw new InvalidArgumentException(errorMessages);
     }
     UpdateUserRequestDto updatedUserDto = new UpdateUserRequestDto(userId,
                                                                    updateUserRequestDto.firstName(),
