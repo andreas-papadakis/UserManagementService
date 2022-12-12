@@ -34,6 +34,6 @@ public record UpdateUserRequestDto(@JsonIgnore UUID userId,
                                            example = "johndoe@gmail.com",
                                            description = "User's e-mail")
                                    @Size(min = 5, max = 100, message = "e-mail must not be blank "
-                                                                     + "and from 5 up to 100"
+                                                                     + "and from 5 up to 100 "
                                                                      + "characters.")
                                    String email) { }
