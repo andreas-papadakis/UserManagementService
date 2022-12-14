@@ -68,16 +68,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
    * {@link com.agileactors.usermanagementservice.exception.ApiException}> with a standard message,
    * 400 HTTP status and the time it occurred
    *
-   * @param illegalArgumentException The exception thrown when an illegal or inappropriate parameter
-   *                                 has been passed to a method
-   *
    * @return {@link ResponseEntity} of type
    *         {@link com.agileactors.usermanagementservice.exception.ApiException} with standard
    *         message, 500 HTTP status and the time it occurred
    */
   @ExceptionHandler (value = IllegalArgumentException.class)
-  public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException
-                                                                 illegalArgumentException) {
+  public ResponseEntity<Object> handleIllegalArgumentException() {
     return new ResponseEntity<>(new ApiException("Internal server error",
                                                  HttpStatus.INTERNAL_SERVER_ERROR,
                                                  LocalDateTime.now()),
