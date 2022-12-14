@@ -53,7 +53,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
    *     message, 400 HTTP status and the time it occurred
    */
   @ExceptionHandler (value = InvalidArgumentException.class)
-  public ResponseEntity<Object> handleInvalidArgumentException(InvalidArgumentException
+  public ResponseEntity<ApiException> handleInvalidArgumentException(InvalidArgumentException
                                                                  invalidArgumentException) {
     return new ResponseEntity<>(new ApiException(invalidArgumentException.getMessage(),
                                                  HttpStatus.BAD_REQUEST,
@@ -73,7 +73,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
    *         message, 500 HTTP status and the time it occurred
    */
   @ExceptionHandler (value = IllegalArgumentException.class)
-  public ResponseEntity<Object> handleIllegalArgumentException() {
+  public ResponseEntity<ApiException> handleIllegalArgumentException() {
     return new ResponseEntity<>(new ApiException("Internal server error",
                                                  HttpStatus.INTERNAL_SERVER_ERROR,
                                                  LocalDateTime.now()),
@@ -97,7 +97,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
    *         exception's message, 404 HTTP status and the time it occurred
    */
   @ExceptionHandler (value = EmptyResultDataAccessException.class)
-  public ResponseEntity<Object> handleEmptyResultDataAccessException(
+  public ResponseEntity<ApiException> handleEmptyResultDataAccessException(
           EmptyResultDataAccessException emptyResultDataAccessException) {
     return new ResponseEntity<>(new ApiException(emptyResultDataAccessException.getMessage(),
                                                  HttpStatus.NOT_FOUND,
