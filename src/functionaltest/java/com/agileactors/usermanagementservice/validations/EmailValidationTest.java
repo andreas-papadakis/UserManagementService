@@ -3,7 +3,7 @@ package com.agileactors.usermanagementservice.validations;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
+import com.agileactors.usermanagementservice.dto.SaveUserRequestDto;
 import com.agileactors.usermanagementservice.exception.InvalidArgumentException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +21,7 @@ public class EmailValidationTest {
   public void testValidationOfeMail() {
     Validator validator = new ValidatorImpl();
 
-    CreateUserRequestDto testUser = new CreateUserRequestDto("lala",
+    SaveUserRequestDto testUser = new SaveUserRequestDto("lala",
                                                              "lala",
                                                              "aaaa@");
 

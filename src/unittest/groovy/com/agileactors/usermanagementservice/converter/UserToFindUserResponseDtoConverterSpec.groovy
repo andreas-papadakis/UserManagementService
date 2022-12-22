@@ -4,9 +4,9 @@ import com.agileactors.usermanagementservice.model.User
 import spock.lang.Specification
 import spock.lang.Subject
 
-class UserToGetUserResponseDtoConverterSpec extends Specification {
+class UserToFindUserResponseDtoConverterSpec extends Specification {
   @Subject
-  def userToGetUserResponseDtoConverter = new UserToGetUserResponseDtoConverter()
+  def userToFindUserResponseDtoConverter = new UserToFindUserResponseDtoConverter()
 
   def "should convert User to GetUserResponseDto"() {
     given: "a User"
@@ -18,11 +18,11 @@ class UserToGetUserResponseDtoConverterSpec extends Specification {
                         null)
 
     when: "userToGetUserResponseDtoConverter converts user"
-    def returnedGetUserResponseDto = userToGetUserResponseDtoConverter.convert(user)
+    def returnedFindUserResponseDto = userToFindUserResponseDtoConverter.convert(user)
 
     then: "returned GetUserResponseDto is as expected"
-    returnedGetUserResponseDto.firstName == user.firstName
-    returnedGetUserResponseDto.lastName  == user.lastName
-    returnedGetUserResponseDto.email     == user.email
+    returnedFindUserResponseDto.firstName == user.firstName
+    returnedFindUserResponseDto.lastName  == user.lastName
+    returnedFindUserResponseDto.email     == user.email
   }
 }

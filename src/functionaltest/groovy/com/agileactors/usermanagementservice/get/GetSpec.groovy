@@ -2,7 +2,7 @@ package com.agileactors.usermanagementservice.get
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 
-import com.agileactors.usermanagementservice.dto.GetUserResponseDto
+import com.agileactors.usermanagementservice.dto.FindUserResponseDto
 import com.agileactors.usermanagementservice.model.User
 import com.agileactors.usermanagementservice.repository.UserRepository
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -88,13 +88,13 @@ class GetSpec extends Specification {
     userRepository.save(user4)
 
     getUser1ResponseDtoJSON = objectMapper.writeValueAsString(conversionService
-                                                          .convert(user1, GetUserResponseDto.class))
+                                                          .convert(user1, FindUserResponseDto.class))
     getUser2ResponseDtoJSON = objectMapper.writeValueAsString(conversionService
-                                                          .convert(user2, GetUserResponseDto.class))
+                                                          .convert(user2, FindUserResponseDto.class))
     getUser3ResponseDtoJSON = objectMapper.writeValueAsString(conversionService
-                                                          .convert(user3, GetUserResponseDto.class))
+                                                          .convert(user3, FindUserResponseDto.class))
     getUser4ResponseDtoJSON = objectMapper.writeValueAsString(conversionService
-                                                          .convert(user4, GetUserResponseDto.class))
+                                                          .convert(user4, FindUserResponseDto.class))
   }
 
   def "should get users with first name: #firstName and last name: #lastName"() {
@@ -107,7 +107,7 @@ class GetSpec extends Specification {
     expect: "the request was successfully completed"
     result.response.status == HttpStatus.OK.value
     and: "the correct numbers of users was retrieved"
-    objectMapper.readValue(result.response.contentAsString, List<GetUserResponseDto>.class).size() == expectedSize
+    objectMapper.readValue(result.response.contentAsString, List<FindUserResponseDto>.class).size() == expectedSize
     and: "the correct users were retrieved"
     result.response.contentAsString.contains(a)
     result.response.contentAsString.contains(b)

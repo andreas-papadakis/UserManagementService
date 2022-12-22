@@ -1,6 +1,6 @@
 package com.agileactors.usermanagementservice.service;
 
-import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
+import com.agileactors.usermanagementservice.dto.SaveUserRequestDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.exception.UserNotFoundException;
 import com.agileactors.usermanagementservice.model.GetUserModel;
@@ -27,12 +27,12 @@ class UserServiceImpl implements UserService {
     this.conversionService = conversionService;
   }
 
-  public User createUser(CreateUserRequestDto createUserRequestDto) {
-    validator.validateEmail(createUserRequestDto.email());
-    return userRepository.save(conversionService.convert(createUserRequestDto, User.class));
+  public User save(SaveUserRequestDto saveUserRequestDto) {
+    validator.validateEmail(saveUserRequestDto.email());
+    return userRepository.save(conversionService.convert(saveUserRequestDto, User.class));
   }
 
-  public List<User> getAllUsers(GetUserModel getUserModel) throws IllegalArgumentException {
+  public List<User> find(GetUserModel getUserModel) throws IllegalArgumentException {
     if (getUserModel.isEmpty()) {
       return userRepository.findAll();
     } else if (getUserModel.containsOnlyFirstName()) {
@@ -47,21 +47,21 @@ class UserServiceImpl implements UserService {
     }
   }
 
-  public User getUserById(UUID userId) throws UserNotFoundException {
+  public User findById(UUID userId) throws UserNotFoundException {
     return userRepository.findById(userId)
                          .orElseThrow(() -> new UserNotFoundException("User with ID: " + userId
                                                                     + " does not exist"));
   }
 
-  public void deleteUser(UUID userId) throws EmptyResultDataAccessException {
+  public void deleteById(UUID userId) throws EmptyResultDataAccessException {
     userRepository.deleteById(userId);
   }
 
-  public void deleteAllUsers() {
+  public void deleteAll() {
     userRepository.deleteAll();
   }
 
-  public User updateUser(UpdateUserRequestDto updateUserRequestDto) throws UserNotFoundException {
+  public User updateById(UpdateUserRequestDto updateUserRequestDto) throws UserNotFoundException {
     validator.validateEmail(updateUserRequestDto.email());
     User existingUser = userRepository.findById(updateUserRequestDto.userId())
                                       .orElseThrow(() -> new UserNotFoundException("User with ID: "

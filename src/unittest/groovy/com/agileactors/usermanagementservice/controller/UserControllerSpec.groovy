@@ -1,8 +1,8 @@
 package com.agileactors.usermanagementservice.controller
 
-import com.agileactors.usermanagementservice.dto.CreateUserRequestDto
-import com.agileactors.usermanagementservice.dto.CreateUserResponseDto
-import com.agileactors.usermanagementservice.dto.GetUserResponseDto
+import com.agileactors.usermanagementservice.dto.SaveUserRequestDto
+import com.agileactors.usermanagementservice.dto.SaveUserResponseDto
+import com.agileactors.usermanagementservice.dto.FindUserResponseDto
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto
 import com.agileactors.usermanagementservice.dto.UpdateUserResponseDto
 import com.agileactors.usermanagementservice.exception.InvalidArgumentException
@@ -21,43 +21,43 @@ class UserControllerSpec extends Specification {
   @Subject
   private def userController    = new UserController(userService, conversionService)
 
-  def "should create a User"() {
-    given: "a valid CreateUserRequestDto"
-    def createUserRequestDto = new CreateUserRequestDto(_ as String,
-                                                        _ as String,
-                                                        _ as String + ' ') //needs an extra char
-                                                                           //because _ as String is
-                                                                           //4 chars long and min is
-                                                                           //5 for javax validation
+  def "should save a User"() {
+    given: "a valid SaveUserRequestDto"
+    def saveUserRequestDto = new SaveUserRequestDto(_ as String,
+                                                    _ as String,
+                                                    _ as String + ' ') //needs an extra char
+                                                                       //because _ as String is
+                                                                       //4 chars long and min is
+                                                                       //5 for javax validation
     and: "a User"
     def user = new User()
     and: "a BindingResult on that User"
-    def beanPropertyBindingResult = new BeanPropertyBindingResult(createUserRequestDto,
-                                                                  "createUserRequestDto")
+    def beanPropertyBindingResult = new BeanPropertyBindingResult(saveUserRequestDto,
+                                                                  "saveUserRequestDto")
 
-    when: "createUser is called"
-    userController.createUser(createUserRequestDto, beanPropertyBindingResult)
+    when: "save method is called"
+    userController.save(saveUserRequestDto, beanPropertyBindingResult)
 
-    then: "createUser from service layer gets called once and returns a User"
-    1 * userService.createUser(_ as CreateUserRequestDto) >> user
+    then: "save from service layer gets called once and returns a User"
+    1 * userService.save(_ as SaveUserRequestDto) >> user
 
-    then: "controller converts the returned user to CreateUserResponseDto"
-    1 * conversionService.convert(user, CreateUserResponseDto.class)
+    then: "controller converts the returned user to SaveUserResponseDto"
+    1 * conversionService.convert(user, SaveUserResponseDto.class)
 
     then: "no other method gets called"
     0 * _
 
     cleanup:
-    createUserRequestDto  = null
+    saveUserRequestDto  = null
     user                  = null
   }
 
-  def "if BindingResult parameter has errors, createUser method should throw an exception"() {
-    given: "an invalid CreateUserRequestDto"
-    def createUserRequestDto = new CreateUserRequestDto("", "", "")
-    and: "a BindingResult on that CreateUserRequestDto containing some random errors"
-    def beanPropertyBindingResult = new BeanPropertyBindingResult(createUserRequestDto,
-                                                                  "createUserRequestDto")
+  def "if BindingResult parameter has errors, save method should throw an exception"() {
+    given: "an invalid SaveUserRequestDto"
+    def saveUserRequestDto = new SaveUserRequestDto("", "", "")
+    and: "a BindingResult on that SaveUserRequestDto containing some random errors"
+    def beanPropertyBindingResult = new BeanPropertyBindingResult(saveUserRequestDto,
+                                                                  "saveUserRequestDto")
     def objectError1 = new ObjectError("createUserRequestDto",
                                        "error message 1")
     def objectError2 = new ObjectError("createUserRequestDto",
@@ -68,8 +68,8 @@ class UserControllerSpec extends Specification {
     beanPropertyBindingResult.addError(objectError2)
     beanPropertyBindingResult.addError(objectError3)
 
-    when: "createUser is called"
-    userController.createUser(createUserRequestDto, beanPropertyBindingResult)
+    when: "save is called"
+    userController.save(saveUserRequestDto, beanPropertyBindingResult)
 
     then: "no method is called"
     0 * _
@@ -81,7 +81,7 @@ class UserControllerSpec extends Specification {
                                         objectError3.defaultMessage + " "
 
     cleanup:
-    createUserRequestDto      = null
+    saveUserRequestDto        = null
     beanPropertyBindingResult = null
     objectError1              = null
     objectError2              = null
@@ -95,15 +95,15 @@ class UserControllerSpec extends Specification {
     and: "a list containing some users"
     def usersList = new ArrayList<User>(List.of(new User(), new User(), new User()))
 
-    when: "getAllUsers is called"
-    userController.getAllUsers(getUserModel)
+    when: "find is called"
+    userController.find(getUserModel)
 
-    then: "getAllUsers from service gets called once and returns a list with retrieved user(s)"
-    1 * userService.getAllUsers(getUserModel) >> usersList
+    then: "find from service gets called once and returns a list with retrieved user(s)"
+    1 * userService.find(getUserModel) >> usersList
 
-    then: "convert method converts usersList's users to GetUserResponseDto"
+    then: "convert method converts usersList's users to FindUserResponseDto"
     usersList.each {user ->
-      1 * conversionService.convert(user, GetUserResponseDto.class)
+      1 * conversionService.convert(user, FindUserResponseDto.class)
     }
 
     then: "no other method gets called"
@@ -121,13 +121,13 @@ class UserControllerSpec extends Specification {
     def user = new User()
 
     when: "getUserById is called"
-    userController.getUserById(id)
+    userController.findById(id)
 
     then: "getUserById gets called once with the provided id as parameter and returns the retrieved user"
-    1 * userService.getUserById(id) >> user
+    1 * userService.findById(id) >> user
 
     then: "conversion service converts the retrieved user to GetUserResponseDto"
-    1 * conversionService.convert(user, GetUserResponseDto.class)
+    1 * conversionService.convert(user, FindUserResponseDto.class)
 
     then: "no other method gets called"
     0 * _
@@ -142,10 +142,10 @@ class UserControllerSpec extends Specification {
     def id = UUID.randomUUID()
 
     when: "deleteUser is called"
-    userController.deleteUser(id)
+    userController.deleteById(id)
 
     then: "deleteUser from service is called once with the provided id as parameter"
-    1 * userService.deleteUser(id)
+    1 * userService.deleteById(id)
 
     then: "no other method is called"
     0 * _
@@ -155,11 +155,11 @@ class UserControllerSpec extends Specification {
   }
 
   def "should delete all users"() {
-    when: "deleteAllUsers is called"
-    userController.deleteAllUsers()
+    when: "deleteAll is called"
+    userController.deleteAll()
 
-    then: "deleteAllUsers from service is called once"
-    1 * userService.deleteAllUsers()
+    then: "deleteAll from service is called once"
+    1 * userService.deleteAll()
 
     then: "no other method is called"
     0 * _
@@ -182,11 +182,11 @@ class UserControllerSpec extends Specification {
     def beanPropertyBindingResult = new BeanPropertyBindingResult(updateUserRequestDto,
                                                                   "updateUserRequestDto")
 
-    when: "controller executes the put request"
-    userController.updateUser(id, updateUserRequestDto, beanPropertyBindingResult)
+    when: "updateById is called"
+    userController.updateById(id, updateUserRequestDto, beanPropertyBindingResult)
 
-    then: "updateUser from service is called once and returns a user"
-    1 * userService.updateUser(updateUserRequestDto) >> user
+    then: "updateById from service is called once and returns a user"
+    1 * userService.updateById(updateUserRequestDto) >> user
 
     then: "convert is called once to convert the returned user to UpdateUserResponseDto"
     1 * conversionService.convert(user, UpdateUserResponseDto.class)
@@ -221,8 +221,8 @@ class UserControllerSpec extends Specification {
     beanPropertyBindingResult.addError(objectError2)
     beanPropertyBindingResult.addError(objectError3)
 
-    when: "updateUser method is called"
-    userController.updateUser(id, updateUserRequestDto, beanPropertyBindingResult)
+    when: "updateById method is called"
+    userController.updateById(id, updateUserRequestDto, beanPropertyBindingResult)
 
     then: "no other method is called"
     0 * _

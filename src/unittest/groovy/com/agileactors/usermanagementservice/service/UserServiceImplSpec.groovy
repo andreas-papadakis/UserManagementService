@@ -1,6 +1,6 @@
 package com.agileactors.usermanagementservice.service
 
-import com.agileactors.usermanagementservice.dto.CreateUserRequestDto
+import com.agileactors.usermanagementservice.dto.SaveUserRequestDto
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto
 import com.agileactors.usermanagementservice.exception.UserNotFoundException
 import com.agileactors.usermanagementservice.model.GetUserModel
@@ -19,14 +19,14 @@ class UserServiceImplSpec extends Specification {
   @Subject
   private def userService       = new UserServiceImpl(userRepository, validator, conversionService)
 
-  def "should save user"() {
+  def "should save a User"() {
     given: "a SaveUserRequestDto"
-    def saveUserRequestDto = new CreateUserRequestDto(_ as String, _ as String, _ as String)
+    def saveUserRequestDto = new SaveUserRequestDto(_ as String, _ as String, _ as String)
     and: "a User"
     def user = new User()
 
     when: "save method is called with provided SaveUserRequestDto"
-    userService.createUser(saveUserRequestDto)
+    userService.save(saveUserRequestDto)
 
     then: "validateEmail is called once to validate CreateUserRequestDto e-mail"
     1 * validator.validateEmail(saveUserRequestDto.email)
@@ -49,8 +49,8 @@ class UserServiceImplSpec extends Specification {
     given: "a GetUserModel with both parameters null"
     def getUserModel = new GetUserModel(null, null)
 
-    when: "getAllUsers method is called with provided GetUserModel"
-    userService.getAllUsers(getUserModel)
+    when: "find method is called with provided GetUserModel"
+    userService.find(getUserModel)
 
     then: "findAll method from repository is called once"
     1 * userRepository.findAll()
@@ -66,8 +66,8 @@ class UserServiceImplSpec extends Specification {
     given: "a GetUserModel with firstName only"
     def getUserModel = new GetUserModel(_ as String, null)
 
-    when: "getAllUsers method is called with provided GetUserModel"
-    userService.getAllUsers(getUserModel)
+    when: "find method is called with provided GetUserModel"
+    userService.find(getUserModel)
 
     then: "findByFirstNameLike method from repository is called once with GetUserModel's firstName"
     1 * userRepository.findByFirstNameLike("%" + getUserModel.firstName + "%")
@@ -83,8 +83,8 @@ class UserServiceImplSpec extends Specification {
     given: "a GetUserModel with lastName only"
     def getUserModel = new GetUserModel(null, _ as String)
 
-    when: "getAllUsers method is called with provided GetUserModel"
-    userService.getAllUsers(getUserModel)
+    when: "find method is called with provided GetUserModel"
+    userService.find(getUserModel)
 
     then: "findByLastNameLike method from repository is called once with GetUserModel's firstName"
     1 * userRepository.findByLastNameLike("%" + getUserModel.lastName + "%")
@@ -100,8 +100,8 @@ class UserServiceImplSpec extends Specification {
     given: "a GetUserModel with firstName and lastName"
     def getUserModel = new GetUserModel(_ as String, _ as String)
 
-    when: "getAllUsers method is called with provided GetUserModel"
-    userService.getAllUsers(getUserModel)
+    when: "find method is called with provided GetUserModel"
+    userService.find(getUserModel)
 
     then: "findByFirstNameLikeAndLastNameLike method from repository is called once with GetUserModel's both parameters"
     1 * userRepository.findByFirstNameLikeAndLastNameLike("%" + getUserModel.firstName + "%",
@@ -120,8 +120,8 @@ class UserServiceImplSpec extends Specification {
     and: "a User"
     def user = new User()
 
-    when: "getUserById method is called with provided UUID"
-    userService.getUserById(uuid)
+    when: "findById method is called with provided UUID"
+    userService.findById(uuid)
 
     then: "findById method from repository is called once"
     1 * userRepository.findById(uuid) >> Optional.of(user)
@@ -138,8 +138,8 @@ class UserServiceImplSpec extends Specification {
     given: "a UUID that does not exist in DB"
     def id = UUID.randomUUID()
 
-    when: "getUserById method is called with provided UUID"
-    userService.getUserById(id)
+    when: "findById method is called with provided UUID"
+    userService.findById(id)
 
     then: "findById method from repository is called once but no user was found thus an empty optional was returned"
     1 * userRepository.findById(id) >> Optional.empty()
@@ -158,8 +158,8 @@ class UserServiceImplSpec extends Specification {
     given: "a UUID"
     def uuid = UUID.randomUUID()
 
-    when: "deleteUser method is called with provided UUID"
-    userService.deleteUser(uuid)
+    when: "deleteById method is called with provided UUID"
+    userService.deleteById(uuid)
 
     then: "deleteById from repository is called once with provided UUID"
     1 * userRepository.deleteById(uuid)
@@ -169,8 +169,8 @@ class UserServiceImplSpec extends Specification {
   }
 
   def "should delete all users"() {
-    when: "deleteAllUsers method is called with provided UUID"
-    userService.deleteAllUsers()
+    when: "deleteAll method is called with provided UUID"
+    userService.deleteAll()
 
     then: "deleteAll method from repository is called once"
     1 * userRepository.deleteAll()
@@ -187,11 +187,11 @@ class UserServiceImplSpec extends Specification {
                                                         _ as String)
     and: "a user retrieved from DB"
     User retrievedUser = new User(updateUserRequestDto.userId,
-                                 _ as String,
-                                 _ as String,
-                                 _ as String,
-                                 LocalDateTime.now(),
-                                 null)
+                                  _ as String,
+                                  _ as String,
+                                  _ as String,
+                                  LocalDateTime.now(),
+                                  null)
     and: "a user representing the updated retrievedUser"
     def newUser = new User(updateUserRequestDto.userId,
                            updateUserRequestDto.firstName,
@@ -200,8 +200,8 @@ class UserServiceImplSpec extends Specification {
                            retrievedUser.createdAt,
                            null)
 
-    when: "updateUser method is called with provided UpdateUserRequestDto"
-    userService.updateUser(updateUserRequestDto)
+    when: "updateById method is called with provided UpdateUserRequestDto"
+    userService.updateById(updateUserRequestDto)
 
     then: "validateEmail is called once to validate UpdateUserRequestDto's e-mail"
     1 * validator.validateEmail(updateUserRequestDto.email)
@@ -223,8 +223,8 @@ class UserServiceImplSpec extends Specification {
                                                         _ as String,
                                                         _ as String)
 
-    when: "updateUser method is called with provided UpdateUserRequestDto"
-    userService.updateUser(updateUserRequestDto)
+    when: "updateById method is called with provided UpdateUserRequestDto"
+    userService.updateById(updateUserRequestDto)
 
     then: "the provided email is being validated"
     1 * validator.validateEmail(updateUserRequestDto.email)

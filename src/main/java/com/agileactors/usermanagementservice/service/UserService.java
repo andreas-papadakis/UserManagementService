@@ -1,6 +1,6 @@
 package com.agileactors.usermanagementservice.service;
 
-import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
+import com.agileactors.usermanagementservice.dto.SaveUserRequestDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.exception.UserNotFoundException;
 import com.agileactors.usermanagementservice.model.GetUserModel;
@@ -18,16 +18,16 @@ public interface UserService {
   /**
    * Creates new {@link com.agileactors.usermanagementservice.model.User user}.
    *
-   * @param createUserRequestDto The {@link com.agileactors.usermanagementservice.model.User user}
-   *                             to be uploaded
+   * @param saveUserRequestDto The {@link com.agileactors.usermanagementservice.model.User user} to
+   *                           be uploaded
    *
    * @return The created {@link com.agileactors.usermanagementservice.model.User user} on success
    */
-  User createUser(CreateUserRequestDto createUserRequestDto);
+  User save(SaveUserRequestDto saveUserRequestDto);
 
   /**
    * Retrieves all {@link com.agileactors.usermanagementservice.model.User users} from database.
-   * If getUserModel contains data, filter by first and/or last name.
+   * If getUserModel contains data, retrieve by matching first and/or last name.
    *
    * @param getUserModel The {@link com.agileactors.usermanagementservice.model.GetUserModel}
    *                     containing data for filtering
@@ -36,7 +36,7 @@ public interface UserService {
    *
    * @throws IllegalArgumentException When getUserModel's data cannot be checked
    */
-  List<User> getAllUsers(GetUserModel getUserModel) throws IllegalArgumentException;
+  List<User> find(GetUserModel getUserModel) throws IllegalArgumentException;
 
   /**
    * Retrieves a specific {@link com.agileactors.usermanagementservice.model.User user}.
@@ -49,7 +49,7 @@ public interface UserService {
    * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not
    *     found
    */
-  User getUserById(UUID userId) throws UserNotFoundException;
+  User findById(UUID userId) throws UserNotFoundException;
 
   /**
    * Removes {@link com.agileactors.usermanagementservice.model.User user} with id userId.
@@ -61,12 +61,12 @@ public interface UserService {
    *         {@link com.agileactors.usermanagementservice.model.User user} with id userID does not
    *         exist
    */
-  void deleteUser(UUID userId) throws EmptyResultDataAccessException;
+  void deleteById(UUID userId) throws EmptyResultDataAccessException;
 
   /**
    * Removes all {@link com.agileactors.usermanagementservice.model.User users}.
    */
-  void deleteAllUsers();
+  void deleteAll();
 
   /**
    * Updates {@link com.agileactors.usermanagementservice.model.User user}.
@@ -80,5 +80,5 @@ public interface UserService {
    * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not
    *                                                                               found
    */
-  User updateUser(UpdateUserRequestDto updatedUser) throws UserNotFoundException;
+  User updateById(UpdateUserRequestDto updatedUser) throws UserNotFoundException;
 }

@@ -1,8 +1,8 @@
 package com.agileactors.usermanagementservice.controller;
 
-import com.agileactors.usermanagementservice.dto.CreateUserRequestDto;
-import com.agileactors.usermanagementservice.dto.CreateUserResponseDto;
-import com.agileactors.usermanagementservice.dto.GetUserResponseDto;
+import com.agileactors.usermanagementservice.dto.SaveUserResponseDto;
+import com.agileactors.usermanagementservice.dto.FindUserResponseDto;
+import com.agileactors.usermanagementservice.dto.SaveUserRequestDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserResponseDto;
 import com.agileactors.usermanagementservice.exception.ApiException;
@@ -58,8 +58,7 @@ public class UserController {
    * Creates a new {@link com.agileactors.usermanagementservice.model.User user}, if
    * createUserRequestDto param is valid. If it's not, throws an {@link InvalidArgumentException}.
    *
-   * @param createUserRequestDto The
-   *     {@link CreateUserRequestDto dto} holding
+   * @param saveUserRequestDto The {@link SaveUserRequestDto dto} holding
    *     {@link com.agileactors.usermanagementservice.model.User user's} to be created data
    * @param errors The errors valid annotation found
    *
@@ -76,25 +75,24 @@ public class UserController {
                    description = "User was successfully created",
                    content = { @Content
                                (mediaType = "application/json",
-                                schema = @Schema(implementation = CreateUserResponseDto.class))}),
+                                schema = @Schema(implementation = SaveUserResponseDto.class))}),
       @ApiResponse(responseCode = "400",
                    description = "User was NOT created due to invalid argument(s)",
                    content = { @Content (mediaType = "application/json",
                                          schema = @Schema (implementation = ApiException.class))})})
   @PostMapping(value = "/users")
-  public CreateUserResponseDto createUser(@RequestBody @Valid
-                                          CreateUserRequestDto createUserRequestDto,
-                                          BindingResult errors) throws InvalidArgumentException {
+  public SaveUserResponseDto save(@RequestBody @Valid SaveUserRequestDto saveUserRequestDto,
+                                  BindingResult errors) throws InvalidArgumentException {
     if (errors.hasErrors()) {
       String errorMessages = "";
-      for(ObjectError error : errors.getAllErrors()) {
+      for (ObjectError error : errors.getAllErrors()) {
         errorMessages = errorMessages + error.getDefaultMessage() + " ";
       }
       throw new InvalidArgumentException(errorMessages);
     }
 
-    return conversionService.convert(userService.createUser(createUserRequestDto),
-                                     CreateUserResponseDto.class);
+    return conversionService.convert(userService.save(saveUserRequestDto),
+                                     SaveUserResponseDto.class);
   }
 
   /**
@@ -117,17 +115,17 @@ public class UserController {
                       description = "Returns a list with retrieved users. If no users were "
                                   + "retrieved, list will be empty",
                       content = { @Content (mediaType = "application/json",
-                              schema = @Schema (implementation = GetUserResponseDto.class))}),
+                              schema = @Schema (implementation = FindUserResponseDto.class))}),
           @ApiResponse(responseCode = "500",
                       description = "Something is wrong with provided parameter(s)",
                       content = { @Content (mediaType = "application/json",
                               schema = @Schema (implementation = ApiException.class))})})
   @GetMapping(value = "/users")
-  public List<GetUserResponseDto> getAllUsers(GetUserModel getUserModel)
+  public List<FindUserResponseDto> find(GetUserModel getUserModel)
           throws IllegalArgumentException {
-    return userService.getAllUsers(getUserModel)
+    return userService.find(getUserModel)
                       .stream()
-                      .map(user -> conversionService.convert(user, GetUserResponseDto.class))
+                      .map(user -> conversionService.convert(user, FindUserResponseDto.class))
                       .toList();
   }
 
@@ -149,16 +147,17 @@ public class UserController {
                    description = "Returns retrieved user",
                    content = { @Content
                                (mediaType = "application/json",
-                                schema = @Schema (implementation = CreateUserResponseDto.class))}),
+                                schema = @Schema (implementation = SaveUserResponseDto.class))}),
       @ApiResponse(responseCode = "404",
                    description = "User with given ID does not exist",
                    content = { @Content
                                (mediaType = "application/json",
                                 schema = @Schema (implementation = ApiException.class))})})
   @GetMapping(value = "/users/{id}")
-  public GetUserResponseDto getUserById(@PathVariable(value = "id") UUID userId)
+  public FindUserResponseDto findById(@PathVariable(value = "id") UUID userId)
           throws UserNotFoundException {
-    return conversionService.convert(userService.getUserById(userId), GetUserResponseDto.class);
+    return conversionService.convert(userService.findById(userId), FindUserResponseDto.class);
+
   }
 
   /**
@@ -178,9 +177,9 @@ public class UserController {
     @ApiResponse(responseCode = "404",
             description = "User with such ID does not exists")})
   @DeleteMapping(value = "/users/{id}")
-  public void deleteUser(@PathVariable(value = "id") UUID userId)
+  public void deleteById(@PathVariable(value = "id") UUID userId)
           throws EmptyResultDataAccessException {
-    userService.deleteUser(userId);
+    userService.deleteById(userId);
   }
 
   /**
@@ -192,8 +191,8 @@ public class UserController {
   @ApiResponse(responseCode = "200",
                description = "The DB is now empty")
   @DeleteMapping(value = "/users")
-  public void deleteAllUsers() {
-    userService.deleteAllUsers();
+  public void deleteAll() {
+    userService.deleteAll();
   }
 
   /**
@@ -219,7 +218,7 @@ public class UserController {
                    description = "Returns updated user",
                    content = { @Content
                                (mediaType = "application/json",
-                                schema = @Schema (implementation = CreateUserResponseDto.class))}),
+                                schema = @Schema (implementation = SaveUserResponseDto.class))}),
       @ApiResponse(responseCode = "404",
                    description = "User with given ID does not exist",
                    content = { @Content (mediaType = "application/json",
@@ -230,7 +229,7 @@ public class UserController {
                                         schema = @Schema (implementation = ApiException.class))})
   })
   @PutMapping(value = "/users/{id}")
-  public UpdateUserResponseDto updateUser(@PathVariable(value = "id") UUID userId,
+  public UpdateUserResponseDto updateById(@PathVariable(value = "id") UUID userId,
                                           @RequestBody @Valid
                                           UpdateUserRequestDto updateUserRequestDto,
                                           BindingResult errors) throws InvalidArgumentException,
@@ -246,7 +245,7 @@ public class UserController {
                                                                    updateUserRequestDto.firstName(),
                                                                    updateUserRequestDto.lastName(),
                                                                    updateUserRequestDto.email());
-    return conversionService.convert(userService.updateUser(updatedUserDto),
+    return conversionService.convert(userService.updateById(updatedUserDto),
                                      UpdateUserResponseDto.class);
   }
 }

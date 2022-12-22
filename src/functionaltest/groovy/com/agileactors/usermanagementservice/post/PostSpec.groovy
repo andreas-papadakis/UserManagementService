@@ -2,7 +2,7 @@ package com.agileactors.usermanagementservice.post
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 
-import com.agileactors.usermanagementservice.dto.CreateUserRequestDto
+import com.agileactors.usermanagementservice.dto.SaveUserRequestDto
 import com.agileactors.usermanagementservice.repository.UserRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.time.LocalDateTime
@@ -31,38 +31,38 @@ class PostSpec extends Specification {
     userRepository.deleteAll()
   }
 
-  def "should save user"() {
-    given: "a valid CreateUserRequestDto"
-    def createUserRequestDto = new CreateUserRequestDto("firstName",
-                                                        "lastName",
-                                                        "a@a.com")
+  def "should save a User"() {
+    given: "a valid SaveUserRequestDto"
+    def saveUserRequestDto = new SaveUserRequestDto("firstName",
+                                                    "lastName",
+                                                    "a@a.com")
 
     when: "I try to save the CreateUserRequestDto"
     def result = mockMvc.perform(post("/api/users")
                                   .contentType("application/json")
                                   .content(objectMapper
-                                          .writeValueAsString(createUserRequestDto)))
+                                          .writeValueAsString(saveUserRequestDto)))
                                   .andReturn()
 
     then: "request completed successfully"
     result.response.status == HttpStatus.OK.value
     and: "response is as expected"
-    result.response.contentAsString.contains(createUserRequestDto.firstName)
-    result.response.contentAsString.contains(createUserRequestDto.lastName)
-    result.response.contentAsString.contains(createUserRequestDto.email)
+    result.response.contentAsString.contains(saveUserRequestDto.firstName)
+    result.response.contentAsString.contains(saveUserRequestDto.lastName)
+    result.response.contentAsString.contains(saveUserRequestDto.email)
     and: "check the user is indeed saved with expected data"
     def user = userRepository.findAll().get(0)
 
-    user.firstName == createUserRequestDto.firstName
-    user.lastName  == createUserRequestDto.lastName
-    user.email     == createUserRequestDto.email
+    user.firstName == saveUserRequestDto.firstName
+    user.lastName  == saveUserRequestDto.lastName
+    user.email     == saveUserRequestDto.email
     ChronoUnit.SECONDS.between(LocalDateTime.now(), user.createdAt) <= 1
     ChronoUnit.SECONDS.between(LocalDateTime.now(), user.updatedAt) <= 1
   }
 
-  def "should fail to save user because CreateUserRequestDto is invalid"() {
-    given: "an invalid createUserRequestDto"
-    def createUserRequestDto = new CreateUserRequestDto("",
+  def "should fail to save user because SaveUserRequestDto is invalid"() {
+    given: "an invalid SaveUserRequestDto"
+    def saveUserRequestDto = new SaveUserRequestDto("",
                                                         "lastName",
                                                         "a@a.com")
 
@@ -70,7 +70,7 @@ class PostSpec extends Specification {
     def result = mockMvc.perform(post("/api/users")
                                  .contentType("application/json")
                                  .content(objectMapper
-                                         .writeValueAsString(createUserRequestDto)))
+                                         .writeValueAsString(saveUserRequestDto)))
                                  .andReturn()
 
     then: "request failed to complete"

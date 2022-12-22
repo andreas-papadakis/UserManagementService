@@ -1,7 +1,7 @@
 package com.agileactors.usermanagementservice.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import javax.validation.constraints.NotBlank;
+
 import javax.validation.constraints.Size;
 
 /**
@@ -15,17 +15,17 @@ import javax.validation.constraints.Size;
  * @param email {@link com.agileactors.usermanagementservice.model.User User's} e-mail. Must not be
  *              blank and from 5 up to 100 chars.
  */
-public record CreateUserRequestDto(@Schema(example = "John", description = "User's first name")
+public record SaveUserRequestDto(@Schema(example = "John", description = "User's first name")
                                    @Size(min = 1, max = 100, message = "First name must not be "
                                                                      + "blank and up to 100 "
                                                                      + "characters.")
                                    String firstName,
-                                   @Schema(example = "Doe", description = "User's last name")
+                                 @Schema(example = "Doe", description = "User's last name")
                                    @Size(min = 1, max = 100, message = "Last name must not be "
                                                                      + "blank and up to 100 "
                                                                      + "characters.")
                                    String lastName,
-                                   @Schema(name = "email",
+                                 @Schema(name = "email",
                                            example = "johndoe@gmail.com",
                                            description = "User's e-mail")
                                    @Size(min = 5, max = 100, message = "e-mail must not be blank "
