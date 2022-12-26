@@ -29,12 +29,30 @@ public record GetUserModel(@Nullable
   }
 
   /**
+   * Checks if {@link GetUserModel} contains first name.
+   *
+   * @return True iff first name contains data
+   */
+  public boolean containsFirstName() {
+    return firstName != null && !firstName.isBlank();
+  }
+
+  /**
    * Checks if {@link GetUserModel} contains only first name.
    *
    * @return True iff only first name contains data
    */
   public boolean containsOnlyFirstName() {
     return firstName != null && !firstName.isBlank() && (lastName == null || lastName.isBlank());
+  }
+
+  /**
+   * Checks if {@link GetUserModel } contains last name.
+   *
+   * @return True iff last name contains data
+   */
+  public boolean containsLastName() {
+    return lastName != null && !lastName.isBlank();
   }
 
   /**
