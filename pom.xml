@@ -19,6 +19,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- TODO: exclude all duplicates and add a single dependency for each without version -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
 		<!-- Needed to handle persistent data -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -32,14 +38,17 @@
 					<groupId>org.springframework</groupId>
 					<artifactId>spring-core</artifactId>
 				</exclusion>
+				<!--
 				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-api</artifactId>
 				</exclusion>
+				-->
 				<exclusion>
 					<groupId>org.jboss.logging</groupId>
 					<artifactId>jboss-logging</artifactId>
 				</exclusion>
+				<!-- TODO: remove this exclusion. it's needed!! -->
 				<exclusion>
 					<groupId>jakarta.xml.bind</groupId>
 					<artifactId>jakarta.xml.bind-api</artifactId>
@@ -55,6 +64,12 @@
 			</exclusions>
 		</dependency>
 
+		<!-- Needed to generate entity's metamodel class for typesafe criteria -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+		</dependency>
+
 		<!-- Needed for web operations (PUT/DELETE/PUSH/GET) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -68,6 +83,7 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter</artifactId>
 				</exclusion>
+
 				<exclusion>
 					<groupId>com.fasterxml.jackson.core</groupId>
 					<artifactId>jackson-core</artifactId>
@@ -223,6 +239,10 @@
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter</artifactId>
 				</exclusion>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 
@@ -271,13 +291,13 @@
 						<fileset>
 							<directory>src/unittest/groovy</directory>
 							<includes>
-								<include>**/*.groovy</include>
+								<include>**/*Spec.groovy</include>
 							</includes>
 						</fileset>
 						<fileset>
 							<directory>src/functionaltest/groovy</directory>
 							<includes>
-								<include>**/*.groovy</include>
+								<include>**/*Spec.groovy</include>
 							</includes>
 						</fileset>
 					</testSources>
