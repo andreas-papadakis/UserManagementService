@@ -95,11 +95,11 @@ class UserControllerSpec extends Specification {
     and: "a list containing some users"
     def usersList = new ArrayList<User>(List.of(new User(), new User(), new User()))
 
-    when: "find is called"
-    userController.find(getUserModel)
+    when: "findByVariousParameters is called"
+    userController.findByVariousParameters(getUserModel)
 
-    then: "find from service gets called once and returns a list with retrieved user(s)"
-    1 * userService.find(getUserModel) >> usersList
+    then: "findByVariousParameters from service gets called once and returns a list with retrieved user(s)"
+    1 * userService.findByVariousParameters(getUserModel) >> usersList
 
     then: "convert method converts usersList's users to FindUserResponseDto"
     usersList.each {user ->
