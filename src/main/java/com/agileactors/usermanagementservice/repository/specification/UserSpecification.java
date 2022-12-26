@@ -19,8 +19,8 @@ public class UserSpecification {
    * @return The created specification
    */
   public static Specification<User> containsFirstName(String firstName) {
-    return ((root, query, criteriaBuilder) ->
-              criteriaBuilder.like(root.get(User_.FIRST_NAME), "%" + firstName + "%"));
+    return (root, query, criteriaBuilder) ->
+              criteriaBuilder.like(root.get(User_.FIRST_NAME), "%" + firstName + "%");
   }
 
   /**
@@ -32,7 +32,7 @@ public class UserSpecification {
    * @return The created specification
    */
   public static Specification<User> containsLastName(String lastName) {
-    return ((root, query, criteriaBuilder) ->
-            criteriaBuilder.like(root.get(User_.LAST_NAME), "%" + lastName + "%"));
+    return (root, query, criteriaBuilder) ->
+            criteriaBuilder.like(root.get(User_.LAST_NAME), "%" + lastName + "%");
   }
 }
