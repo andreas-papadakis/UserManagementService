@@ -1,8 +1,8 @@
 package com.agileactors.usermanagementservice.controller;
 
-import com.agileactors.usermanagementservice.dto.SaveUserResponseDto;
 import com.agileactors.usermanagementservice.dto.FindUserResponseDto;
 import com.agileactors.usermanagementservice.dto.SaveUserRequestDto;
+import com.agileactors.usermanagementservice.dto.SaveUserResponseDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserResponseDto;
 import com.agileactors.usermanagementservice.exception.ApiException;
@@ -121,9 +121,9 @@ public class UserController {
                       content = { @Content (mediaType = "application/json",
                               schema = @Schema (implementation = ApiException.class))})})
   @GetMapping(value = "/users")
-  public List<FindUserResponseDto> find(GetUserModel getUserModel)
+  public List<FindUserResponseDto> findByVariousParameters(GetUserModel getUserModel)
           throws IllegalArgumentException {
-    return userService.find(getUserModel)
+    return userService.findByVariousParameters(getUserModel)
                       .stream()
                       .map(user -> conversionService.convert(user, FindUserResponseDto.class))
                       .toList();

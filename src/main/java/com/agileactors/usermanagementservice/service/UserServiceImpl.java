@@ -1,5 +1,9 @@
 package com.agileactors.usermanagementservice.service;
 
+import static com.agileactors.usermanagementservice.repository.specification.UserSpecification.containsFirstName;
+import static com.agileactors.usermanagementservice.repository.specification.UserSpecification.containsLastName;
+import static org.springframework.data.jpa.domain.Specification.where;
+
 import com.agileactors.usermanagementservice.dto.SaveUserRequestDto;
 import com.agileactors.usermanagementservice.dto.UpdateUserRequestDto;
 import com.agileactors.usermanagementservice.exception.UserNotFoundException;
@@ -11,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,19 +37,26 @@ class UserServiceImpl implements UserService {
     return userRepository.save(conversionService.convert(saveUserRequestDto, User.class));
   }
 
-  public List<User> find(GetUserModel getUserModel) throws IllegalArgumentException {
-    if (getUserModel.isEmpty()) {
+  public List<User> findByVariousParameters(GetUserModel getUserModel)
+          throws IllegalArgumentException {
+    if (getUserModel == null || getUserModel.isEmpty()) {
       return userRepository.findAll();
-    } else if (getUserModel.containsOnlyFirstName()) {
-      return userRepository.findByFirstNameLike("%" + getUserModel.firstName() + "%");
-    } else if (getUserModel.containsOnlyLastName()) {
-      return userRepository.findByLastNameLike("%" + getUserModel.lastName() + "%");
-    } else if (getUserModel.containsAllData()) {
-      return userRepository.findByFirstNameLikeAndLastNameLike("%" + getUserModel.firstName() + "%",
-                "%" + getUserModel.lastName() + "%");
-    } else {
-      throw new IllegalArgumentException();
     }
+
+    Specification<User> retrieveCondition = null;
+
+    if (getUserModel.containsFirstName()) {
+      retrieveCondition = where(containsFirstName(getUserModel.firstName()));
+    }
+    if (getUserModel.containsLastName()) {
+      if (retrieveCondition == null) {
+        retrieveCondition = where(containsLastName(getUserModel.lastName()));
+      } else {
+        retrieveCondition = retrieveCondition.and(containsLastName(getUserModel.lastName()));
+      }
+    }
+
+    return userRepository.findAll(retrieveCondition);
   }
 
   public User findById(UUID userId) throws UserNotFoundException {

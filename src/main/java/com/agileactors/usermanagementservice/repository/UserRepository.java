@@ -4,13 +4,14 @@ import com.agileactors.usermanagementservice.model.User;
 import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 /**
  * Interface to interact with DB.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, UUID> {
+public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificationExecutor<User> {
   /**
    * Retrieves all {@link com.agileactors.usermanagementservice.model.User users} from database
    * whose first name contains the searchTerm.

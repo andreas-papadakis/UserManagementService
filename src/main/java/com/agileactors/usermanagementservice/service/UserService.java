@@ -26,8 +26,8 @@ public interface UserService {
   User save(SaveUserRequestDto saveUserRequestDto);
 
   /**
-   * Retrieves all {@link com.agileactors.usermanagementservice.model.User users} from database.
-   * If getUserModel contains data, retrieve by matching first and/or last name.
+   * Retrieves all {@link com.agileactors.usermanagementservice.model.User users} from database
+   * by getUserModel's variables. If no variable is set then retrieve all users.
    *
    * @param getUserModel The {@link com.agileactors.usermanagementservice.model.GetUserModel}
    *                     containing data for filtering
@@ -36,7 +36,7 @@ public interface UserService {
    *
    * @throws IllegalArgumentException When getUserModel's data cannot be checked
    */
-  List<User> find(GetUserModel getUserModel) throws IllegalArgumentException;
+  List<User> findByVariousParameters(GetUserModel getUserModel) throws IllegalArgumentException;
 
   /**
    * Retrieves a specific {@link com.agileactors.usermanagementservice.model.User user}.
@@ -47,7 +47,7 @@ public interface UserService {
    * @return Retrieved {@link com.agileactors.usermanagementservice.model.User user}
    *
    * @throws com.agileactors.usermanagementservice.exception.UserNotFoundException When user not
-   *     found
+   *         found
    */
   User findById(UUID userId) throws UserNotFoundException;
 
